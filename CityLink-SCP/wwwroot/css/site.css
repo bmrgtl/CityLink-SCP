@@ -1,0 +1,79 @@
+/* GENERAL */
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* HERO */
+.hero {
+    height: 400px;
+    background: linear-gradient(135deg,#007BFF,#00BFFF);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+/* ANNOUNCEMENTS */
+.announcement-card {
+    background: #f0f8ff;
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* SERVICES */
+.service-card {
+    background: #e3f2fd;
+    border-radius: 8px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+    .service-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+/* EVENTS CAROUSEL */
+.carousel-item .card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+/* FAQ */
+.accordion-button {
+    background: #f0f8ff;
+    font-weight: 500;
+}
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+
+/* FOOTER */
+footer {
+    background: #0d1b2a;
+    color: #ccc;
+    padding: 40px 0;
+}
+
+    footer h5 {
+        color: #fff;
+    }
+
+/* RESPONSIVE */
+@media (max-width:768px) {
+    .hero {
+        height: auto;
+        padding: 50px 20px;
+    }
+
+    .service-card {
+        margin-bottom: 15px;
+    }
+}
