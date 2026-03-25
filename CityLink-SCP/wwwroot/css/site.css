@@ -1,79 +1,335 @@
-/* GENERAL */
-body {
-    font-family: 'Segoe UI', sans-serif;
+/* ----------------------------------------------------------------
+   1. VARIABLES
+   Edit these to retheme the whole site in one place.
+---------------------------------------------------------------- */
+:root {
+    --green: #1B3A2F;
+    --green-dark: #122820;
+    --cream: #F5F2EC;
+    --mist: #E8E4DC;
+    --placeholder: #C5CFC8;
+    --text: #1a1a1a;
+    --text-muted: #5a6a63;
+    --white: #ffffff;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-pill: 9999px;
+    --shadow: 0 4px 24px rgba(27, 58, 47, 0.10);
+    --shadow-hover: 0 12px 40px rgba(27, 58, 47, 0.18);
+    --ease: 0.25s ease;
+    --max-width: 1180px;
+    --padding: 1.25rem; /* side padding — increases at larger breakpoints */
 }
 
-/* HERO */
-.hero {
-    height: 400px;
-    background: linear-gradient(135deg,#007BFF,#00BFFF);
-    color: white;
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE
+---------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+
+/* ----------------------------------------------------------------
+   3. LAYOUT HELPERS
+---------------------------------------------------------------- */
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--padding);
+}
+
+.section {
+    padding-block: clamp(3rem, 8vw, 5rem);
+}
+
+.section--cream {
+    background: var(--cream);
+}
+
+/* Small uppercase label that sits above a heading */
+.eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 0.4rem;
+}
+
+/* Large centred heading (sections) */
+.heading-lg {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* Medium left-aligned heading (sub-sections) */
+.heading-md {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 900;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+
+/* ----------------------------------------------------------------
+   4. NAVIGATION
+---------------------------------------------------------------- */
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--green);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+}
+
+.nav__inner {
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--padding);
+    height: 64px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 10px;
-    margin: 20px;
+    justify-content: space-between;
 }
 
-/* ANNOUNCEMENTS */
-.announcement-card {
-    background: #f0f8ff;
-    border: none;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
+.nav__logo {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    transition: opacity var(--ease);
 }
 
-/* SERVICES */
-.service-card {
-    background: #e3f2fd;
-    border-radius: 8px;
-    padding: 20px;
-    transition: 0.3s;
+.nav__logo:hover {
+    opacity: 0.8;
 }
 
-    .service-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-/* EVENTS CAROUSEL */
-.carousel-item .card {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 25px;
+/* Desktop links — hidden on mobile, shown via media query */
+.nav_links {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
 }
 
-/* FAQ */
-.accordion-button {
-    background: #f0f8ff;
+.nav_link {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.85rem;
     font-weight: 500;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
+    transition: color var(--ease), background var(--ease);
 }
 
-    .accordion-button:focus {
-        box-shadow: none;
-    }
-
-/* FOOTER */
-footer {
-    background: #0d1b2a;
-    color: #ccc;
-    padding: 40px 0;
+.nav_link:hover,
+.nav_link--active {
+    color: var(--white);
+    background: rgba(255,255,255,0.12);
 }
 
-    footer h5 {
-        color: #fff;
-    }
-
-/* RESPONSIVE */
-@media (max-width:768px) {
-    .hero {
-        height: auto;
-        padding: 50px 20px;
-    }
-
-    .service-card {
-        margin-bottom: 15px;
-    }
+.nav_cta {
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    border-radius: var(--radius-pill);
+    margin-left: 0.5rem;
+    transition: background var(--ease), border-color var(--ease);
 }
+
+.nav_cta:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: var(--white);
+}
+
+/* Hamburger (mobile only) */
+.nav__hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: background var(--ease);
+}
+
+.nav__hamburger:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.nav__hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+}
+
+/* Mobile slide-down menu */
+.nav__mobile {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--green-dark);
+    transition: max-height 0.35s ease;
+}
+
+.nav__mobile.open {
+    max-height: 320px;
+}
+
+.nav__mobile-link {
+    display: block;
+    padding: 0.85rem var(--padding);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    transition: background var(--ease), color var(--ease);
+}
+
+.nav__mobile-link:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--white);
+}
+
+.nav__mobile-link--bold {
+    font-weight: 600;
+}
+
+/* ----------------------------------------------------------------
+   5. FOOTER
+---------------------------------------------------------------- */
+.footer {
+    background: var(--cream);
+    border-top: 1px solid var(--mist);
+    padding-top: 3rem;
+}
+
+.footer__grid {
+    display: grid;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+}
+
+.footer__logo {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+}
+
+.footer__small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+    .footer__small + .footer__small {
+        margin-top: 0.5rem;
+    }
+
+.footer__heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+}
+
+.footer__links li + li {
+    margin-top: 0.45rem;
+}
+
+.footer__links a {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    transition: color var(--ease);
+}
+
+    .footer__links a:hover {
+        color: var(--green);
+    }
+
+.footer__links .gap {
+    margin-top: 0.5rem;
+}
+
+.footer__ack {
+    border-top: 1px solid var(--mist);
+    background: var(--mist);
+    padding-block: 1.5rem;
+}
+
+.footer__ack-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.footer__ack-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 720px;
+}
+
+
+/* ----------------------------------------------------------------
+   6. RESPONSIVE / ADAPTIVE
+---------------------------------------------------------------- */
+
+@media (min-width: 1046px) {
+    .nav_links {display: flex }
+    .nav__hamburger { display: none }
+    .nav__mobile { display: none }
+    .footer__grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+
+}
+
+

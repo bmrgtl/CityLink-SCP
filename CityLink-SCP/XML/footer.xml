@@ -1,0 +1,21 @@
+﻿<Footer>
+	<ContactUs>
+		<Phone>CONTACT NUMBER</Phone>
+		<Email>EMAIL ADDRESS</Email>
+	</ContactUs>
+
+	<QuickLinks>
+		<QuickLink>
+			<LinkTitle>TEXT</LinkTitle>
+			<Link>URL</Link>
+		</QuickLink>
+	</QuickLinks>
+
+	<SocialMedias>
+		<SocialMedia>
+			<SocialMediaTitle>Facebook</SocialMediaTitle>
+			<SocialMediaLink>URL</SocialMediaLink>
+		</SocialMedia>
+	</SocialMedias>
+	
+</Footer>

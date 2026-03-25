@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using CityLink_SCP.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace CityLink_SCP.Controllers
 {
@@ -12,6 +14,7 @@ namespace CityLink_SCP.Controllers
         {
             _logger = logger;
         }
+
 
         public IActionResult Index()
         {
