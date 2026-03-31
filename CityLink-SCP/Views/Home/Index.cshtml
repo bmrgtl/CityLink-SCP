@@ -1,20 +1,238 @@
 ﻿@{
     ViewData["Title"] = "Home";
+    
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+}
+
+@section Scripts {
+    <script src="~/js/index.js"></script>
+}
+
+
 <!-- HERO -->
-<section class="hero text-center text-white d-flex align-items-center justify-content-center">
-    <div>
-        <h1 class="display-4 fw-bold">Welcome to the Smart Community Portal</h1>
-        <p class="lead">All community services, events, and announcements in one place</p>
-        <a href="/Services" class="btn btn-warning btn-lg mt-3">Explore Services</a>
+<section class="hero">
+    <div class="container hero__grid">
+        <div>
+            <h1 class="hero__title">CityLink<br />Initiatives</h1>
+            <p class="hero__sub">Streamlining access to services and information online.</p>
+            <a href="services.html" class="btn">View Services</a>
+        </div>
+        <div class="placeholder placeholder--hero"></div>
     </div>
 </section>
 
-<section>
-    <h5> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
-        in culpa qui officia deserunt mollit anim id est laborum.</h5>
+
+<!-- SERVICES CAROUSEL -->
+<section id="services" class="section">
+    <div class="container">
+        <p class="eyebrow">What We Offer</p>
+        <h2 class="heading-lg">Our Services</h2>
+
+        <div class="carousel__track" id="servicesTrack">
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Our Rates.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="services.html" class="btn btn--outline">View Rates</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Waste Management.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="services.html" class="btn btn--outline">View Schedule</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Issues and Concerns?</h3>
+                    <p class="card__text">Let us know.</p>
+                    <a href="#contact" class="btn btn--outline">Feedback</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Community Programs.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Learn More</a>
+                </div>
+            </article>
+        </div>
+
+        <div class="carousel__controls">
+            <button class="carousel__btn" id="servicesPrev">&#8592;</button>
+            <div class="carousel__dots" id="servicesDots"></div>
+            <button class="carousel__btn" id="servicesNext">&#8594;</button>
+        </div>
+    </div>
+</section>
+
+
+<!-- NEWS -->
+<section id="news" class="section section--cream">
+    <div class="container">
+        <h2 class="news__heading">What's New?</h2>
+
+        <!-- Announcement 1: image left, text right -->
+        <div class="ann">
+            <div class="placeholder placeholder--ann"></div>
+            <div>
+                <h3 class="ann__title">Announcement 1</h3>
+                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+        </div>
+
+        <!-- Announcement 2: text left, image right (reversed) -->
+        <div class="ann ann--reverse">
+            <div class="placeholder placeholder--ann ann__image"></div>
+            <div class="ann__copy">
+                <h3 class="ann__title">Announcement 2</h3>
+                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- EVENTS CAROUSEL -->
+<section id="events" class="section">
+    <div class="container">
+        <p class="eyebrow">Events On Right Now</p>
+        <h2 class="heading-lg">What's Happening</h2>
+
+        <div class="carousel__track" id="eventsTrack">
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event One.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event Two.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event Three.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event Four.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+        </div>
+
+        <div class="carousel__controls">
+            <button class="carousel__btn" id="eventsPrev">&#8592;</button>
+            <div class="carousel__dots" id="eventsDots"></div>
+            <button class="carousel__btn" id="eventsNext">&#8594;</button>
+        </div>
+    </div>
+</section>
+
+
+<!-- FAQ + CONTACT -->
+<section class="section section--cream">
+    <div class="container">
+        <p class="eyebrow">Commonly Asked</p>
+        <h2 class="heading-lg">Frequently Asked Questions</h2>
+
+        <div class="faq__grid">
+
+            <!-- FAQ accordion -->
+            <div class="faq__list">
+                <div class="faq__item">
+                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq1">
+                        <span>What is CityLink Initiatives?</span>
+                        <span class="faq__icon">+</span>
+                    </button>
+                    <div class="faq__panel" id="faq1">
+                        <p>CityLink Initiatives is a government platform that streamlines citizens' access to local services, announcements, and community events all in one place.</p>
+                    </div>
+                </div>
+
+                <div class="faq__item">
+                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq2">
+                        <span>How do I report an issue or concern?</span>
+                        <span class="faq__icon">+</span>
+                    </button>
+                    <div class="faq__panel" id="faq2">
+                        <p>Navigate to the Services section and click "Feedback". Fill out the online form and a council representative will get back to you within 3 business days.</p>
+                    </div>
+                </div>
+
+                <div class="faq__item">
+                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq3">
+                        <span>Where can I find the waste collection schedule?</span>
+                        <span class="faq__icon">+</span>
+                    </button>
+                    <div class="faq__panel" id="faq3">
+                        <p>The waste collection schedule is available under Waste Management in the Services section. You can also subscribe to receive email reminders.</p>
+                    </div>
+                </div>
+
+                <div class="faq__item">
+                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq4">
+                        <span>How do I book a community event?</span>
+                        <span class="faq__icon">+</span>
+                    </button>
+                    <div class="faq__panel" id="faq4">
+                        <p>Visit the What's Happening section and click "Book Now" on any event. You'll need a free CityLink account or to log in to complete your booking.</p>
+                    </div>
+                </div>
+
+                <div class="faq__item">
+                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq5">
+                        <span>Is this service available 24/7?</span>
+                        <span class="faq__icon">+</span>
+                    </button>
+                    <div class="faq__panel" id="faq5">
+                        <p>Yes, the CityLink online platform is available around the clock. For phone or in-person support, check our Contact Us page for office hours.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact card -->
+            <div id="contact" class="contact">
+                <p class="contact__title">More Questions?</p>
+                <p class="contact__sub">You can contact us at anytime.</p>
+                <div class="contact__row">
+                    <input type="email" placeholder="Email" />
+                    <input type="tel" placeholder="Phone" />
+                </div>
+                <input type="text" placeholder="Subject" />
+                <textarea placeholder="Message" rows="5"></textarea>
+                <button class="btn--submit" type="button">Submit</button>
+            </div>
+
+        </div>
+    </div>
 </section>

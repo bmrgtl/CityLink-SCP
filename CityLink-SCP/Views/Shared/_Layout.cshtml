@@ -8,19 +8,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
+
 </head>
 
 <body>
 
     <nav class="nav">
         <div class="nav__inner">
-            <a asp-controller="Home" asp-action="Index" class="nav__logo">CityLink.</a>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav__logo">CityLink.</a>
 
             <ul class="nav_links">
                 <li><a href="#events" class="nav_link">What's On</a></li>
                 <li><a href="services.html" class="nav_link">Our Services</a></li>
                 <li><a href="#contact" class="nav_link">Contact Us</a></li>
-                <li><a href="#" class="nav_cta">Log In</a></li>
+                <li><a class="nav_cta" asp-area="" asp-controller="Home" asp-action="Login">Log In</a></li>
             </ul>
 
             <button class="nav__hamburger" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
@@ -33,7 +35,7 @@
             <a href="#events" class="nav__mobile-link">Events</a>
             <a href="services.html" class="nav__mobile-link">Services</a>
             <a href="#contact" class="nav__mobile-link">Contact Us</a>
-            <a href="#" class="nav__mobile-link nav__mobile-link--bold">Log In</a>
+            <a class="nav__mobile-link nav__mobile-link--bold" asp-area="" asp-controller="Home" asp-action="Login">Log In</a>
         </div>
     </nav>
     <!-- BODY -->
@@ -84,20 +86,8 @@
         </div>
     </footer>
 
-    <script>
-        /* ── Mobile nav ── */
-        const menuBtn    = document.getElementById('menuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
 
-        menuBtn.addEventListener('click', () => {
-              const open = mobileMenu.classList.toggle('open');
-              menuBtn.setAttribute('aria-expanded', open);
-        });
-
-        // Close when a link is tapped
-        mobileMenu.querySelectorAll('a').forEach(a =>
-            a.addEventListener('click', () => mobileMenu.classList.remove('open'))
-        );
-    </script>
 </body>
 </html>

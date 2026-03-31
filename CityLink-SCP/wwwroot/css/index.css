@@ -1,0 +1,644 @@
+﻿/* ================================================================
+   styles.css — CityLink Initiatives
+   Shared across all pages. Load this before services.css.
+
+   CONTENTS
+   1.  Variables (colours, fonts, spacing)
+   2.  Reset & base
+   3.  Layout helpers
+   4.  Navigation
+   5.  Buttons
+   6.  Image placeholders
+   7.  Hero section
+   8.  Service & event cards
+   9.  Carousel
+   10. News / announcements
+   11. FAQ accordion
+   12. Contact form
+   13. Footer
+   14. Responsive (tablet ≥640px, desktop ≥1024px)
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. VARIABLES
+   Edit these to retheme the whole site in one place.
+---------------------------------------------------------------- */
+:root {
+    --green: #1B3A2F;
+    --green-dark: #122820;
+    --cream: #F5F2EC;
+    --mist: #E8E4DC;
+    --placeholder: #C5CFC8;
+    --text: #1a1a1a;
+    --text-muted: #5a6a63;
+    --white: #ffffff;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-pill: 9999px;
+    --shadow: 0 4px 24px rgba(27, 58, 47, 0.10);
+    --shadow-hover: 0 12px 40px rgba(27, 58, 47, 0.18);
+    --ease: 0.25s ease;
+    --max-width: 1180px;
+    --padding: 1.25rem; /* side padding — increases at larger breakpoints */
+}
+
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE
+---------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+
+/* ----------------------------------------------------------------
+   3. LAYOUT HELPERS
+---------------------------------------------------------------- */
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--padding);
+}
+
+.section {
+    padding-block: clamp(3rem, 8vw, 5rem);
+}
+
+.section--cream {
+    background: var(--cream);
+}
+
+/* Small uppercase label that sits above a heading */
+.eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 0.4rem;
+}
+
+/* Large centred heading (sections) */
+.heading-lg {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* Medium left-aligned heading (sub-sections) */
+.heading-md {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 900;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+
+/* ----------------------------------------------------------------
+   5. BUTTONS
+---------------------------------------------------------------- */
+
+/* Base: filled green pill */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.6rem;
+    background: var(--green);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--green);
+    transition: background var(--ease), transform var(--ease), box-shadow var(--ease);
+}
+
+    .btn:hover {
+        background: var(--green-dark);
+        border-color: var(--green-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(27,58,47,0.3);
+    }
+
+/* Modifier: outline only */
+.btn--outline {
+    background: transparent;
+    color: var(--green);
+}
+
+    .btn--outline:hover {
+        background: var(--green);
+        color: var(--white);
+        box-shadow: none;
+    }
+
+/* Modifier: full-width block (booking page) */
+.btn--block {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding-block: 1rem;
+    border-radius: var(--radius-lg);
+}
+
+/* Submit button inside dark contact card */
+.btn--submit {
+    align-self: flex-end;
+    padding: 0.65rem 2rem;
+    background: var(--white);
+    color: var(--green);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    transition: background var(--ease), transform var(--ease);
+}
+
+    .btn--submit:hover {
+        background: var(--mist);
+        transform: translateY(-2px);
+    }
+
+
+/* ----------------------------------------------------------------
+   6. IMAGE PLACEHOLDERS
+   Swap these out for real <img> tags when you have images.
+   Just replace the <div class="placeholder ..."> with an <img>.
+---------------------------------------------------------------- */
+.placeholder {
+    background: var(--placeholder);
+    border-radius: var(--radius-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.placeholder--hero {
+    width: 100%;
+    aspect-ratio: 4/3;
+}
+
+.placeholder--card {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+.placeholder--ann {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--green);
+    min-height: 200px;
+}
+
+.placeholder--thumb {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+
+/* ----------------------------------------------------------------
+   7. HERO
+---------------------------------------------------------------- */
+.hero {
+    padding-block: clamp(3rem, 10vw, 6rem);
+}
+
+.hero__grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.hero__title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.4rem, 8vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+}
+
+.hero__sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 340px;
+    margin-bottom: 2rem;
+}
+
+
+/* ----------------------------------------------------------------
+   8. CARDS  (services + events share the same card style)
+---------------------------------------------------------------- */
+.card {
+    background: var(--white);
+    border: 1px solid var(--mist);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+}
+
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(27,58,47,0.2);
+    }
+
+.card__body {
+    padding: 1rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+}
+
+.card__title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.card__text {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    flex: 1;
+}
+
+
+/* ----------------------------------------------------------------
+   9. CAROUSEL
+---------------------------------------------------------------- */
+
+/* Scrollable row of cards */
+.carousel__track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+}
+
+    .carousel__track::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Each card: mobile = full width, grows at breakpoints (see §14) */
+    .carousel__track > * {
+        scroll-snap-align: start;
+        flex: 0 0 calc(100% - 0.5rem);
+    }
+
+/* Controls row: ← dots → */
+.carousel__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.carousel__btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--green);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--ease), color var(--ease), transform var(--ease);
+}
+
+    .carousel__btn:hover {
+        background: var(--green);
+        color: var(--white);
+        transform: scale(1.08);
+    }
+
+.carousel__dots {
+    display: flex;
+    gap: 0.45rem;
+}
+
+.carousel__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--mist);
+    border: 1.5px solid var(--placeholder);
+    transition: background var(--ease), width var(--ease);
+}
+
+    .carousel__dot.active {
+        background: var(--green);
+        border-color: var(--green);
+        width: 22px;
+        border-radius: var(--radius-pill);
+    }
+
+
+/* ----------------------------------------------------------------
+   10. NEWS / ANNOUNCEMENTS
+---------------------------------------------------------------- */
+.news__heading {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+/* Row: image beside text — stacks on mobile, side-by-side on tablet+ */
+.ann {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+    align-items: center;
+}
+
+.ann--reverse .ann__image {
+    order: 2;
+}
+/* flips image to right side */
+.ann--reverse .ann__copy {
+    order: 1;
+}
+
+.ann__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 4vw, 1.9rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.ann__text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+
+/* ----------------------------------------------------------------
+   11. FAQ ACCORDION
+---------------------------------------------------------------- */
+.faq__grid {
+    display: grid;
+    gap: 2.5rem;
+}
+/* becomes 2-col on desktop */
+.faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.faq__item {
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    overflow: hidden;
+    transition: border-color var(--ease), box-shadow var(--ease);
+}
+
+    .faq__item:hover {
+        border-color: rgba(27,58,47,0.3);
+        box-shadow: 0 2px 12px rgba(27,58,47,0.07);
+    }
+
+/* Question button */
+.faq__trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: left;
+    transition: background var(--ease);
+}
+
+    .faq__trigger:hover {
+        background: var(--cream);
+    }
+
+/* Green circle with + or × */
+.faq__icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--white);
+    font-size: 1.1rem;
+    transition: transform 0.35s ease;
+}
+
+/* Answer — collapsed by default; JS sets max-height to open */
+.faq__panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    padding-inline: 1.2rem;
+}
+
+    .faq__panel p {
+        padding-block: 0.75rem 1rem;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+        border-top: 1px solid var(--mist);
+    }
+
+
+/* ----------------------------------------------------------------
+   12. CONTACT FORM (homepage)
+---------------------------------------------------------------- */
+.contact {
+    background: var(--green);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.contact__sub {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: -0.5rem;
+}
+
+.contact__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.contact input,
+.contact textarea {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--white);
+    outline: none;
+    width: 100%;
+    transition: border-color var(--ease), background var(--ease);
+}
+
+    .contact input::placeholder,
+    .contact textarea::placeholder {
+        color: rgba(255,255,255,0.45);
+    }
+
+    .contact input:focus,
+    .contact textarea:focus {
+        border-color: rgba(255,255,255,0.6);
+        background: rgba(255,255,255,0.18);
+    }
+
+.contact textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ----------------------------------------------------------------
+   14. RESPONSIVE
+---------------------------------------------------------------- */
+
+/* Tablet (≥ 640px) */
+@media (min-width: 640px) {
+    :root {
+        --padding: 2rem;
+    }
+
+    .hero__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ann {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .carousel__track > * {
+        flex: 0 0 calc(50% - 0.5rem);
+    }
+    /* 2 cards */
+    .footer__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Desktop (≥ 1024px) */
+@media (min-width: 1024px) {
+    :root {
+        --padding: 2.5rem;
+    }
+
+    .nav__links {
+        display: flex;
+    }
+
+    .nav__hamburger {
+        display: none;
+    }
+
+    .nav__mobile {
+        display: none !important;
+    }
+
+    .hero__grid {
+        grid-template-columns: 5fr 4fr;
+        gap: 4rem;
+    }
+
+    .carousel__track > * {
+        flex: 0 0 calc(33.333% - 0.68rem);
+    }
+    /* 3 cards */
+    .faq__grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+
+    .footer__grid {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+}
+
+
+/* ----------------------------------------------------------------
+   ACCESSIBILITY
+---------------------------------------------------------------- */
+:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}

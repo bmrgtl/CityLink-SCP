@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Signin";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+
+<div class="account-container">
+    <h1>Sign Into CityLink.</h1>
+    <div class="sign-up-link">
+        <p>Already have an account? <a class="sign-up-link" asp-area="" asp-controller="Home" asp-action="Login">Log In Here</a>.</p>
+    </div>
+    <partial name="_LoginForm" />
+
+</div>
