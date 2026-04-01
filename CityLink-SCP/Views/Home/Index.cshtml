@@ -1,7 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home";
-    
 }
+
+@model CityLink_SCP.Models.IndexViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
@@ -32,6 +33,11 @@
         <h2 class="heading-lg">Our Services</h2>
 
         <div class="carousel__track" id="servicesTrack">
+            @foreach (var card in Model.Cards)
+            {
+                <partial name="_Card" model="card" />
+            }
+
             <article class="card">
                 <div class="placeholder placeholder--card"></div>
                 <div class="card__body">

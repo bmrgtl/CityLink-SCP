@@ -220,6 +220,7 @@ button {
 .placeholder--hero {
     width: 100%;
     aspect-ratio: 4/3;
+    display: none;
 }
 
 .placeholder--card {
@@ -578,6 +579,10 @@ button {
 
     .hero__grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .placeholder--hero {
+        display: block;
     }
 
     .ann {

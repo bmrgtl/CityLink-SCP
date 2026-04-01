@@ -18,6 +18,7 @@ namespace CityLink_SCP.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -30,6 +31,8 @@ namespace CityLink_SCP.Controllers
         {
             return View();
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

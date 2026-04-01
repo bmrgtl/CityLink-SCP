@@ -88,7 +88,7 @@ h1 {
 }
 
 form {
-    width: 40%;
+    width: 80%;
     max-width: var(--max-width);
 }
 
@@ -158,18 +158,15 @@ form {
     }
 
     form {
-        width: 100%;
+        width: 40%;
+        max-width: var(--max-width);
     }
+
 }
 
 /* Desktop (≥ 1024px) */
 @media (min-width: 1024px) {
     :root {
         --padding: 2.5rem;
-    }
-
-    .hero__grid {
-        grid-template-columns: 5fr 4fr;
-        gap: 4rem;
     }
 }
