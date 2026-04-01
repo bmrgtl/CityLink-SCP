@@ -1,0 +1,26 @@
+﻿@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+    <link rel="stylesheet" href="~/css/index.css" />
+
+}
+
+@section Scripts {
+    <script src="~/js/admin.js"></script>
+}
+
+<div class="container">
+    <h1 class="heading-lg">Admin Dashboard</h1>
+    <p class="eyebrow">Welcome to the admin dashboard. Here you can manage users, view reports, and configure settings.</p>
+    <div styles="color: black;" class="admin">
+        <p class="contact__title">XML Configurations</p>
+        <textarea id="xml" styles="background:white;" rows="20" cols="50" placeholder="XML input here..."></textarea>
+    <button class="btn--submit" onclick="LoadXML()">Load</button>
+    <button class="btn--submit" onclick="UploadXML()">Save Configurations</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="carousel__track" id="cards_test">
+        
+    </div>
+</div>

@@ -7,4 +7,13 @@
     <RootNamespace>CityLink_SCP</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="XML\Card.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XML\footer.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
