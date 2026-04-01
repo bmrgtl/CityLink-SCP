@@ -79,15 +79,12 @@ button {
     padding: 90px;
 }
 
-.login-header {
-    text-align: center;
-}
-
 h1 {
     font-family: var(--font-heading);
     font-size: clamp(2.4rem, 8vw, 3rem);
     font-weight: 900;
     line-height: 1.05;
+    text-align: center;
 }
 
 form {
@@ -149,3 +146,30 @@ form {
         text-decoration: underline;
         color: var(--green);
     }
+
+/* ----------------------------------------------------------------
+   14. RESPONSIVE
+---------------------------------------------------------------- */
+
+/* Tablet (≥ 640px) */
+@media (min-width: 800px) {
+    :root {
+        --padding: 2rem;
+    }
+
+    form {
+        width: 100%;
+    }
+}
+
+/* Desktop (≥ 1024px) */
+@media (min-width: 1024px) {
+    :root {
+        --padding: 2.5rem;
+    }
+
+    .hero__grid {
+        grid-template-columns: 5fr 4fr;
+        gap: 4rem;
+    }
+}

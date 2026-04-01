@@ -599,18 +599,6 @@ button {
         --padding: 2.5rem;
     }
 
-    .nav__links {
-        display: flex;
-    }
-
-    .nav__hamburger {
-        display: none;
-    }
-
-    .nav__mobile {
-        display: none !important;
-    }
-
     .hero__grid {
         grid-template-columns: 5fr 4fr;
         gap: 4rem;
@@ -625,9 +613,6 @@ button {
         align-items: start;
     }
 
-    .footer__grid {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
-    }
 }
 
 
