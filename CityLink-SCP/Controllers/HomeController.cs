@@ -51,7 +51,7 @@ namespace CityLink_SCP.Controllers
             return View();
 		}
 
-        public IActionResult Upload([FromBody]string XML)
+        /*public IActionResult Upload([FromBody]string XML)
         {
             try
             {
@@ -97,12 +97,70 @@ namespace CityLink_SCP.Controllers
 			var result = new
 			{
 				xml = content,
-				cards = model.Cards
-			};
+				cards = PartialView("_Card", model.Cards)
+            };
 			return Ok(result);
-		}
+		}*/
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        // Returns just the XML string
+        public IActionResult LoadXml()
+        {
+            var content = System.IO.File.ReadAllText("XML\\Card.xml");
+            return Content(content, "application/xml");
+        }
+
+        // Returns rendered card HTML
+        public IActionResult LoadCards()
+        {
+            var cards = GetCardsFromXml();
+            return PartialView("_Card", cards);
+        }
+
+        // Saves XML, returns rendered card HTML
+        [HttpPost]
+        public IActionResult UploadCards([FromBody] string xml)
+        {
+            try
+            {
+                System.IO.File.WriteAllText("XML\\Card.xml", xml);
+                var cards = GetCardsFromXml();
+                return PartialView("_Card", cards);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Invalid XML format: " + ex.Message);
+            }
+        }
+
+        // Saves XML, returns the XML back
+        [HttpPost]
+        public IActionResult UploadXml([FromBody] string xml)
+        {
+            try
+            {
+                System.IO.File.WriteAllText("XML\\Card.xml", xml);
+                return Content(xml, "application/xml");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Invalid XML format: " + ex.Message);
+            }
+        }
+
+        // Extract the repeated parsing logic
+        private List<CardViewModel> GetCardsFromXml()
+        {
+            var content = System.IO.File.ReadAllText("XML\\Card.xml");
+            var xdoc = XDocument.Parse(content);
+            return xdoc.Descendants("Card").Select(x => new CardViewModel
+            {
+                Title = (string)x.Element("Title"),
+                Description = (string)x.Element("Description"),
+                ButtonLabel = (string)x.Element("ButtonLabel")
+            }).ToList();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

@@ -1,4 +1,4 @@
-﻿async function LoadXML() {
+﻿/*async function LoadXML() {
     const url = "load"
     try {
         const response = await fetch(url);
@@ -77,5 +77,38 @@ function makeCards(data) {
 
         // Add to container
         cardsContainer.appendChild(article);
+    });
+}*/
+
+function LoadXML() {
+    $.ajax({
+        url: "loadxml",
+        type: "GET",
+        dataType: "text",
+        success: function (data) {
+            $("#xml").val(data);
+        }
+    });
+
+    $.ajax({
+        url: "loadcards",
+        type: "GET",
+        success: function (html) {
+            $("#cards_test").html(html);
+        }
+    });
+}
+
+function UploadXML() {
+    var xml = $("#xml").val();
+
+    $.ajax({
+        url: "uploadcards",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(xml),
+        success: function (html) {
+            $("#cards_test").html(html);
+        }
     });
 }

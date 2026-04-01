@@ -1,10 +1,13 @@
-﻿@model CardViewModel
+﻿@model List<CardViewModel>
 
-<article class="card">
-    <div class="placeholder placeholder--card"></div>
-    <div class="card__body">
-        <h3 class="card__title">@Model.Title</h3>
-        <p class="card__text">@Model.Description</p>
-        <a href="services.html" class="btn btn--outline">@Model.ButtonLabel</a>
-    </div>
-</article>
+@foreach(var card in Model)
+{
+    <article class="card">
+        <div class="placeholder placeholder--card"></div>
+        <div class="card__body">
+            <h3 class="card__title">@card.Title</h3>
+            <p class="card__text">@card.Description</p>
+            <a href="services.html" class="btn btn--outline">@card.ButtonLabel</a>
+        </div>
+    </article>
+}
