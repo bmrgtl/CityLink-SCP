@@ -101,7 +101,7 @@ function makeCards(data) {
 */
 $("#loadXML").on("click", function() {
     $.ajax({
-        url: "loadxml",
+        url: "admin/loadxml",
         type: "GET",
         dataType: "text",
         success: function (data) {
@@ -112,7 +112,7 @@ $("#loadXML").on("click", function() {
 
 $("#loadCards").on("click", function() {
     $.ajax({
-        url: "loadcards",
+        url: "admin/loadcards",
         type: "GET",
         success: function (html) {
             $("#cards_test").html(html);
@@ -125,7 +125,7 @@ $("#saveXML").on("click", function() {
     var xml = $("#xmlEditText").val();
 
     $.ajax({
-        url: "uploadcards",
+        url: "admin/uploadcards",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(xml),
