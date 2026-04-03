@@ -1,7 +1,5 @@
 ﻿@section Styles {
     <link rel="stylesheet" href="~/css/admin.css" />
-    <link rel="stylesheet" href="~/css/index.css" />
-
 }
 
 @section Scripts {
@@ -13,9 +11,10 @@
     <p class="eyebrow">Welcome to the admin dashboard. Here you can manage users, view reports, and configure settings.</p>
     <div styles="color: black;" class="admin">
         <p class="contact__title">XML Configurations</p>
-        <textarea id="xml" styles="background:white;" rows="20" cols="50" placeholder="XML input here..."></textarea>
-    <button class="btn--submit" onclick="LoadXML()">Load</button>
-    <button class="btn--submit" onclick="UploadXML()">Save Configurations</button>
+        <textarea id="xmlEditText" styles="background:white;" rows="20" cols="50" placeholder="XML input here..."></textarea>
+        <button class="btn--submit" id="loadXML">Load XML</button>
+        <button class="btn--submit" id="loadCards">Load Cards</button>
+        <button class="btn--submit" id="saveXML">Save Configurations</button>
     </div>
 </div>
 
