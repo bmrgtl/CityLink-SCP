@@ -102,6 +102,11 @@ namespace CityLink_SCP.Controllers
 			return Ok(result);
 		}
 
+        public IActionResult WhatsOn()
+        {
+            return View();
+        }
+
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

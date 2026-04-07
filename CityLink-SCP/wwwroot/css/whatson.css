@@ -1,0 +1,113 @@
+﻿/* FORM CONTAINER */
+.searchsort form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* allows responsiveness */
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 20px;
+}
+
+/* SHARED INPUT STYLE */
+.input-field {
+    padding: 12px 15px;
+    border: 2px solid var(--green);
+    border-radius: 20px;
+    font-size: 1rem;
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+/* SEARCH INPUT (grows) */
+.input-box {
+    flex: 1 1 300px;
+}
+
+/* PLACEHOLDER STYLE */
+::placeholder {
+    font-weight: 500;
+    color: #222;
+}
+
+/* SELECT WRAPPER */
+.sort-select {
+    position: relative;
+    flex: 0 1 150px;
+}
+
+    /* SELECT (matches input) */
+    .sort-select select {
+        padding: 12px 15px;
+        border: 2px solid var(--green);
+        border-radius: 20px;
+        font-size: 1rem;
+        background-color: white;
+        width: 100%;
+        height: 60px;
+        cursor: pointer;
+        box-sizing: border-box;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    /* CUSTOM DROPDOWN ARROW */
+    .sort-select::after {
+        content: "▼";
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 12px;
+        color: #555;
+    }
+
+/* BUTTON WRAPPER */
+.input-submit {
+    flex: 0 1 auto;
+}
+
+/* BUTTON STYLE */
+.submit-btn {
+    padding: 0 20px;
+    height: 60px;
+    border-radius: 30px;
+    border: none;
+    background-color: var(--green);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .submit-btn:hover {
+        background: var(--green-dark);
+        border-color: var(--green-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(27,58,47,0.3);
+    }
+
+/* FOCUS STATES (nice UX) */
+.input-field:focus,
+.sort-select select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+/* 📱 MOBILE RESPONSIVENESS */
+@media (max-width: 600px) {
+    .searchsort form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-box,
+    .sort-select,
+    .input-submit {
+        width: 100%;
+        flex: 1 1 100%;
+    }
+}

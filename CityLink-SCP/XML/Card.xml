@@ -9,5 +9,10 @@
 		<Description>This is the fourth card.</Description>
 		<ButtonLabel>10</ButtonLabel>
 	</Card>
+        <Card>
+		<Title>Card 5</Title>
+		<Description>This is the fifth card.</Description>
+		<ButtonLabel>Open</ButtonLabel>
+	</Card>
 
 </Cards>
