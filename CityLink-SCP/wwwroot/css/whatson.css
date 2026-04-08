@@ -89,7 +89,7 @@
         box-shadow: 0 6px 20px rgba(27,58,47,0.3);
     }
 
-/* FOCUS STATES (nice UX) */
+/* FOCUS STATES */
 .input-field:focus,
 .sort-select select:focus {
     outline: none;
