@@ -1,13 +1,18 @@
 <Cards>
 	<Card>
-		<Title>Card1</Title>
-		<Description>This is the first card.</Description>
-		<ButtonLabel>10</ButtonLabel>
+		<Title>HELLLOOO</Title>
+		<Description>HELLLOOO</Description>
+		<ButtonLabel>HELLLOOO</ButtonLabel>
 	</Card>
 	<Card>
-		<Title>Card4</Title>
-		<Description>This is the fourth card.</Description>
-		<ButtonLabel>10</ButtonLabel>
+		<Title>GOODBYEEE</Title>
+		<Description>GOODBYEEE</Description>
+		<ButtonLabel>GOODBYEEE</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>BAD BYE</Title>
+		<Description>BAD BYE</Description>
+		<ButtonLabel>BAD BYE</ButtonLabel>
 	</Card>
         <Card>
 		<Title>Card 5</Title>

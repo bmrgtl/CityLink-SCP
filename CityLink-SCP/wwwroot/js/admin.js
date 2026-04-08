@@ -1,4 +1,17 @@
-﻿async function LoadXML() {
+﻿/*
+    These functions are commented out because they use Fetch (browser API) to do GET and POST requests
+    I prefer Ajax, the syntax is cleaner and easier IMO, so I rewrote them below
+    but using fetch is fine, 
+    so those functions can be uncommented and changed slight to make them work again
+
+    BUT,
+    THe MakeCards function expects different return data,
+    which wont work with action that returns partial view
+*/
+
+
+
+/*async function LoadXML() {
     const url = "load"
     try {
         const response = await fetch(url);
@@ -78,4 +91,49 @@ function makeCards(data) {
         // Add to container
         cardsContainer.appendChild(article);
     });
-}
+}*/
+
+/*
+    Replaced named function with 'EventListeners', apparently its better to keep the html and js separate
+    Where before in the <button> it had 'onclick="LoadXML()"', this instead uses JQuery to do this:
+        document.querySelector('button').addEventListener('click', doSomething); 
+    Which is better for "Separatoin of Concerns", html doesnt have js function names in it, which may change
+*/
+$("#loadXML").on("click", function() {
+    $.ajax({
+        url: "admin/loadxml",
+        type: "GET",
+        dataType: "text",
+        success: function (data) {
+            $("#xmlEditText").val(data);
+        }
+    });
+});
+
+$("#loadCards").on("click", function() {
+    $.ajax({
+        url: "admin/loadcards",
+        type: "GET",
+        success: function (html) {
+            $("#cards_test").html(html);
+        }
+    });
+});
+
+$("#saveXML").on("click", function() {
+    // Set variable to -> Get element with id -> Get its value
+    var xml = $("#xmlEditText").val();
+
+    $.ajax({
+        url: "admin/uploadcards",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(xml),
+        // If the request returned a success code
+        success: function (html) {
+            // Get this element ->  set the html content of it -> to the html returned by the request
+            $("#cards_test").html(html);
+        }
+    });
+});
+

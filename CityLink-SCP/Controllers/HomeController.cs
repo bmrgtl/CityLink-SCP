@@ -45,69 +45,7 @@ namespace CityLink_SCP.Controllers
             return View();
         }
 
-        public IActionResult Admin()
-        {
-
-            return View();
-		}
-
-        public IActionResult Upload([FromBody]string XML)
-        {
-            try
-            {
-                System.IO.File.WriteAllText("XML\\Card.xml", XML);
-
-				var content = System.IO.File.ReadAllText("XML\\Card.xml");
-				var xdoc = XDocument.Parse(content);
-				var model = new IndexViewModel
-				{
-					Cards = xdoc.Descendants("Card").Select(x => new CardViewModel
-					{
-						Title = (string)x.Element("Title"),
-						Description = (string)x.Element("Description"),
-						ButtonLabel = (string)x.Element("ButtonLabel")
-					}).ToList()
-				};
-                var result = new
-                {
-                    xml = XML,
-                    cards = model.Cards
-                };
-				return Ok(result);
-			}
-			catch(Exception ex)
-            {
-                return(BadRequest("Invalid XML format: " + ex.Message));
-			}
-        }
-
-        public IActionResult Load()
-        {
-			var content = System.IO.File.ReadAllText("XML\\Card.xml");
-			var xdoc = XDocument.Parse(content);
-			var model = new IndexViewModel
-			{
-				Cards = xdoc.Descendants("Card").Select(x => new CardViewModel
-				{
-					Title = (string)x.Element("Title"),
-					Description = (string)x.Element("Description"),
-					ButtonLabel = (string)x.Element("ButtonLabel")
-				}).ToList()
-			};
-			var result = new
-			{
-				xml = content,
-				cards = model.Cards
-			};
-			return Ok(result);
-		}
-
-        public IActionResult WhatsOn()
-        {
-            return View();
-        }
-
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
