@@ -33,10 +33,7 @@
         <h2 class="heading-lg">Our Services</h2>
 
         <div class="carousel__track" id="servicesTrack">
-            @foreach (var card in Model.Cards)
-            {
-                <partial name="_Card" model="card" />
-            }
+            <partial name="_Card" model=@Model.Cards />
         </div>
 
         <div class="carousel__controls">
