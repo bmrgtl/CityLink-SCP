@@ -395,7 +395,6 @@ button {
     font-family: var(--font-heading);
     font-size: clamp(1.8rem, 5vw, 2.8rem);
     font-weight: 900;
-    margin-bottom: clamp(2rem, 5vw, 3rem);
 }
 
 /* Row: image beside text — stacks on mobile, side-by-side on tablet+ */

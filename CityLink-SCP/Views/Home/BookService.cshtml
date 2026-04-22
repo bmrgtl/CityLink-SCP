@@ -1,0 +1,80 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="~/css/bookservice.css"/>
+}
+
+<section id="service">
+    <div class="container">
+        <h2 class="news__heading">Book a Service</h2>
+        <p class="ann__text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <hr />
+
+        <div class="bookings-container">
+            <h3 class="booking-heading">Book a Service</h3>
+            <div class="bookings">
+                <form method="post" class="book-form-col">
+                    <div class="form-left">
+                        <div class="input-box">
+                            <select class="input-field" name="service" placeholder="Choose a Service" required>
+                                <option value="1">Service 1</option>
+                                <option value="2">Service 2</option>
+                                <option value="3">Service 3</option>
+                            </select>
+                        </div>
+                        <div class="datetime-row">
+                            <div class="input-box">
+                                <input class="input-field" name="date" placeholder="dd/mm/yyyy" type="date" />
+                            </div>
+                            <div class="input-box">
+                                <input class="input-field" name="time" placeholder="Time" type="time" />
+                            </div>
+                        </div>
+
+                        <div class="input-box">
+                            <input class="input-field" name="comments" placeholder="Comments" />
+                        </div>
+                        
+                        <div class="error-msg">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                        </div>
+                    </div>
+
+                    <div class="summary-col">
+                        <div class="service-details">
+                            <p>Service Name</p>
+                            <p>Day, Date, Time</p>
+                            <hr />
+                            <div class="booking-details">
+                                <p>Service Name</p>
+                                <p>$0.00</p>
+                            </div>
+                            <hr />
+                            <div class="booking-details">
+                                <p>Subtotal</p>
+                                <p>$0.00</p>
+                            </div>
+                            <hr />
+                            <div class="booking-details">
+                                <h3>Total</h3>
+                                <p>$0.00</p>
+                            </div>
+                        </div>
+
+                        <div class="input-submit">
+                            <button class="submit-btn" id="submit" type="submit">Book Service</button>
+                        </div>
+                    </div>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+</section>
