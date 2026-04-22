@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Cards>
+	<Card>
+		<Title>SERVICE ONE</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>SERVICE TWO</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>SERVICE THREE</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>SERVICE FOUR</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>SERVICE FIVE</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>SERVICE SIX</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+	<Card>
+		<Title>SERVICE SEVEN</Title>
+		<Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Description>
+		<ButtonLabel>Book Now</ButtonLabel>
+	</Card>
+</Cards>

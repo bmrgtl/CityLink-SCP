@@ -1,0 +1,16 @@
+﻿@model List<FAQViewModel>
+
+<div class="faq__list">
+    @for (int index = 0; index < Model.Count(); index++)
+    {
+        <div class="faq__item">
+            <button class="faq__trigger" aria-expanded="false" aria-controls="faq@(index)">
+                <span>@Model[index].Question</span>
+                <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__panel" id="faq@(index)">
+                <p>@Model[index].Answer</p>
+            </div>
+        </div>
+    }
+</div>

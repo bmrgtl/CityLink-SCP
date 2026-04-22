@@ -15,24 +15,18 @@ namespace CityLink_SCP.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }
+			_indexViewModel = new IndexViewModel
+			{
+				Events = GetEventsModel(),
+				Services = GetServicesModel(),
+				FAQs = GetFAQsModel()
+			};
+		}
+		private readonly IndexViewModel _indexViewModel;
 
-
-        public IActionResult Index()
+		public IActionResult Index()
         {
-            var content = System.IO.File.ReadAllText("XML\\Card.xml");
-            var xdoc = XDocument.Parse(content);
-            var model = new IndexViewModel
-            {
-                Cards = xdoc.Descendants("Card").Select(x => new CardViewModel
-                {
-                    Title = (string)x.Element("Title"),
-                    Description = (string)x.Element("Description"),
-                    ButtonLabel = (string)x.Element("ButtonLabel")
-                }).ToList()
-            };
-
-			return View(model);
+			return View(_indexViewModel);
         }
 
         public IActionResult Signin()
@@ -54,5 +48,40 @@ namespace CityLink_SCP.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+
+		#region Helper Methods
+		private List<CardViewModel> GetEventsModel()
+		{
+			var content = System.IO.File.ReadAllText("XML\\EventsDefault.xml");
+			var xdoc = XDocument.Parse(content);
+			return xdoc.Descendants("Card").Select(x => new CardViewModel
+			{
+				Title = (string)x.Element("Title"),
+				Description = (string)x.Element("Description"),
+				ButtonLabel = (string)x.Element("ButtonLabel")
+			}).ToList();
+		}
+		private List<CardViewModel> GetServicesModel()
+		{
+			var content = System.IO.File.ReadAllText("XML\\ServicesDefault.xml");
+			var xdoc = XDocument.Parse(content);
+			return xdoc.Descendants("Card").Select(x => new CardViewModel
+			{
+				Title = (string)x.Element("Title"),
+				Description = (string)x.Element("Description"),
+				ButtonLabel = (string)x.Element("ButtonLabel")
+			}).ToList();
+		}
+		private List<FAQViewModel> GetFAQsModel()
+		{
+			var content = System.IO.File.ReadAllText("XML\\FAQsDefault.xml");
+			var xdoc = XDocument.Parse(content);
+			return xdoc.Descendants("FAQItem").Select(x => new FAQViewModel
+			{
+				Question = (string)x.Element("Question"),
+				Answer = (string)x.Element("Answer")
+			}).ToList();
+		}
+		#endregion
+	}
 }
