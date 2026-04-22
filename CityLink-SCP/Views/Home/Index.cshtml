@@ -33,7 +33,7 @@
         <h2 class="heading-lg">Our Services</h2>
 
         <div class="carousel__track" id="servicesTrack">
-            <partial name="_Card" model=@Model.Cards />
+            <partial name="_Card" model="@Model.Services" />
         </div>
 
         <div class="carousel__controls">
@@ -81,41 +81,7 @@
         <h2 class="heading-lg">What's Happening</h2>
 
         <div class="carousel__track" id="eventsTrack">
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event One.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Two.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Three.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Four.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
+            <partial name="_Card" model="@Model.Events" />
         </div>
 
         <div class="carousel__controls">
@@ -136,57 +102,7 @@
         <div class="faq__grid">
 
             <!-- FAQ accordion -->
-            <div class="faq__list">
-                <div class="faq__item">
-                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq1">
-                        <span>What is CityLink Initiatives?</span>
-                        <span class="faq__icon">+</span>
-                    </button>
-                    <div class="faq__panel" id="faq1">
-                        <p>CityLink Initiatives is a government platform that streamlines citizens' access to local services, announcements, and community events all in one place.</p>
-                    </div>
-                </div>
-
-                <div class="faq__item">
-                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq2">
-                        <span>How do I report an issue or concern?</span>
-                        <span class="faq__icon">+</span>
-                    </button>
-                    <div class="faq__panel" id="faq2">
-                        <p>Navigate to the Services section and click "Feedback". Fill out the online form and a council representative will get back to you within 3 business days.</p>
-                    </div>
-                </div>
-
-                <div class="faq__item">
-                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq3">
-                        <span>Where can I find the waste collection schedule?</span>
-                        <span class="faq__icon">+</span>
-                    </button>
-                    <div class="faq__panel" id="faq3">
-                        <p>The waste collection schedule is available under Waste Management in the Services section. You can also subscribe to receive email reminders.</p>
-                    </div>
-                </div>
-
-                <div class="faq__item">
-                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq4">
-                        <span>How do I book a community event?</span>
-                        <span class="faq__icon">+</span>
-                    </button>
-                    <div class="faq__panel" id="faq4">
-                        <p>Visit the What's Happening section and click "Book Now" on any event. You'll need a free CityLink account or to log in to complete your booking.</p>
-                    </div>
-                </div>
-
-                <div class="faq__item">
-                    <button class="faq__trigger" aria-expanded="false" aria-controls="faq5">
-                        <span>Is this service available 24/7?</span>
-                        <span class="faq__icon">+</span>
-                    </button>
-                    <div class="faq__panel" id="faq5">
-                        <p>Yes, the CityLink online platform is available around the clock. For phone or in-person support, check our Contact Us page for office hours.</p>
-                    </div>
-                </div>
-            </div>
+            <partial name="_FAQ" model="@Model.FAQs" />
 
             <!-- Contact card -->
             <div id="contact" class="contact">

@@ -2,8 +2,8 @@
 {
     public class IndexViewModel
     {
-        public List<CardViewModel> Cards { get; set; }
-
-
-    }
+        public List<CardViewModel> Events { get; set; }
+        public List<CardViewModel> Services { get; set; }
+        public List<FAQViewModel> FAQs { get; set; }
+	}
 }
