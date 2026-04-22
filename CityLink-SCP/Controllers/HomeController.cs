@@ -48,6 +48,10 @@ namespace CityLink_SCP.Controllers
         {
             return View();
         }
+        public IActionResult BookService()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

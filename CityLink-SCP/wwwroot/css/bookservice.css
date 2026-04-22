@@ -1,0 +1,128 @@
+﻿#service {
+    margin-top: 1rem;
+}
+
+.booking_heading {
+    font-family: var(--text-muted);
+    font-size: clamp(1.3rem, 4vw, 1.9rem);
+    font-weight: 700;
+}
+
+.bookings-container {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.bookings {
+    margin-top:1rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.book-form-col {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+}
+
+.form-left {
+    flex:7;
+}
+
+.book-form-col form {
+    width:100%;
+}
+
+.input-box {
+    margin-bottom: 1rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid gray;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    background: white;
+    outline: none;
+    transition: 0.2s;
+}
+
+    .input-field:focus,
+    .input-field:hover {
+        border-color: rgba(27, 58, 47, 0.4);
+        box-shadow: 0 0 0 3px rgba(27, 58, 47, 0.08);
+    }
+
+select.input-field {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2.5rem; /* space for arrow */
+
+    background-color: white;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/32/32195.png");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+}
+
+.datetime-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.summary-col {
+    flex: 3;
+}
+
+.service-details {
+    border: 1.5px solid var(--green);
+    border-radius: 15px;
+    padding: 1.25rem 1.25rem;
+}
+
+.summary-details hr {
+    border: none;
+    height: 0.5px;
+    background-color: lightgray;
+    margin-top: 2px;
+}
+
+.booking-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    padding-block: 0.3rem;
+}
+
+.input-submit {
+    display: flex;
+    justify-content: center;
+}
+
+.submit-btn {
+    margin-top: 2rem;
+    width: 70%;
+    height: 60px;
+    background: var(--green);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--green);
+    transition: background var(--ease), transform var(--ease), box-shadow var(--ease);
+    position: center;
+}
+
+    .submit-btn:hover {
+        background: var(--green-dark);
+        border-color: var(--green-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(27,58,47,0.3);
+    }
