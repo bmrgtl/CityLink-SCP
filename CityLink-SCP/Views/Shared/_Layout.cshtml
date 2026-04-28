@@ -19,10 +19,10 @@
             <a asp-area="" asp-controller="Home" asp-action="Index" class="nav__logo">CityLink.</a>
 
             <ul class="nav_links">
-                <li><a class="nav_link" asp-area="" asp-controller="Home" asp-action="WhatsOn">What's On</a></li>
-                <li><a href="services.html" class="nav_link">Our Services</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="WhatsOn" class="nav_link">What's On</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Services" class="nav_link">Our Services</a></li>
                 <li><a href="#contact" class="nav_link">Contact Us</a></li>
-                <li><a class="nav_cta" asp-area="" asp-controller="Home" asp-action="Login">Log In</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Login" class="nav_cta">Log In</a></li>
             </ul>
 
             <button class="nav__hamburger" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
@@ -31,10 +31,10 @@
         </div>
 
         <div class="nav__mobile" id="mobileMenu">
-            <a class="nav__mobile-link" asp-area="" asp-controller="Home" asp-action="WhatsOn">What's On</a>
-            <a href="services.html" class="nav__mobile-link">Services</a>
+            <a asp-area="" asp-controller="Home" asp-action="WhatsOn" class="nav__mobile-link">What's On</a>
+            <a asp-area="" asp-controller="Home" asp-action="Services" class="nav__mobile-link">Services</a>
             <a href="#contact" class="nav__mobile-link">Contact Us</a>
-            <a class="nav__mobile-link nav__mobile-link--bold" asp-area="" asp-controller="Home" asp-action="Login">Log In</a>
+            <a asp-area="" asp-controller="Home" asp-action="Login" class="nav__mobile-link nav__mobile-link--bold">Log In</a>
         </div>
     </nav>
     <!-- BODY -->
@@ -62,7 +62,7 @@
                 <p class="footer__heading">Quick Links</p>
                 <ul class="footer__links">
                     <li><a href="#">Announcements</a></li>
-                    <li><a href="services.html">Our Services</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Services">Our Services</a></li>
                     <li><a href="#">FAQs</a></li>
                     <li><a href="#">Feedback Form</a></li>
                     <li><a asp-area="" asp-controller="Admin" asp-action="Index">Staff Portal</a></li>

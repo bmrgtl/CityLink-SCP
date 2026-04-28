@@ -42,15 +42,22 @@ namespace CityLink_SCP.Controllers
         {
             return View();
         }
+		public IActionResult News()
+        {
+            return View();
+        }
+
+        public IActionResult Services()
+		{
+            return View(_indexViewModel);
+        }
         public IActionResult BookService()
         {
             return View();
         }
 
-		public IActionResult News()
-		{
-			return View();
-        }
+		
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
