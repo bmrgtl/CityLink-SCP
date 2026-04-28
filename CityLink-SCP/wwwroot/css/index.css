@@ -99,6 +99,7 @@ button {
     max-width: var(--max-width);
     margin-inline: auto;
     padding-inline: var(--padding);
+
 }
 
 .section {
@@ -239,6 +240,13 @@ button {
     width: 48px;
     height: 48px;
     flex-shrink: 0;
+}
+
+.placeholder--news {
+    width: 100%;
+    height: 250px;
+    aspect-ratio: 16/6;
+    margin-bottom: 1.25rem;
 }
 
 
@@ -426,6 +434,22 @@ button {
     color: var(--text-muted);
     line-height: 1.7;
     margin-bottom: 1.25rem;
+}
+
+.ann__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top:1.25rem;
+}
+
+.article__content {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    text-align: justify;
 }
 
 

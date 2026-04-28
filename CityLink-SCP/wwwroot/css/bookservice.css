@@ -22,6 +22,7 @@
 
 .book-form-col {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
     width: 100%;
 }
@@ -99,6 +100,12 @@ select.input-field {
     padding-block: 0.3rem;
 }
 
+.datetime-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
 .input-submit {
     display: flex;
     justify-content: center;
@@ -126,3 +133,9 @@ select.input-field {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(27,58,47,0.3);
     }
+
+@media (min-width: 768px) {
+    .book-form-col {
+        flex-direction: row; /* side-by-side again */
+    }
+}
