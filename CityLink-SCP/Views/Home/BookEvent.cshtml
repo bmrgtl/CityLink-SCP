@@ -1,0 +1,84 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="~/css/bookservice.css" />
+}
+
+<section id="service">
+    <div class="container">
+        <h2 class="news__heading">Event Name</h2>
+        <p class="ann__text">LOCATION | DAY, DATE AND TIME</p>
+        <p class="ann__text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <hr />
+
+        <div class="bookings-container">
+            <h3 class="booking-heading">Book Event</h3>
+            <div class="bookings">
+                <form method="post" class="book-form-col">
+                    <div class="form-left">
+                        <div class="datetime-row">
+                            <div class="input-box">
+                                <input class="input-field" name="first-name" placeholder="First Name" required/>
+                            </div>
+                            <div class="input-box">
+                                <input class="input-field" name="last-name" placeholder="Last Name" required />
+                            </div>
+                        </div>
+
+                        <div class="input-box">
+                            <input class="input-field" name="mobile" placeholder="Mobile Number" />
+                        </div>
+
+                        <div class="datetime-row">
+                            <div class="input-box">
+                                <p class="ann__text">Number of Tickets </p>
+                            </div>
+                            <div class="input-box">
+                                <input class="input-field" name="tickets" type="number" value="1" min="1" max="5" step="1"/>
+                            </div>
+
+                        </div>
+
+                        <div class="error-msg">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                        </div>
+                    </div>
+
+                    <div class="summary-col">
+                        <div class="service-details">
+                            <p>Event Name</p>
+                            <p>Day, Date, Time</p>
+                            <hr />
+                            <div class="booking-details">
+                                <p>1x Ticket</p>
+                                <p>$0.00</p>
+                            </div>
+                            <hr />
+                            <div class="booking-details">
+                                <p>Subtotal</p>
+                                <p>$0.00</p>
+                            </div>
+                            <hr />
+                            <div class="booking-details">
+                                <h3>Total</h3>
+                                <p>$0.00</p>
+                            </div>
+                        </div>
+
+                        <div class="input-submit">
+                            <button class="submit-btn" id="submit" type="submit">Book Service</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</section>

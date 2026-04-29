@@ -48,6 +48,8 @@
     background: white;
     outline: none;
     transition: 0.2s;
+    font-family: inherit;
+    resize:none;
 }
 
     .input-field:focus,
@@ -83,6 +85,7 @@ select.input-field {
     border: 1.5px solid var(--green);
     border-radius: 15px;
     padding: 1.25rem 1.25rem;
+    margin-bottom:2rem;
 }
 
 .summary-details hr {
@@ -112,7 +115,6 @@ select.input-field {
 }
 
 .submit-btn {
-    margin-top: 2rem;
     width: 70%;
     height: 60px;
     background: var(--green);

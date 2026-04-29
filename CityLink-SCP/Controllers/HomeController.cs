@@ -47,6 +47,16 @@ namespace CityLink_SCP.Controllers
             return View();
         }
 
+		public IActionResult Events()
+		{
+			return View();
+		}
+
+		public IActionResult BookEvent()
+		{
+			return View();
+		}
+
         public IActionResult Services()
 		{
             return View(_indexViewModel);
@@ -55,6 +65,12 @@ namespace CityLink_SCP.Controllers
         {
             return View();
         }
+
+
+		public IActionResult ContactUs()
+		{
+			return View();
+		}
 
 		
 

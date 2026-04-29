@@ -99,7 +99,6 @@ button {
     max-width: var(--max-width);
     margin-inline: auto;
     padding-inline: var(--padding);
-
 }
 
 .section {

@@ -1,0 +1,94 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="~/css/whatson.css" />
+}
+
+@section Scripts {
+    <script src="~/js/index.js"></script>
+}
+<section id="news" class="section section--cream">
+    <div class="container">
+        <p class="eyebrow">Announcements</p>
+        <h2 class="heading-lg">What's New?</h2>
+
+        <!-- Announcement 1: image left, text right -->
+        <div class="ann">
+            <div class="placeholder placeholder--ann"></div>
+            <div>
+                <h3 class="ann__title">Announcement 1</h3>
+                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+        </div>
+</section>
+
+<section id="events" class="section">
+    <div class="container">
+        <p class="eyebrow">Events On Right Now</p>
+        <h2 class="heading-lg">What's Happening</h2>
+
+        <div class="searchsort">
+            <form method="get">
+                <div class="input-box">
+                    <input class="input-field" name="search" placeholder="Search" />
+                </div>
+                <div class="sort-select">
+                    <select class="input-field" name="sort">
+                        <option value="">Sort By</option>
+                        <option value="alphabetical">A - Z</option>
+                        <option value="date">Date</option>
+                    </select>
+                </div>
+                <div class="input-submit">
+                    <button class="submit-btn" id="submit" type="submit">Apply</button>
+                </div>
+                <div class="error-msg">
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                </div>
+            </form>
+        </div>
+
+        <div class="carousel__track" id="eventsTrack">
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event One.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event Two.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event Three.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">Event Four.</h3>
+                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="btn btn--outline">Book Now</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+

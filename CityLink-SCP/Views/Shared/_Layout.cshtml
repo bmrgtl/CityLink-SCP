@@ -20,8 +20,9 @@
 
             <ul class="nav_links">
                 <li><a asp-area="" asp-controller="Home" asp-action="WhatsOn" class="nav_link">What's On</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Events" class="nav_link">Events</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="Services" class="nav_link">Our Services</a></li>
-                <li><a href="#contact" class="nav_link">Contact Us</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="ContactUs" class="nav_link">Contact Us</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="Login" class="nav_cta">Log In</a></li>
             </ul>
 
@@ -32,8 +33,9 @@
 
         <div class="nav__mobile" id="mobileMenu">
             <a asp-area="" asp-controller="Home" asp-action="WhatsOn" class="nav__mobile-link">What's On</a>
+            <a asp-area="" asp-controller="Home" asp-action="Events" class="nav__mobile-link">Events</a>
             <a asp-area="" asp-controller="Home" asp-action="Services" class="nav__mobile-link">Services</a>
-            <a href="#contact" class="nav__mobile-link">Contact Us</a>
+            <a asp-area="" asp-controller="Home" asp-action="ContactUs" class="nav__mobile-link">Contact Us</a>
             <a asp-area="" asp-controller="Home" asp-action="Login" class="nav__mobile-link nav__mobile-link--bold">Log In</a>
         </div>
     </nav>
@@ -64,7 +66,7 @@
                     <li><a href="#">Announcements</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Services">Our Services</a></li>
                     <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Feedback Form</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="ContactUs">Feedback Form</a></li>
                     <li><a asp-area="" asp-controller="Admin" asp-action="Index">Staff Portal</a></li>
                 </ul>
             </div>
