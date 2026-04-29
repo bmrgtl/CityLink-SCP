@@ -16,7 +16,7 @@
 .bookings {
     margin-top:1rem;
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: flex-start;
 }
 
