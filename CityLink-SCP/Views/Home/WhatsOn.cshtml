@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CityLink_SCP.Models.IndexViewModel
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/whatson.css" />
@@ -26,41 +24,7 @@
 
         <h3 class="ann__title">Other Announcements</h3>
         <div class="carousel__track" id="eventsTrack">
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event One.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Two.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Three.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Four.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
+            <partial name="_Card" model="@Model.Services" />
         </div>
 
         <div class="carousel__controls">
@@ -99,41 +63,7 @@
         </div>
 
         <div class="carousel__track" id="eventsTrack">
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event One.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Two.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Three.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="placeholder placeholder--card"></div>
-                <div class="card__body">
-                    <h3 class="card__title">Event Four.</h3>
-                    <p class="card__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="btn btn--outline">Book Now</a>
-                </div>
-            </article>
+            <partial name="_Card" model="@Model.Events" />
         </div>
 
         <div class="carousel__controls">

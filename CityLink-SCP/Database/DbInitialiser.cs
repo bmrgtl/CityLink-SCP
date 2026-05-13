@@ -9,13 +9,14 @@ namespace CityLink_SCP.Database
 		{
 			if (context.Users.Any())
 			{
-				context.EventRegistrations.RemoveRange(context.EventRegistrations);
-				context.ServiceBookings.RemoveRange(context.ServiceBookings);
-				context.Services.RemoveRange(context.Services);
-				context.Events.RemoveRange(context.Events);
-				context.Staff.RemoveRange(context.Staff);
-				context.Users.RemoveRange(context.Users);
-				context.SaveChanges();
+				return;
+				//context.EventRegistrations.RemoveRange(context.EventRegistrations);
+				//context.ServiceBookings.RemoveRange(context.ServiceBookings);
+				//context.Services.RemoveRange(context.Services);
+				//context.Events.RemoveRange(context.Events);
+				//context.Staff.RemoveRange(context.Staff);
+				//context.Users.RemoveRange(context.Users);
+				//context.SaveChanges();
 			}
 			int usersNum = 20;
             int servicesNum = 20;

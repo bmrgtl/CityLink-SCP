@@ -34,7 +34,7 @@ namespace CityLink_SCP.Controllers
         }
         public IActionResult WhatsOn()
         {
-            return View();
+            return View(GetIndexViewModel());
         }
         public IActionResult BookService()
         {
