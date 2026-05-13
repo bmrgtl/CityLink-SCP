@@ -1,0 +1,125 @@
+﻿@model CityLink_SCP.Models.IndexViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="~/css/services.css" />
+}
+
+@section Scripts {
+    <script src="~/js/index.js"></script>
+}
+
+
+<section class="section-white">
+    <div class="container">
+        <h2 class="news__heading">Our Services.</h2>
+        <div class="rates-container">
+            <h3 class="heading-md">Our Rates</h3>
+            <div class="rates-info">
+                <table class="rates-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Service</th>
+                            <th scope="col">Fees</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Green Waste Collection</td>
+                            <td>$45.00</td>
+                        </tr>
+                        <tr>
+                            <td>Service 2</td>
+                            <td>$5.00</td>
+                        </tr>
+                        <tr>
+                            <td>Service 3</td>
+                            <td>$45.00</td>
+                        </tr>
+                        <tr>
+                            <td>Service 4</td>
+                            <td>$145.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="rates-questions">
+                    <p class="ann__eyebrow">Can't Find What You're Looking For?</p>
+                    <p class="ann__text">Enquire Now</p>
+                    <form>
+                        <div class="contact-info">
+                            <div class="input-box">
+                                <input class="input-field" name="name" placeholder="Name" required />
+                            </div>
+                            <div class="input-box">
+                                <input class="input-field" name="email" placeholder="Email" type="email" required />
+                            </div>
+                        </div>
+                        
+                        <div class="input-box">
+                            <textarea rows="5" class="input-field" name="message" placeholder="Message" required></textarea>
+                        </div>
+                        <div class="input-submit">
+                            <button type="submit" class="submit-btn">Submit Enquiry</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</section>
+
+<section class="section-white">
+    <div class="container">
+        <p class="ann__eyebrow">What We Offer</p>
+        <h3 class="heading-md"> Available Services</h3>
+
+        <div class="service-cards">
+            <div class="carousel__track" id="servicesTrack">
+                <partial name="_Card" model="@Model.Services" />
+            </div>
+
+            <div class="carousel__controls">
+                <button class="carousel__btn" id="servicesPrev">&#8592;</button>
+                <div class="carousel__dots" id="servicesDots"></div>
+                <button class="carousel__btn" id="servicesNext">&#8594;</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section--cream">
+    <div class="container">
+        <h3 class="heading-md">Waste Collection Schedule</h3>
+        <div class="schedule-info">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Bin</th>
+                        <th scope="col">Day</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Yellow Bin (Recycling)</td>
+                        <td>Monday</td>
+                    </tr>
+                    <tr>
+                        <td>Red Lin Bin (Green Waste)</td>
+                        <td>Tuesday</td>
+                    </tr>
+                    <tr>
+                        <td>Other</td>
+                        <td>Wednesday</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+   

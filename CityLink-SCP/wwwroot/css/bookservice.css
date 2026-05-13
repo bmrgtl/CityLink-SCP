@@ -16,12 +16,13 @@
 .bookings {
     margin-top:1rem;
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: flex-start;
 }
 
 .book-form-col {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
     width: 100%;
 }
@@ -47,6 +48,8 @@
     background: white;
     outline: none;
     transition: 0.2s;
+    font-family: inherit;
+    resize:none;
 }
 
     .input-field:focus,
@@ -82,6 +85,7 @@ select.input-field {
     border: 1.5px solid var(--green);
     border-radius: 15px;
     padding: 1.25rem 1.25rem;
+    margin-bottom:2rem;
 }
 
 .summary-details hr {
@@ -99,13 +103,18 @@ select.input-field {
     padding-block: 0.3rem;
 }
 
+.datetime-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
 .input-submit {
     display: flex;
     justify-content: center;
 }
 
 .submit-btn {
-    margin-top: 2rem;
     width: 70%;
     height: 60px;
     background: var(--green);
@@ -126,3 +135,9 @@ select.input-field {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(27,58,47,0.3);
     }
+
+@media (min-width: 768px) {
+    .book-form-col {
+        flex-direction: row; /* side-by-side again */
+    }
+}
