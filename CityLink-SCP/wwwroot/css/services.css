@@ -1,0 +1,153 @@
+﻿.section-white {
+    margin: 1.25rem;
+}
+.rates-container {
+    background: var(--green);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* layout: table + form */
+.rates-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* table + form split */
+.rates-table {
+    width:100%;
+    border-collapse: collapse;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+    /* table cells */
+    .rates-table th,
+    .rates-table td {
+        padding: 0.9rem 1rem;
+        text-align: left;
+    }
+
+    .rates-table thead {
+        background: rgba(255,255,255,0.15);
+    }
+
+    .rates-table tbody tr:hover {
+        background: rgba(255,255,255,0.08);
+    }
+
+/* enquiry box */
+.rates-questions {
+    border-radius: var(--radius-md);
+}
+
+    .rates-questions .ann__eyebrow {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.7);
+        margin-top:0;
+    }
+
+    .rates-questions .ann__text {
+        color: var(--white);
+    }
+
+.contact-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-box {
+    margin-bottom: 1rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid gray;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    background: white;
+    outline: none;
+    transition: 0.2s;
+    font-family:inherit;
+    resize:none;
+}
+
+    .input-field:focus,
+    .input-field:hover {
+        border-color: rgba(27, 58, 47, 0.4);
+        box-shadow: 0 0 0 3px rgba(27, 58, 47, 0.08);
+    }
+
+.input-submit {
+    display: flex;
+    justify-content: center;
+}
+
+.submit-btn {
+    width: 70%;
+    height: 60px;
+    background: var(--white);
+    color: var(--green);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--white);
+    transition: background var(--ease), transform var(--ease), box-shadow var(--ease);
+    position: center;
+}
+
+    .submit-btn:hover {
+        background: rgba(255,255,255,0.08);
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(27,58,47,0.3);
+    }
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 0.9rem 1rem;
+        text-align: left;
+    }
+
+    .schedule-table thead {
+        background: var(--green);
+        color: var(--white);
+    }
+
+    .schedule-table tbody tr:hover {
+        background: rgba(27, 58, 47, 0.05);
+    }
+
+@media (min-width: 768px) {
+    .rates-info {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .rates-table {
+        flex: 1.5;
+        min-width: 0;
+    }
+
+    .rates-questions {
+        flex: 1;
+        min-width: 0;
+    }
+}
