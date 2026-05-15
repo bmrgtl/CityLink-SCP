@@ -1,4 +1,5 @@
 ﻿using CityLink_SCP.Models;
+using CityLink_SCP.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
@@ -7,6 +8,16 @@ namespace CityLink_SCP.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly XmlConfigService _xmlService;
+        private readonly DatabaseService _dbService;
+        private readonly ILogger _logger;
+
+        public AdminController(XmlConfigService xmlConfigService, DatabaseService dbService, ILogger<AdminController> logger)
+        {
+            _xmlService = xmlConfigService;
+            _dbService = dbService;
+            _logger = logger;
+        }
         // GET: AdminController
         public ActionResult Index()
         {
@@ -83,28 +94,45 @@ namespace CityLink_SCP.Controllers
         }
 
         // Returns just the XML string
-        public IActionResult LoadXml()
+        [HttpGet]
+        public IActionResult LoadXml(int id)
         {
-            var content = System.IO.File.ReadAllText("XML\\Card.xml");
+            var content = _xmlService.GetXmlContentById(id);
+            if (content == null) return NotFound($"XML not found for ID: {id}");
             return Content(content, "application/xml");
         }
 
-        // Returns rendered card HTML
-        public IActionResult LoadCards()
+        // Returns rendered HTML that the specified xml refers to
+        [HttpGet]
+        public async Task<IActionResult> GetXmlPreview(int id = 1)
         {
-            var cards = GetCardsFromXml();
-            return PartialView("_Card", cards);
+            var model = await Task.Run(() => _xmlService.GetXmlViewModel(id));
+            if (model == null)
+            {
+                return NotFound();
+            }
+            if (model is not IXmlViewModel xmlViewModel)
+            {
+                return BadRequest();
+            }
+            return PartialView(xmlViewModel.PartialName, model);
         }
 
         // Saves XML, returns rendered card HTML
         [HttpPost]
-        public IActionResult UploadCards([FromBody] string xml)
+        public async Task<IActionResult> UploadCards([FromForm] XmlConfigDto xmlConfig)
         {
             try
             {
-                System.IO.File.WriteAllText("XML\\Card.xml", xml);
-                var cards = GetCardsFromXml();
-                return PartialView("_Card", cards);
+                // Validate XML before saving
+                var validXml = _xmlService.Validate(xmlConfig.Type, xmlConfig.XmlContent);
+                if (!validXml.valid)
+                {
+                    return BadRequest("Invalid XML: " + validXml.error);
+                }
+                // User Identity call to manager here, later
+                await _xmlService.SaveNewVersionAsync(_dbService._context.Staff.First(), xmlConfig);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -126,19 +154,5 @@ namespace CityLink_SCP.Controllers
                 return BadRequest("Invalid XML format: " + ex.Message);
             }
         }
-
-        // Extract the repeated parsing logic
-        private List<CardViewModel> GetCardsFromXml()
-        {
-            var content = System.IO.File.ReadAllText("XML\\Card.xml");
-            var xdoc = XDocument.Parse(content);
-            return xdoc.Descendants("Card").Select(x => new CardViewModel
-            {
-                Title = (string)x.Element("Title"),
-                Description = (string)x.Element("Description"),
-                ButtonLabel = (string)x.Element("ButtonLabel")
-            }).ToList();
-        }
-
     }
 }

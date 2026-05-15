@@ -23,6 +23,18 @@ namespace CityLink_SCP.Extensions
 				ButtonLabel = "Register"
 			};
 		}
-		
-	}
+		public static XmlConfigDto ToViewModel(this XmlConfig config)
+		{
+			return new XmlConfigDto
+			{
+				Id = config.Id,
+                XmlContent = config.XmlContent,
+				Type = config.Type,
+				Version = config.Version,
+				IsActive = config.IsActive,
+				UploadedAt = config.UploadedAt,
+				Label = config.Label
+			};
+        }
+    }
 }

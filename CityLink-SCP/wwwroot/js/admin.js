@@ -110,12 +110,12 @@ $("#loadXML").on("click", function() {
     });
 });
 
-$("#loadCards").on("click", function() {
+$("#previewXML").on("click", function() {
     $.ajax({
-        url: "admin/loadcards",
+        url: "admin/getxmlpreview",
         type: "GET",
         success: function (html) {
-            $("#cards_test").html(html);
+            $("#xml_preview").html(html);
         }
     });
 });
