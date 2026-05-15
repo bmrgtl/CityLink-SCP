@@ -53,7 +53,7 @@ namespace CityLink_SCP.Controllers
 
         public IActionResult Services()
 		{
-            return View(_indexViewModel);
+            return View(GetIndexViewModel());
         }
         public IActionResult BookService()
         {
