@@ -5,28 +5,22 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Xml;
 using System.IO;
-
+using CityLink_SCP.Services;
+using CityLink_SCP.Extensions;
 namespace CityLink_SCP.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+		private readonly DatabaseService _dbService;
+		public HomeController(ILogger<HomeController> logger, DatabaseService dbService)
         {
             _logger = logger;
-			_indexViewModel = new IndexViewModel
-			{
-				Events = GetEventsModel(),
-				Services = GetServicesModel(),
-				FAQs = GetFAQsModel()
-			};
+			_dbService = dbService;
 		}
-		private readonly IndexViewModel _indexViewModel;
-
 		public IActionResult Index()
         {
-			return View(_indexViewModel);
+			return View(GetIndexViewModel());
         }
 
         public IActionResult Signin()
@@ -40,7 +34,7 @@ namespace CityLink_SCP.Controllers
         }
         public IActionResult WhatsOn()
         {
-            return View();
+            return View(GetIndexViewModel());
         }
 		public IActionResult News()
         {
@@ -59,7 +53,7 @@ namespace CityLink_SCP.Controllers
 
         public IActionResult Services()
 		{
-            return View(_indexViewModel);
+            return View(GetIndexViewModel());
         }
         public IActionResult BookService()
         {
@@ -82,6 +76,18 @@ namespace CityLink_SCP.Controllers
         }
 
 		#region Helper Methods
+		private IndexViewModel GetIndexViewModel()
+		{
+			var events = _dbService._context.Events.Select(e => e.ToCardViewModel());
+			var services = _dbService._context.Services.Select(s => s.ToCardViewModel());
+			var model = new IndexViewModel
+			{
+				Events = events.Any() ? events.ToList() : GetEventsModel(),
+				Services = services.Any() ? services.ToList() : GetServicesModel(),
+				FAQs = GetFAQsModel()
+			};
+			return model;
+		}
 		private List<CardViewModel> GetEventsModel()
 		{
 			var content = System.IO.File.ReadAllText("XML\\EventsDefault.xml");
@@ -90,7 +96,7 @@ namespace CityLink_SCP.Controllers
 			{
 				Title = (string)x.Element("Title"),
 				Description = (string)x.Element("Description"),
-				ButtonLabel = (string)x.Element("ButtonLabel")
+				ButtonLabel = (string)x.Element("ButtonLabel") 
 			}).ToList();
 		}
 		private List<CardViewModel> GetServicesModel()
