@@ -1,16 +1,38 @@
-﻿@model List<FAQViewModel>
+﻿@model FAQViewModel
 
 <div class="faq__list">
-    @for (int index = 0; index < Model.Count(); index++)
+    @for (int index = 0; index < Model.FAQs.Count; index++)
     {
         <div class="faq__item">
             <button class="faq__trigger" aria-expanded="false" aria-controls="faq@(index)">
-                <span>@Model[index].Question</span>
+                <span>@Model.FAQs[index].Question</span>
                 <span class="faq__icon">+</span>
             </button>
             <div class="faq__panel" id="faq@(index)">
-                <p>@Model[index].Answer</p>
+                <p>@Model.FAQs[index].Answer</p>
             </div>
         </div>
     }
 </div>
+
+<script>
+        (function () {
+        const faqTriggers = document.querySelectorAll(".faq__trigger");
+
+        faqTriggers.forEach(trigger => {
+            trigger.addEventListener("click", () => {
+                const panel = document.getElementById(
+                    trigger.getAttribute("aria-controls")
+                );
+
+                const isOpen = trigger.getAttribute("aria-expanded") === "true";
+
+                trigger.setAttribute("aria-expanded", !isOpen);
+
+                if (panel) {
+                    panel.style.maxHeight = isOpen ? null : panel.scrollHeight + "px";
+                }
+            });
+        });
+    })();
+</script>

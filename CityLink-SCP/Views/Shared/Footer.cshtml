@@ -1,0 +1,45 @@
+﻿@model CityLink_SCP.Models.FooterModel
+@{
+}
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer__grid">
+        <div>
+            <p class="footer__logo">CityLink<br />Initiatives</p>
+            <p class="footer__small">Copyright &copy; 2026<br />Government of Western Australia.<br />All rights reserved.</p>
+            <p class="footer__small">@Model.Email<br />@Model.Address</p>
+        </div>
+        <div>
+            <p class="footer__heading">Need Help?</p>
+            <ul class="footer__links">
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">@Model.Phone</a></li>
+                <li><a href="#">@Model.Email</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer__heading">Quick Links</p>
+            <ul class="footer__links">
+                @foreach (var link in Model.QuickLinks)
+                {
+                    <li><a href="@link.Url">@link.Title</a></li>
+                }
+            </ul>
+        </div>
+        <div>
+            <p class="footer__heading">Social Media</p>
+            <ul class="footer__links">
+                @foreach (var social in Model.SocialMedia)
+                {
+                    <li><a href="@social.Url">@social.Title</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="footer__ack">
+        <div class="container">
+            <p class="footer__ack-title">Acknowledgement of Country</p>
+            <p class="footer__ack-text">The Government of Western Australia acknowledges the traditional owners throughout Western Australia and their continuing connection to the land, waters and community. We pay our respects to all members of the Aboriginal communities and their cultures; and to Elders both past and present.</p>
+        </div>
+    </div>
+</footer>

@@ -8,7 +8,7 @@ public class CityLinksContext : DbContext
 {
 	public DbSet<User> Users => Set<User>();
     public DbSet<Staff> Staff => Set<Staff>();
-    public DbSet<XML_Configurations> XML_Configurations => Set<XML_Configurations>();
+    public DbSet<XmlConfig> XML_Configurations => Set<XmlConfig>();
     public DbSet<EventRegistration> EventRegistrations => Set<EventRegistration>();
     public DbSet<ServiceBooking> ServiceBookings => Set<ServiceBooking>();
     public DbSet<Event> Events => Set<Event>();
@@ -29,7 +29,7 @@ public class CityLinksContext : DbContext
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configure relationships and constraints between the tables
-        modelBuilder.Entity<XML_Configurations>()
+        modelBuilder.Entity<XmlConfig>()
             .HasOne(x => x.Staff)
             .WithMany()
             .HasForeignKey(x => x.StaffId);

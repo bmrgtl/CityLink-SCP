@@ -17,9 +17,10 @@ namespace CityLink_SCP
 
             builder.Services.AddDbContext<CityLinksContext>();
             builder.Services.AddScoped<DatabaseService>();
-            
+            builder.Services.AddScoped<XmlConfigService>();
 
-			var app = builder.Build();
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -35,7 +36,8 @@ namespace CityLink_SCP
                 var context = services.GetRequiredService<CityLinksContext>();
                 context.Database.EnsureCreated();
                 var dbService = services.GetRequiredService<DatabaseService>();
-                DbInitialiser.Initialise(context, dbService);
+                var xmlService = services.GetRequiredService<XmlConfigService>();
+                DbInitialiser.Initialise(context, dbService, xmlService);
 			}   
 
 			app.UseHttpsRedirection();

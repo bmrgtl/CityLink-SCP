@@ -1,9 +1,12 @@
-﻿namespace CityLink_SCP.Models
+﻿using System.Xml.Serialization;
+
+namespace CityLink_SCP.Models
 {
-    public class IndexViewModel
+    public class IndexViewModel : IXmlViewModel
     {
-        public List<CardViewModel> Events { get; set; }
-        public List<CardViewModel> Services { get; set; }
-        public List<FAQViewModel> FAQs { get; set; }
+        public string PartialName => "Index";
+        public EventsViewModel Events { get; set; } = new();
+        public ServicesViewModel Services { get; set; } = new();
+        public FAQViewModel FAQs { get; set; } = new ();
 	}
 }

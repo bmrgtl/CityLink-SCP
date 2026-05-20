@@ -1,22 +1,25 @@
-using System.Diagnostics;
+using CityLink_SCP.DbModels;
+using CityLink_SCP.Extensions;
 using CityLink_SCP.Models;
+using CityLink_SCP.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml;
-using System.IO;
-using CityLink_SCP.Services;
-using CityLink_SCP.Extensions;
+using System.Xml.Linq;
 namespace CityLink_SCP.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 		private readonly DatabaseService _dbService;
-		public HomeController(ILogger<HomeController> logger, DatabaseService dbService)
+		private readonly XmlConfigService _xmlService;
+		public HomeController(ILogger<HomeController> logger, DatabaseService dbService, XmlConfigService xmlService)
         {
             _logger = logger;
 			_dbService = dbService;
+			_xmlService = xmlService;
 		}
 		public IActionResult Index()
         {
@@ -78,47 +81,31 @@ namespace CityLink_SCP.Controllers
 		#region Helper Methods
 		private IndexViewModel GetIndexViewModel()
 		{
-			var events = _dbService._context.Events.Select(e => e.ToCardViewModel());
-			var services = _dbService._context.Services.Select(s => s.ToCardViewModel());
+			var events = _dbService._context.Events.ToList().ToCardViewModel();
+			var services = _dbService._context.Services.ToList().ToCardViewModel();
+			var faqs = _xmlService.GetActive<FAQViewModel>();
 			var model = new IndexViewModel
 			{
-				Events = events.Any() ? events.ToList() : GetEventsModel(),
-				Services = services.Any() ? services.ToList() : GetServicesModel(),
-				FAQs = GetFAQsModel()
+				Events = events.Events.Count > 0 ? events : GetEventsDefault(),
+				Services = services.Services.Count > 0 ? services : GetServicesDefault(),
+				FAQs = faqs?.FAQs.Count > 0 ? faqs : GetFAQsDefault(),
 			};
 			return model;
 		}
-		private List<CardViewModel> GetEventsModel()
+		private EventsViewModel GetEventsDefault()
 		{
 			var content = System.IO.File.ReadAllText("XML\\EventsDefault.xml");
-			var xdoc = XDocument.Parse(content);
-			return xdoc.Descendants("Card").Select(x => new CardViewModel
-			{
-				Title = (string)x.Element("Title"),
-				Description = (string)x.Element("Description"),
-				ButtonLabel = (string)x.Element("ButtonLabel") 
-			}).ToList();
+			return _xmlService.ToViewModel<EventsViewModel>(content)!;
 		}
-		private List<CardViewModel> GetServicesModel()
+		private ServicesViewModel GetServicesDefault()
 		{
 			var content = System.IO.File.ReadAllText("XML\\ServicesDefault.xml");
-			var xdoc = XDocument.Parse(content);
-			return xdoc.Descendants("Card").Select(x => new CardViewModel
-			{
-				Title = (string)x.Element("Title"),
-				Description = (string)x.Element("Description"),
-				ButtonLabel = (string)x.Element("ButtonLabel")
-			}).ToList();
-		}
-		private List<FAQViewModel> GetFAQsModel()
+            return _xmlService.ToViewModel<ServicesViewModel>(content)!;
+        }
+		private FAQViewModel GetFAQsDefault()
 		{
 			var content = System.IO.File.ReadAllText("XML\\FAQsDefault.xml");
-			var xdoc = XDocument.Parse(content);
-			return xdoc.Descendants("FAQItem").Select(x => new FAQViewModel
-			{
-				Question = (string)x.Element("Question"),
-				Answer = (string)x.Element("Answer")
-			}).ToList();
+			return _xmlService.ToViewModel<FAQViewModel>(content);
 		}
 		#endregion
 	}
