@@ -5,23 +5,34 @@ namespace CityLink_SCP.Extensions
 {
 	public static class DbModelExtensions
 	{
-		public static CardViewModel ToCardViewModel(this Service service)
+		public static ServicesViewModel ToCardViewModel(this List<Service> services)
 		{
-			return new CardViewModel
+			var model = new ServicesViewModel();
+			foreach (var item in services)
 			{
-				Title = service.Title,
-				Description = service.Description,
-				ButtonLabel = "Book Now"
-			};
+				model.Services.Add(new ServiceViewModel
+				{
+					Title = item.Title,
+					Description = item.Description,
+					ButtonLabel = "Book Now"
+				});
+			}
+			return model;
 		}
-		public static CardViewModel ToCardViewModel(this Event evnt)
+		public static EventsViewModel ToCardViewModel(this List<Event> events)
 		{
-			return new CardViewModel
+			var model = new EventsViewModel();
+			model.Events = new();
+			foreach (var item in events)
 			{
-				Title = evnt.Title,
-				Description = evnt.Description,
-				ButtonLabel = "Register"
-			};
+				model.Events.Add(new EventViewModel
+				{
+					Title = item.Title,
+					Description = item.Description,
+					ButtonLabel = "Register"
+				});
+			}
+			return model;
 		}
 		public static XmlConfigDto ToViewModel(this XmlConfig config)
 		{

@@ -81,32 +81,32 @@ namespace CityLink_SCP.Controllers
 		#region Helper Methods
 		private IndexViewModel GetIndexViewModel()
 		{
-            var events = _dbService._context.Events.Select(e => e.ToCardViewModel());
-			var services = _dbService._context.Services.Select(s => s.ToCardViewModel());
-			var faqs = _xmlService.GetActive<List<FAQViewModel>>();
+			var events = _dbService._context.Events.ToList().ToCardViewModel();
+			var services = _dbService._context.Services.ToList().ToCardViewModel();
+			var faqs = _xmlService.GetActive<FAQViewModel>();
 			var model = new IndexViewModel
 			{
-				Events = events.Any() ? events.ToList() : GetEventsDefault(),
-				Services = services.Any() ? services.ToList() : GetServicesDefault(),
-				FAQs = faqs?.Count != 0 ? faqs.ToList() : GetFAQsDefault(),
+				Events = events.Events.Count > 0 ? events : GetEventsDefault(),
+				Services = services.Services.Count > 0 ? services : GetServicesDefault(),
+				FAQs = faqs?.FAQs.Count > 0 ? faqs : GetFAQsDefault(),
 			};
 			return model;
 		}
-		private List<CardViewModel> GetEventsDefault()
+		private EventsViewModel GetEventsDefault()
 		{
 			var content = System.IO.File.ReadAllText("XML\\EventsDefault.xml");
-			return _xmlService.ToViewModel<List<CardViewModel>>(content)!;
+			return _xmlService.ToViewModel<EventsViewModel>(content)!;
 		}
-		private List<CardViewModel> GetServicesDefault()
+		private ServicesViewModel GetServicesDefault()
 		{
-			var content = System.IO.File.ReadAllText("XML\\EventsDefault.xml");
-            return _xmlService.ToViewModel<List<CardViewModel>>(content)!;
+			var content = System.IO.File.ReadAllText("XML\\ServicesDefault.xml");
+            return _xmlService.ToViewModel<ServicesViewModel>(content)!;
         }
-		private List<FAQViewModel> GetFAQsDefault()
+		private FAQViewModel GetFAQsDefault()
 		{
 			var content = System.IO.File.ReadAllText("XML\\FAQsDefault.xml");
-            return _xmlService.ToViewModel<List<FAQViewModel>>(content)!;
-        }
-        #endregion
-    }
+			return _xmlService.ToViewModel<FAQViewModel>(content);
+		}
+		#endregion
+	}
 }

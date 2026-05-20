@@ -24,8 +24,10 @@
 
     initCarousel("servicesTrack", "servicesPrev", "servicesNext");
     initCarousel("eventsTrack", "eventsPrev", "eventsNext");
+    initFAQAccordian();
+});
 
-    // FAQ
+function initFAQAccordian() {
     const faqTriggers = document.querySelectorAll(".faq__trigger");
 
     faqTriggers.forEach(trigger => {
@@ -43,5 +45,4 @@
             }
         });
     });
-
-});
+}

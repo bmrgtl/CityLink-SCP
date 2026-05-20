@@ -1,0 +1,15 @@
+﻿@model ServicesViewModel
+
+<div class="carousel__track" id="servicesTrack">
+@foreach(var card in Model.Services)
+{
+    <article class="card">
+        <div class="placeholder placeholder--card"></div>
+        <div class="card__body">
+            <h3 class="card__title">@card.Title</h3>
+            <p class="card__text">@card.Description</p>
+            <a asp-area="" asp-controller="Home" asp-action="BookEvent" class="btn btn--outline">@card.ButtonLabel</a>
+        </div>
+    </article>
+}
+<</div>

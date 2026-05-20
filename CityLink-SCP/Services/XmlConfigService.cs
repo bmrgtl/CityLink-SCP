@@ -4,8 +4,10 @@ using CityLink_SCP.Database;
 using CityLink_SCP.DbModels;
 using CityLink_SCP.Extensions;
 using System.Xml.Linq;
+
 namespace CityLink_SCP.Services;
-public class XmlConfigService 
+
+public class XmlConfigService
 {
     private readonly CityLinksContext _db;
 
@@ -17,7 +19,7 @@ public class XmlConfigService
     // Deserialize active XML for a given ViewModel type
     public T? GetActive<T>()
     {
-        var typeName = typeof(T).Name;
+        var typeName = DbInitialiser.GetFriendlyName(typeof(T));
         var record = _db.XML_Configurations
             .Where(r => r.Type == typeName && r.IsActive)
             .OrderByDescending(r => r.UploadedAt)
@@ -29,7 +31,22 @@ public class XmlConfigService
         using var reader = new StringReader(record.XmlContent);
         return (T?)serializer.Deserialize(reader);
     }
-    // Get the full viewmodel from the db by Id 
+    public object? GetActive(Type type)
+    {
+        var typeName = DbInitialiser.GetFriendlyName(type);
+        var record = _db.XML_Configurations
+            .Where(r => r.Type == typeName && r.IsActive)
+            .OrderByDescending(r => r.UploadedAt)
+            .FirstOrDefault();
+
+        if (record == null) return null;
+
+        var serializer = new XmlSerializer(type);
+        using var reader = new StringReader(record.XmlContent);
+        return serializer.Deserialize(reader);
+    }
+
+    // Get the full deserialized ViewModel from the db by Id
     public object? GetXmlViewModel(int id)
     {
         var record = _db.XML_Configurations.Where(r => r.Id == id).FirstOrDefault();
@@ -43,8 +60,8 @@ public class XmlConfigService
         return serializer.Deserialize(reader);
     }
 
-    // Get raw XML by Id (for editing/rollback)
-    public string? GetXmlContentById(int id) 
+    // Get raw pretty-printed XML by Id (for the editor)
+    public string? GetXmlContentById(int id)
     {
         var record = _db.XML_Configurations.Where(r => r.Id == id).FirstOrDefault();
         if (record == null) return null;
@@ -52,7 +69,7 @@ public class XmlConfigService
     }
 
     // Convert a ViewModel instance to XML string for saving/updating
-    public string ToXml<T>(T viewModel) 
+    public string ToXml<T>(T viewModel)
     {
         var serializer = new XmlSerializer(typeof(T));
         using var writer = new StringWriter();
@@ -66,11 +83,12 @@ public class XmlConfigService
         using var reader = new StringReader(xml);
         return (T?)serializer.Deserialize(reader);
     }
-    public XmlConfig FromViewModel<T>(T viewModel) 
+
+    public XmlConfig FromViewModel<T>(T viewModel)
     {
         return new XmlConfig
         {
-            Type = typeof(T).Name,
+            Type = DbInitialiser.GetFriendlyName(typeof(T)),
             XmlContent = ToXml(viewModel),
             UploadedAt = DateTime.UtcNow,
             IsActive = true,
@@ -81,7 +99,7 @@ public class XmlConfigService
     // Save new version; deactivate all previous for that type
     public async Task SaveNewVersionAsync(Staff staff, XmlConfigDto xmlConfig)
     {
-        // Deactivate old
+        // Deactivate existing active records for this type
         var existing = _db.XML_Configurations.Where(r => r.Type == xmlConfig.Type && r.IsActive);
         foreach (var r in existing)
         {
@@ -95,21 +113,18 @@ public class XmlConfigService
             XmlContent = xmlConfig.XmlContent,
             UploadedAt = DateTime.UtcNow,
             IsActive = true,
-            Label = xmlConfig.Label,
+            Label = xmlConfig.Label ?? string.Empty,
             Staff = staff
         });
 
         await _db.SaveChangesAsync();
     }
 
-    // Roll back to a specific version by Id
+    // Roll back / activate a specific version by Id
     public async Task<bool> ActivateVersionAsync(int recordId)
     {
         var target = await _db.XML_Configurations.FindAsync(recordId);
-        if (target == null)
-        {
-            return false;
-        }
+        if (target == null) return false;
 
         var existing = _db.XML_Configurations.Where(r => r.Type == target.Type && r.IsActive);
         foreach (var r in existing)
@@ -140,7 +155,7 @@ public class XmlConfigService
         }
     }
 
-    // Generate an empty/template XML for a given ViewModel
+    // Generate an empty/template XML for a given ViewModel type
     public string GenerateTemplate(string typeName)
     {
         var vmType = GetViewModelType(typeName);
@@ -149,14 +164,50 @@ public class XmlConfigService
         var serializer = new XmlSerializer(vmType);
         using var sw = new StringWriter();
         serializer.Serialize(sw, instance);
-        return sw.ToString();
+        return XDocument.Parse(sw.ToString()).ToString(); // pretty-print
     }
 
-    // Central registry — add new ViewModels here
-    public static Type? GetViewModelType(string typeName) => typeName switch
+	public static string GetFriendlyName(Type type)
+	{
+		if (type.IsGenericType)
+		{
+			// Get the name without the `1 arity suffix
+			string name = type.Name.Split('`')[0];
+			// Get the friendly names of the generic arguments
+			var args = string.Join(", ", type.GetGenericArguments().Select(GetFriendlyName));
+			return $"{name}<{args}>";
+		}
+		return type.Name;
+	}
+
+	// -----------------------------------------------------------------------
+	// Central type registry — add new ViewModel types here as the site grows
+	// -----------------------------------------------------------------------
+
+	public static Type? GetViewModelType(string typeName) => typeName switch
     {
         "FooterModel" => typeof(FooterModel),
         "IndexViewModel" => typeof(IndexViewModel),
-        _ => null
+        "FAQViewModel" => typeof(FAQViewModel),
+        "EventsViewModel" => typeof(EventsViewModel),
+        "ServicesViewModel" => typeof(ServicesViewModel),
+        "List<FAQViewModel>" => typeof(List<FAQViewModel>),
+        "List<CardViewModel>" => typeof(List<CardViewModel>),
+        "List<AdminIndexViewModel>" => typeof(List<AdminIndexViewModel>),
+		_ => null
     };
+
+	/// <summary>Returns the list of registered type names for the admin UI dropdown.</summary>
+	public static List<string> GetAvailableTypes() =>
+		new() 
+        { 
+            "FooterModel", 
+            "IndexViewModel",
+			"FAQViewModel",
+            "EventsViewModel",
+            "ServicesViewModel",
+			"List<FAQViewModel>",
+		    "List<CardViewModel>",
+		    "List<AdminIndexViewModel>"
+		};
 }

@@ -32,9 +32,7 @@
         <p class="eyebrow">What We Offer</p>
         <h2 class="heading-lg">Our Services</h2>
 
-        <div class="carousel__track" id="servicesTrack">
-            <partial name="_Card" model="@Model.Services" />
-        </div>
+        <partial name="_ServiceCards" model="@Model.Services" />   
 
         <div class="carousel__controls">
             <button class="carousel__btn" id="servicesPrev">&#8592;</button>
@@ -80,10 +78,8 @@
         <p class="eyebrow">Events On Right Now</p>
         <h2 class="heading-lg">What's Happening</h2>
 
-        <div class="carousel__track" id="eventsTrack">
-            <partial name="_Card" model="@Model.Events" />
-        </div>
-
+        <partial name="_EventCards" model="@Model.Events" />
+        
         <div class="carousel__controls">
             <button class="carousel__btn" id="eventsPrev">&#8592;</button>
             <div class="carousel__dots" id="eventsDots"></div>

@@ -1,4 +1,5 @@
 ﻿using CityLink_SCP.DbModels;
+using CityLink_SCP.Extensions;
 using CityLink_SCP.Models;
 using CityLink_SCP.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -90,25 +91,29 @@ namespace CityLink_SCP.Database
             var xmlConfig = new XmlConfig
             {
                 XmlContent = xmlService.ToXml<FooterModel>(footer),
-                Type = typeof(FooterModel).Name,
+                Type = GetFriendlyName(typeof(FooterModel)),
                 Version = "1.0",
                 IsActive = true,
                 UploadedAt = DateTime.Now,
                 Label = "Initial Footer Config",
                 Staff = staff[0]
             };
-            var faqs = new List<FAQViewModel>
+            var faqs = new FAQViewModel
             {
-                new FAQViewModel { Question = "What is CityLink Initiatives?", Answer = "CityLink Initiatives is a government platform that streamlines citizens' access to local services, announcements, and community events all in one place." },
-                new FAQViewModel { Question = "How do I report an issue or concern?", Answer = "Navigate to the Services section and click \"Feedback\". Fill out the online form and a council representative will get back to you within 3 business days." },
-                new FAQViewModel { Question = "Where can I find the waste collection schedule?", Answer = "The waste collection schedule is available under Waste Management in the Services section. You can also subscribe to receive email reminders." },
-                new FAQViewModel { Question = "How do I book a community event?", Answer = "Visit the What's Happening section and click \"Book Now\" on any event. You'll need a free CityLink account or to log in to complete your booking." }, 
-                new FAQViewModel { Question = "Is this service available 24/7?", Answer = "Yes, the CityLink online platform is available around the clock. For phone or in-person support, check our Contact Us page for office hours." }
-            };
+                FAQs =  new List<FAQ>
+                {
+                    new FAQ { Question = "What is CityLink Initiatives?", Answer = "CityLink Initiatives is a government platform that streamlines citizens' access to local services, announcements, and community events all in one place." },
+                    new FAQ { Question = "How do I report an issue or concern?", Answer = "Navigate to the Services section and click \"Feedback\". Fill out the online form and a council representative will get back to you within 3 business days." },
+                    new FAQ { Question = "Where can I find the waste collection schedule?", Answer = "The waste collection schedule is available under Waste Management in the Services section. You can also subscribe to receive email reminders." },
+                    new FAQ { Question = "How do I book a community event?", Answer = "Visit the What's Happening section and click \"Book Now\" on any event. You'll need a free CityLink account or to log in to complete your booking." },
+                    new FAQ { Question = "Is this service available 24/7?", Answer = "Yes, the CityLink online platform is available around the clock. For phone or in-person support, check our Contact Us page for office hours." }
+				}
+			};
+
             var faqsConfig = new XmlConfig
             {
-                XmlContent = xmlService.ToXml<List<FAQViewModel>>(faqs),
-                Type = typeof(List<FAQViewModel>).Name,
+                XmlContent = xmlService.ToXml<FAQViewModel>(faqs),
+                Type = GetFriendlyName(typeof(FAQViewModel)),
                 Version = "1.0",
                 IsActive = true,
                 UploadedAt = DateTime.Now,
@@ -116,8 +121,31 @@ namespace CityLink_SCP.Database
                 Staff = staff[0]
             };
 
-            context.XML_Configurations.Add(xmlConfig);
+            var eventsConfig = new XmlConfig
+            {
+                XmlContent = xmlService.ToXml<EventsViewModel>(eventsRange.Take(6).ToList().ToCardViewModel()),
+                Type = GetFriendlyName(typeof(EventsViewModel)),
+                Version = "1.0",
+                IsActive = true,
+                UploadedAt = DateTime.Now,
+                Label = "Initial Events Config",
+                Staff = staff[0]
+            };
+            var servicesConfig = new XmlConfig
+            {
+                XmlContent = xmlService.ToXml<ServicesViewModel>(servicesRange.Take(6).ToList().ToCardViewModel()),
+                Type = GetFriendlyName(typeof(ServicesViewModel)),
+                Version = "1.0",
+                IsActive = true,
+                UploadedAt = DateTime.Now,
+                Label = "Initial Services Config",
+                Staff = staff[0]
+            };
+
+			context.XML_Configurations.Add(xmlConfig);
             context.XML_Configurations.Add(faqsConfig);
+            context.XML_Configurations.Add(eventsConfig);
+            context.XML_Configurations.Add(servicesConfig);
             context.Staff.AddRange(staff);
             context.Users.AddRange(usersRange);
             context.Events.AddRange(eventsRange);
@@ -145,6 +173,18 @@ namespace CityLink_SCP.Database
                     j++;
                 }
             }
-        } 
-    }
+        }
+		public static string GetFriendlyName(Type type)
+		{
+			if (type.IsGenericType)
+			{
+				// Get the name without the `1 arity suffix
+				string name = type.Name.Split('`')[0];
+				// Get the friendly names of the generic arguments
+				var args = string.Join(", ", type.GetGenericArguments().Select(GetFriendlyName));
+				return $"{name}<{args}>";
+			}
+			return type.Name;
+		}
+	}
 }
