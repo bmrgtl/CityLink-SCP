@@ -1,6 +1,8 @@
 using CityLink_SCP.DbModels;
 using CityLink_SCP.Extensions;
 using CityLink_SCP.Models;
+using CityLink_SCP.ViewModels;
+using CityLink_SCP.PageModels;
 using CityLink_SCP.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -66,7 +68,7 @@ namespace CityLink_SCP.Controllers
 
 		public IActionResult ContactUs()
 		{
-			return View();
+			return View(new ContactUs());
 		}
 
 		

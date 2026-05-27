@@ -1,0 +1,13 @@
+﻿@model CityLink_SCP.ViewModels.Enquiry
+
+<div id="contact" class="contact">
+    <p class="contact__title">@Model.Heading</p>
+    <p class="contact__sub">@Model.SubHeading</p>
+    <div class="contact__row">
+        <input type="email" placeholder="@(Model.User?.Email ?? "Email")" />
+        <input type="tel" placeholder="@(Model.User?.Phone_Number ?? "Phone")" />
+    </div>
+    <input type="text" placeholder="Subject" />
+    <textarea placeholder="Message" rows="5"></textarea>
+    <button class="btn--submit" type="button">Submit</button>
+</div>

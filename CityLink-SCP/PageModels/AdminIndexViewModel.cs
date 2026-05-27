@@ -2,7 +2,7 @@ using CityLink_SCP.DbModels;
 using CityLink_SCP.Models;
 using System.Xml.Serialization;
 
-namespace CityLink_SCP.Models
+namespace CityLink_SCP.PageModels
 {
     /// <summary>
     /// View model for the Admin dashboard Index page.

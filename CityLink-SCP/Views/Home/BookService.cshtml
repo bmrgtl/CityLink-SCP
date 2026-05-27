@@ -1,6 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CityLink_SCP.ViewModels.BookService
+
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/bookservice.css"/>
@@ -29,10 +28,10 @@
                         </div>
                         <div class="datetime-row">
                             <div class="input-box">
-                                <input class="input-field" name="date" placeholder="dd/mm/yyyy" type="date" />
+                                <input asp-for="ServiceDate" class="input-field" placeholder="dd/mm/yyyy" />
                             </div>
                             <div class="input-box">
-                                <input class="input-field" name="time" placeholder="Time" type="time" />
+                                <input asp-for="ServiceTime" class="input-field" placeholder="Time" />
                             </div>
                         </div>
 
@@ -47,11 +46,11 @@
 
                     <div class="summary-col">
                         <div class="service-details">
-                            <p>Service Name</p>
-                            <p>Day, Date, Time</p>
+                            <p>@Model.Service.Title</p>
+                            <p>@Model.ServiceBooking.Start_Time.ToString("g")</p>
                             <hr />
                             <div class="booking-details">
-                                <p>Service Name</p>
+                                <p>@Model.Service.Title</p>
                                 <p>$0.00</p>
                             </div>
                             <hr />

@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CityLink_SCP.ViewModels.ContactUs
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/bookservice.css" />
@@ -8,26 +6,26 @@
 
 <section>
     <div class="container" style="margin-top: 1.25rem; margin-bottom: 2rem;">
-        <h2 class="news__heading">Contact Us</h2>
-        <p class="ann__text">PHONE: (08) XXX XXX | EMAIL: INFO@CITYLINK.WA.GOV.AU</p>
+        <h2 class="news__heading">@Model.PageHeading</h2>
+        <p class="ann__text">@Model.PageSubHeading</p>
 
         <div class="feedback-form">
-            <p class="ann__text" style="font-size:1.2rem;">Let us know your thoughts!</p>
+            <p class="ann__text" style="font-size:1.2rem;">@Model.FormTitle</p>
             <form>
                 <div class="datetime-row">
                     <div class="input-box">
-                        <input class="input-field" name="name" placeholder="Name"/>
+                        <input class="input-field" name="name" placeholder="@Model.NamePlaceHolder"/>
                     </div>
                     <div class="input-box">
-                        <input class="input-field" name="contact" placeholder="Email/Phone"/>
+                        <input class="input-field" name="contact" placeholder="@Model.ContactPlaceHolder"/>
                     </div>
                 </div>
 
                 <div class="input-box">
-                    <textarea rows="10" class="input-field" name="message" placeholder="Message" required></textarea>
+                    <textarea rows="10" class="input-field" name="message" placeholder="@Model.InputAreaPlaceHolder" required></textarea>
                 </div>
                 <div class="input-submit">
-                    <button type="submit" class="submit-btn">Submit Enquiry</button>
+                    <button type="submit" class="submit-btn">@Model.ButtonLabel</button>
                 </div>
             </form>
         </div>
