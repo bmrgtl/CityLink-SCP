@@ -4,6 +4,7 @@
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+
 		public string ButtonLabel { get; set; } = string.Empty;
 		//public Uri ImageUrl { get; set; }
 	}
