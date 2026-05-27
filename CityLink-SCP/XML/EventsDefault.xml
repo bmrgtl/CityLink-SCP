@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-16"?>
-<ArrayOfCardViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <CardViewModel>
-    <Title>Event_0</Title>
-    <Description>Description for Event_0</Description>
-    <ButtonLabel>Register</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Event_1</Title>
-    <Description>Description for Event_1</Description>
-    <ButtonLabel>Register</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Event_2</Title>
-    <Description>Description for Event_2</Description>
-    <ButtonLabel>Register</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Event_3</Title>
-    <Description>Description for Event_3</Description>
-    <ButtonLabel>Register</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Event_4</Title>
-    <Description>Description for Event_4</Description>
-    <ButtonLabel>Register</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Event_5</Title>
-    <Description>Description for Event_5</Description>
-    <ButtonLabel>Register</ButtonLabel>
-  </CardViewModel>
-</ArrayOfCardViewModel>
+<EventsViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Events>
+    <EventViewModel>
+      <Title>Event_0</Title>
+      <Description>Description for Event_0</Description>
+      <ButtonLabel>Register</ButtonLabel>
+    </EventViewModel>
+    <EventViewModel>
+      <Title>Event_1</Title>
+      <Description>Description for Event_1</Description>
+      <ButtonLabel>Register</ButtonLabel>
+    </EventViewModel>
+    <EventViewModel>
+      <Title>Event_2</Title>
+      <Description>Description for Event_2</Description>
+      <ButtonLabel>Register</ButtonLabel>
+    </EventViewModel>
+    <EventViewModel>
+      <Title>Event_3</Title>
+      <Description>Description for Event_3</Description>
+      <ButtonLabel>Register</ButtonLabel>
+    </EventViewModel>
+    <EventViewModel>
+      <Title>Event_4</Title>
+      <Description>Description for Event_4</Description>
+      <ButtonLabel>Register</ButtonLabel>
+    </EventViewModel>
+    <EventViewModel>
+      <Title>Event_5</Title>
+      <Description>Description for Event_5</Description>
+      <ButtonLabel>Register</ButtonLabel>
+    </EventViewModel>
+  </Events>
+</EventsViewModel>

@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-16"?>
-<ArrayOfCardViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <CardViewModel>
-    <Title>Service_0</Title>
-    <Description>Description for Service_0</Description>
-    <ButtonLabel>Book Now</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Service_1</Title>
-    <Description>Description for Service_1</Description>
-    <ButtonLabel>Book Now</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Service_2</Title>
-    <Description>Description for Service_2</Description>
-    <ButtonLabel>Book Now</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Service_3</Title>
-    <Description>Description for Service_3</Description>
-    <ButtonLabel>Book Now</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Service_4</Title>
-    <Description>Description for Service_4</Description>
-    <ButtonLabel>Book Now</ButtonLabel>
-  </CardViewModel>
-  <CardViewModel>
-    <Title>Service_5</Title>
-    <Description>Description for Service_5</Description>
-    <ButtonLabel>Book Now</ButtonLabel>
-  </CardViewModel>
-</ArrayOfCardViewModel>
+<ServicesViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Services>
+    <ServiceViewModel>
+      <Title>Service_0</Title>
+      <Description>Description for Service_0</Description>
+      <ButtonLabel>Book Now</ButtonLabel>
+    </ServiceViewModel>
+    <ServiceViewModel>
+      <Title>Service_1</Title>
+      <Description>Description for Service_1</Description>
+      <ButtonLabel>Book Now</ButtonLabel>
+    </ServiceViewModel>
+    <ServiceViewModel>
+      <Title>Service_2</Title>
+      <Description>Description for Service_2</Description>
+      <ButtonLabel>Book Now</ButtonLabel>
+    </ServiceViewModel>
+    <ServiceViewModel>
+      <Title>Service_3</Title>
+      <Description>Description for Service_3</Description>
+      <ButtonLabel>Book Now</ButtonLabel>
+    </ServiceViewModel>
+    <ServiceViewModel>
+      <Title>Service_4</Title>
+      <Description>Description for Service_4</Description>
+      <ButtonLabel>Book Now</ButtonLabel>
+    </ServiceViewModel>
+    <ServiceViewModel>
+      <Title>Service_5</Title>
+      <Description>Description for Service_5</Description>
+      <ButtonLabel>Book Now</ButtonLabel>
+    </ServiceViewModel>
+  </Services>
+</ServicesViewModel>
