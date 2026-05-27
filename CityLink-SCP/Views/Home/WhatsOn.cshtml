@@ -23,9 +23,7 @@
         </div>
 
         <h3 class="ann__title">Other Announcements</h3>
-        <div class="carousel__track" id="eventsTrack">
-            <partial name="_Card" model="@Model.Services" />
-        </div>
+        <partial name="@Model.Services.PartialName" model="@Model.Services" />
 
         <div class="carousel__controls">
             <button class="carousel__btn" id="eventsPrev">&#8592;</button>
@@ -59,10 +57,8 @@
                 </div>
             </form>
         </div>
-
-        <div class="carousel__track" id="eventsTrack">
-            <partial name="_Card" model="@Model.Events" />
-        </div>
+     
+            <partial name="@Model.Events.PartialName" model="@Model.Events" />
     </div>
 </section>
 
