@@ -109,8 +109,9 @@ namespace CityLink_SCP.Database
                     new FAQ { Question = "Is this service available 24/7?", Answer = "Yes, the CityLink online platform is available around the clock. For phone or in-person support, check our Contact Us page for office hours." }
 				}
 			};
-
-            var faqsConfig = new XmlConfig
+			string xmlFaqContent = xmlService.ToXml<EventsViewModel>(eventsRange.Take(6).ToList().ToCardViewModel());
+            File.WriteAllText("XML\\FAQsDefault.xml", xmlFaqContent);
+			var faqsConfig = new XmlConfig
             {
                 XmlContent = xmlService.ToXml<FAQViewModel>(faqs),
                 Type = GetFriendlyName(typeof(FAQViewModel)),
@@ -120,10 +121,11 @@ namespace CityLink_SCP.Database
                 Label = "Initial FAQ Config",
                 Staff = staff[0]
             };
-
-            var eventsConfig = new XmlConfig
+            string xmlEventContent = xmlService.ToXml<EventsViewModel>(eventsRange.Take(6).ToList().ToCardViewModel());
+			File.WriteAllText("XML\\EventsDefault.xml", xmlEventContent);
+			var eventsConfig = new XmlConfig
             {
-                XmlContent = xmlService.ToXml<EventsViewModel>(eventsRange.Take(6).ToList().ToCardViewModel()),
+                XmlContent = xmlEventContent,
                 Type = GetFriendlyName(typeof(EventsViewModel)),
                 Version = "1.0",
                 IsActive = true,
@@ -131,9 +133,11 @@ namespace CityLink_SCP.Database
                 Label = "Initial Events Config",
                 Staff = staff[0]
             };
-            var servicesConfig = new XmlConfig
+            string xmlServiceContent = xmlService.ToXml<ServicesViewModel>(servicesRange.Take(6).ToList().ToCardViewModel());
+			File.WriteAllText("XML\\ServicesDefault.xml", xmlServiceContent);
+			var servicesConfig = new XmlConfig
             {
-                XmlContent = xmlService.ToXml<ServicesViewModel>(servicesRange.Take(6).ToList().ToCardViewModel()),
+                XmlContent = xmlServiceContent,
                 Type = GetFriendlyName(typeof(ServicesViewModel)),
                 Version = "1.0",
                 IsActive = true,
@@ -174,17 +178,17 @@ namespace CityLink_SCP.Database
                 }
             }
         }
-		public static string GetFriendlyName(Type type)
-		{
-			if (type.IsGenericType)
-			{
-				// Get the name without the `1 arity suffix
-				string name = type.Name.Split('`')[0];
-				// Get the friendly names of the generic arguments
-				var args = string.Join(", ", type.GetGenericArguments().Select(GetFriendlyName));
-				return $"{name}<{args}>";
-			}
-			return type.Name;
-		}
+        public static string GetFriendlyName(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                // Get the name without the `1 arity suffix
+                string name = type.Name.Split('`')[0];
+                // Get the friendly names of the generic arguments
+                var args = string.Join(", ", type.GetGenericArguments().Select(GetFriendlyName));
+                return $"{name}<{args}>";
+            }
+            return type.Name;
+        }
 	}
 }
