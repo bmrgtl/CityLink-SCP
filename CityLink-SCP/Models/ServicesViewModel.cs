@@ -2,9 +2,10 @@
 {
     public class ServiceViewModel
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string ButtonLabel { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string ButtonLabel { get; set; } = string.Empty;
         //public Uri ImageUrl { get; set; }
 	}
     public class ServicesViewModel : IXmlViewModel

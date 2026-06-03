@@ -12,6 +12,7 @@ namespace CityLink_SCP.Extensions
 			{
 				model.Services.Add(new ServiceViewModel
 				{
+					Id = item.Id,
 					Title = item.Title,
 					Description = item.Description,
 					ButtonLabel = "Book Now"
@@ -27,6 +28,7 @@ namespace CityLink_SCP.Extensions
 			{
 				model.Events.Add(new EventViewModel
 				{
+					Id = item.Id,
 					Title = item.Title,
 					Description = item.Description,
 					ButtonLabel = "Register"

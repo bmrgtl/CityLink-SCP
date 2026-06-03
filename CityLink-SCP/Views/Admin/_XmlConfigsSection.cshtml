@@ -1,0 +1,76 @@
+@using CityLink_SCP.PageModels
+@using CityLink_SCP.Services
+@model AdminIndexViewModel
+
+<!--  XML Configurations  -->
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">XML Configurations</h2>
+            <p class="admin-section__desc">Manage site-wide content layouts. The active version is applied live.</p>
+        </div>
+        <button class="btn--admin btn--primary" id="newConfigBtn">+ New Config</button>
+    </div>
+
+    @if (Model.XmlConfigs.Any())
+    {
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Label</th>
+                        <th>Uploaded</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cfg in Model.XmlConfigs)
+                    {
+                        <tr class="@(cfg.IsActive ? "row--active" : "")">
+                            <td class="col-muted">#@cfg.Id</td>
+                            <td><span class="tag" title="@cfg.Type">@XmlConfigService.GetFriendlyLabel(cfg.Type)</span></td>
+                            <td>@(string.IsNullOrEmpty(cfg.Label) ? "—" : cfg.Label)</td>
+                            <td class="col-muted">@cfg.UploadedAt.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td>
+                                @if (cfg.IsActive)
+                                {
+                                    <span class="badge badge--active">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge--inactive">Inactive</span>
+                                }
+                            </td>
+                            <td class="col-actions">
+                                <button class="btn--admin btn--ghost btn--sm edit-config-btn"
+                                        data-id="@cfg.Id"
+                                        data-type="@cfg.Type"
+                                        data-label="@cfg.Label">
+                                    Edit
+                                </button>
+                                <button class="btn--admin btn--ghost btn--sm preview-config-btn"
+                                        data-id="@cfg.Id">
+                                    Preview
+                                </button>
+                                @if (!cfg.IsActive)
+                                {
+                                    <button class="btn--admin btn--activate btn--sm activate-config-btn"
+                                            data-id="@cfg.Id">
+                                        Activate
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">No XML configurations yet. Create one with the button above.</div>
+    }
+</section>

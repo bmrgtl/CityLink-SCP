@@ -1,0 +1,72 @@
+@using CityLink_SCP.DbModels
+@model List<Event>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Events</h2>
+            <p class="admin-section__desc">Create and manage community events.</p>
+        </div>
+        <button class="btn--admin btn--primary" id="newEventBtn">+ New Event</button>
+    </div>
+
+    <div class="table-search" id="events-search-form">
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="ev-term">Search</label>
+                <input type="text" class="crud-input" id="ev-term" name="SearchTerm" placeholder="Title or description…" />
+            </div>
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="ev-location">Location</label>
+                <input type="text" class="crud-input" id="ev-location" name="Location" placeholder="e.g. City Square" />
+            </div>
+            <div class="table-search__field table-search__field--sm">
+                <label class="crud-field__label" for="ev-mincost">Min $</label>
+                <input type="number" class="crud-input" id="ev-mincost" name="MinCost" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="table-search__field table-search__field--sm">
+                <label class="crud-field__label" for="ev-maxcost">Max $</label>
+                <input type="number" class="crud-input" id="ev-maxcost" name="MaxCost" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="ev-from">From Date</label>
+                <input type="datetime-local" class="crud-input" id="ev-from" name="From" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="ev-to">To Date</label>
+                <input type="datetime-local" class="crud-input" id="ev-to" name="To" />
+            </div>
+            <div class="table-search__field table-search__field--sm">
+                <label class="crud-field__label" for="ev-avail">Tickets</label>
+                <select class="crud-input" id="ev-avail" name="TicketsAvaliable">
+                    <option value="">Any</option>
+                    <option value="true">Available</option>
+                </select>
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="ev-staff-filter">Staff</label>
+                <select class="crud-input" id="ev-staff-filter" name="StaffId">
+                    <option value="">All Staff</option>
+                </select>
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="ev-sort">Sort By</label>
+                <select class="crud-input" id="ev-sort" name="SortBy">
+                    <option value="">Default</option>
+                    <option value="Title">A – Z</option>
+                    <option value="Start_Date_Time">Date</option>
+                    <option value="Cost">Cost ↑</option>
+                    <option value="Max_Capcity">Capacity</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-search__actions">
+            <button type="button" class="btn--admin btn--primary btn--sm" id="eventSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="eventClearBtn" style="display:none;">Clear</button>
+        </div>
+    </div>
+
+    <div id="events-table-container">
+        <partial name="_EventsTable" model="@Model" />
+    </div>
+</section>

@@ -2,33 +2,39 @@
 <EventsViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Events>
     <EventViewModel>
-      <Title>Event_0</Title>
-      <Description>Description for Event_0</Description>
+      <Id>1</Id>
+      <Title>Sunset Farmers Market</Title>
+      <Description>A weekly outdoor market featuring over 40 local growers and producers. Browse fresh seasonal fruit and vegetables, artisan breads, locally sourced honey, and handmade preserves. Live acoustic music and food trucks on site. Great for families and a wonderful way to support WA's farming community.</Description>
       <ButtonLabel>Register</ButtonLabel>
     </EventViewModel>
     <EventViewModel>
-      <Title>Event_1</Title>
-      <Description>Description for Event_1</Description>
+      <Id>2</Id>
+      <Title>Bush Tucker &amp; Noongar Culture Walk</Title>
+      <Description>Join Noongar elder guides for a two-hour interpretive walk through Bold Park, learning about traditional bush foods, medicinal plants, and the deep cultural significance of the Perth coastal landscape. A hands-on and deeply respectful experience for all ages.</Description>
       <ButtonLabel>Register</ButtonLabel>
     </EventViewModel>
     <EventViewModel>
-      <Title>Event_2</Title>
-      <Description>Description for Event_2</Description>
+      <Id>3</Id>
+      <Title>Community Emergency Preparedness Expo</Title>
+      <Description>A free half-day expo run by the City in partnership with DFES and St John WA. Attend demonstrations on home fire safety, cyclone and storm preparedness, first aid basics, and how to build a household emergency kit. Information stalls from council rangers, SES, and local volunteer groups.</Description>
       <ButtonLabel>Register</ButtonLabel>
     </EventViewModel>
     <EventViewModel>
-      <Title>Event_3</Title>
-      <Description>Description for Event_3</Description>
+      <Id>4</Id>
+      <Title>School Holiday Science Spectacular</Title>
+      <Description>A hands-on STEM workshop series for children aged 8–14 during the October school holidays. Kids rotate through four activity stations covering robotics, chemistry experiments, coding puzzles, and sustainable engineering challenges. All materials provided. Bookings essential.</Description>
       <ButtonLabel>Register</ButtonLabel>
     </EventViewModel>
     <EventViewModel>
-      <Title>Event_4</Title>
-      <Description>Description for Event_4</Description>
+      <Id>5</Id>
+      <Title>Multicultural Street Festival</Title>
+      <Description>A vibrant celebration of our community's cultural diversity. Enjoy food stalls, traditional dance performances, live music, craft markets, and cultural displays from over 20 community groups. Free entry for all. The festival is supported by the Office of Multicultural Interests WA.</Description>
       <ButtonLabel>Register</ButtonLabel>
     </EventViewModel>
     <EventViewModel>
-      <Title>Event_5</Title>
-      <Description>Description for Event_5</Description>
+      <Id>6</Id>
+      <Title>Spring Garden &amp; Sustainability Fair</Title>
+      <Description>Celebrate spring with a free community fair focused on sustainable living and home gardening. Workshops include worm farming, rainwater harvesting, composting basics, and growing native edible plants. Free seedling giveaway for the first 100 attendees.</Description>
       <ButtonLabel>Register</ButtonLabel>
     </EventViewModel>
   </Events>

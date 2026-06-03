@@ -1,8 +1,9 @@
-﻿@{
+﻿@using CityLink_SCP.PageModels
+@{
     ViewData["Title"] = "Home";
 }
 
-@model CityLink_SCP.Models.IndexViewModel
+@model IndexViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
@@ -19,7 +20,7 @@
         <div>
             <h1 class="hero__title">CityLink<br />Initiatives</h1>
             <p class="hero__sub">Streamlining access to services and information online.</p>
-            <a href="services.html" class="btn">View Services</a>
+            <a asp-controller="Home" asp-action="Services" class="btn">View Services</a>
         </div>
         <div class="placeholder placeholder--hero"></div>
     </div>
@@ -34,40 +35,14 @@
 
         <partial name="@Model.Services.PartialName" model="@Model.Services" />
 
-        <div class="carousel__controls">
-            <button class="carousel__btn" id="servicesPrev">&#8592;</button>
-            <div class="carousel__dots" id="servicesDots"></div>
-            <button class="carousel__btn" id="servicesNext">&#8594;</button>
-        </div>
     </div>
 </section>
 
 
-<!-- NEWS -->
+<!-- ANNOUNCEMENTS -->
 <section id="news" class="section section--cream">
     <div class="container">
-        <p class="eyebrow">Announcements</p>
-        <h2 class="heading-lg">What's On</h2>
-
-        <!-- Announcement 1: image left, text right -->
-        <div class="ann">
-            <div class="placeholder placeholder--ann"></div>
-            <div>
-                <h3 class="ann__title">Announcement 1</h3>
-                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a asp-area="" asp-controller="Home" asp-action="News" class="btn">Read More</a>
-            </div>
-        </div>
-
-        <!-- Announcement 2: text left, image right (reversed) -->
-        <div class="ann ann--reverse">
-            <div class="placeholder placeholder--ann ann__image"></div>
-            <div class="ann__copy">
-                <h3 class="ann__title">Announcement 2</h3>
-                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a asp-area="" asp-controller="Home" asp-action="News" class="btn">Read More</a>
-            </div>
-        </div>
+        <partial name="_Announcements" model="@Model.Announcements" />
     </div>
 </section>
 
@@ -80,11 +55,6 @@
 
         <partial name="@Model.Events.PartialName" model="@Model.Events" />
         
-        <div class="carousel__controls">
-            <button class="carousel__btn" id="eventsPrev">&#8592;</button>
-            <div class="carousel__dots" id="eventsDots"></div>
-            <button class="carousel__btn" id="eventsNext">&#8594;</button>
-        </div>
     </div>
 </section>
 
@@ -98,20 +68,10 @@
         <div class="faq__grid">
 
             <!-- FAQ accordion -->
-            <partial name="_FAQ" model="@Model.FAQs" />
+            <partial name="@Model.FAQs.PartialName" model="@Model.FAQs" />
 
             <!-- Contact card -->
-            <div id="contact" class="contact">
-                <p class="contact__title">More Questions?</p>
-                <p class="contact__sub">You can contact us at anytime.</p>
-                <div class="contact__row">
-                    <input type="email" placeholder="Email" />
-                    <input type="tel" placeholder="Phone" />
-                </div>
-                <input type="text" placeholder="Subject" />
-                <textarea placeholder="Message" rows="5"></textarea>
-                <button class="btn--submit" type="button">Submit</button>
-            </div>
+            <partial name="_EnquiryCard" model="@Model.Enquiry"/>
 
         </div>
     </div>

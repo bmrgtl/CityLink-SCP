@@ -1,0 +1,54 @@
+<div id="staff-overlay" class="xml-overlay" aria-hidden="true">
+    <div class="xml-panel">
+        <div class="xml-panel__header">
+            <div>
+                <p class="xml-panel__eyebrow">Staff Members</p>
+                <h2 class="xml-panel__title" id="staff-panel-title">New Staff Member</h2>
+            </div>
+            <button class="xml-panel__close" id="closeStaffPanel" aria-label="Close">&#x2715;</button>
+        </div>
+
+        <div id="staff-form-pane" class="xml-panel__body panel-scroll">
+            <input type="hidden" id="staffId" value="" />
+            <div class="crud-form-grid">
+                <div class="crud-field">
+                    <label class="crud-field__label" for="staffFirstName">First Name *</label>
+                    <input type="text" id="staffFirstName" class="crud-input" placeholder="John" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="staffLastName">Last Name</label>
+                    <input type="text" id="staffLastName" class="crud-input" placeholder="Doe" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="staffEmail">Email *</label>
+                    <input type="email" id="staffEmail" class="crud-input" placeholder="john@citylink.wa.gov.au" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="staffPhone">Phone</label>
+                    <input type="text" id="staffPhone" class="crud-input" placeholder="08 XXXX XXXX" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="staffRole">Role *</label>
+                    <input type="text" id="staffRole" class="crud-input" placeholder="e.g. Administrator" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="staffAddress">Address</label>
+                    <input type="text" id="staffAddress" class="crud-input" placeholder="123 Example St" />
+                </div>
+                <div class="crud-field crud-field--full">
+                    <label class="crud-field__label" for="staffPassword">
+                        Password <span class="crud-field__hint">(leave blank to keep unchanged)</span>
+                    </label>
+                    <input type="password" id="staffPassword" class="crud-input" placeholder="••••••••" autocomplete="new-password" />
+                </div>
+            </div>
+            <div id="staff-status" class="xml-status" style="margin:0.75rem 0 0;"></div>
+        </div>
+
+        <div id="staff-panel-actions" class="xml-panel__actions panel-footer">
+            <button class="btn--admin btn--ghost btn--sm" id="cancelStaffBtn">Cancel</button>
+            <button class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="staff" style="display:none;">Edit</button>
+            <button class="btn--admin btn--primary btn--sm panel-save-btn" id="saveStaffBtn">&#10003; Save Staff</button>
+        </div>
+    </div>
+</div>

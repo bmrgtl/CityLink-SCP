@@ -2,33 +2,39 @@
 <ServicesViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Services>
     <ServiceViewModel>
-      <Title>Service_0</Title>
-      <Description>Description for Service_0</Description>
+      <Id>1</Id>
+      <Title>Skip Bin Hire (2m³ Mini Skip)</Title>
+      <Description>Hire a 2m³ skip bin for light household cleanouts, garden waste, and general rubbish. Delivery and pickup included. Bin will be dropped at your kerbside or driveway on your chosen date. Hire period is up to 3 days. Prohibited items include tyres, asbestos, liquids, and e-waste. Additional days available on request.</Description>
       <ButtonLabel>Book Now</ButtonLabel>
     </ServiceViewModel>
     <ServiceViewModel>
-      <Title>Service_1</Title>
-      <Description>Description for Service_1</Description>
+      <Id>2</Id>
+      <Title>Skip Bin Hire (4m³ Standard Skip)</Title>
+      <Description>A 4m³ skip bin suitable for medium renovation projects, shed cleanouts, and bulk hard rubbish. Delivery and collection included. Maximum hire period is 5 days. Ideal for mixed general waste including timber, plasterboard, and furniture. Council permit required if placed on a verge or road — lodge through CityLink.</Description>
       <ButtonLabel>Book Now</ButtonLabel>
     </ServiceViewModel>
     <ServiceViewModel>
-      <Title>Service_2</Title>
-      <Description>Description for Service_2</Description>
+      <Id>3</Id>
+      <Title>Trailer Hire (Box Trailer)</Title>
+      <Description>Hire a single-axle box trailer for moving furniture, garden waste, or general loads. Capacity 600 kg. Available for half-day (4 hrs) or full-day hire. Suitable for standard tow balls — please check your vehicle rating before booking. Ball and hitch not provided. Valid driver's licence required at pickup.</Description>
       <ButtonLabel>Book Now</ButtonLabel>
     </ServiceViewModel>
     <ServiceViewModel>
-      <Title>Service_3</Title>
-      <Description>Description for Service_3</Description>
+      <Id>4</Id>
+      <Title>Trailer Hire (Enclosed Cage Trailer)</Title>
+      <Description>A full-size enclosed cage trailer suitable for bulk rubbish runs and large loads. Capacity 1,000 kg. Available for half-day or full-day hire. Features removable mesh sides and secure tailgate. Valid driver's licence and proof of tow capacity required at pickup. Fuel not included.</Description>
       <ButtonLabel>Book Now</ButtonLabel>
     </ServiceViewModel>
     <ServiceViewModel>
-      <Title>Service_4</Title>
-      <Description>Description for Service_4</Description>
+      <Id>5</Id>
+      <Title>Community Room Hire — Small Meeting Room</Title>
+      <Description>A quiet, air-conditioned meeting room seating up to 12 people, available for community group meetings, workshops, and study sessions. Includes a whiteboard, projector and screen, and Wi-Fi. Kitchenette access included. Bookings available in 2-hour blocks. Alcohol not permitted without prior approval.</Description>
       <ButtonLabel>Book Now</ButtonLabel>
     </ServiceViewModel>
     <ServiceViewModel>
-      <Title>Service_5</Title>
-      <Description>Description for Service_5</Description>
+      <Id>6</Id>
+      <Title>Community Room Hire — Large Function Hall</Title>
+      <Description>A spacious hall available for community functions, events, and presentations. Seats up to 120 theatre-style or 80 banquet-style. Includes stage, AV system, PA, and data projector. Commercial kitchen access available at additional cost. Liquor licence required for events serving alcohol. Setup and pack-down time included.</Description>
       <ButtonLabel>Book Now</ButtonLabel>
     </ServiceViewModel>
   </Services>

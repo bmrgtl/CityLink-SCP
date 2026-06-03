@@ -1,0 +1,62 @@
+<div id="feedback-overlay" class="xml-overlay" aria-hidden="true">
+    <div class="xml-panel">
+        <div class="xml-panel__header">
+            <div>
+                <p class="xml-panel__eyebrow">Feedback &amp; Enquiries</p>
+                <h2 class="xml-panel__title" id="feedback-panel-title">Feedback</h2>
+            </div>
+            <button class="xml-panel__close" id="closeFeedbackPanel" aria-label="Close">&#x2715;</button>
+        </div>
+
+        <div id="feedback-form-pane" class="xml-panel__body panel-scroll">
+            <input type="hidden" id="feedbackId" value="" />
+
+            @* Read-only summary (always visible) *@
+            <div class="crud-detail-grid" style="grid-template-columns:1fr;margin-bottom:1.25rem;">
+                <div class="crud-field">
+                    <p class="crud-field__label">From</p>
+                    <p class="crud-detail-value" id="fb-form-from"></p>
+                </div>
+                <div class="crud-field">
+                    <p class="crud-field__label">Received</p>
+                    <p class="crud-detail-value col-muted" id="fb-form-date"></p>
+                </div>
+                <div class="crud-field">
+                    <p class="crud-field__label">Message</p>
+                    <p class="crud-detail-value" id="fb-form-message" style="white-space:pre-wrap;line-height:1.7;"></p>
+                </div>
+            </div>
+
+            @* Editable resolution fields *@
+            <div class="crud-form-grid">
+                <div class="crud-field">
+                    <label class="crud-field__label" for="feedbackStatus">Status *</label>
+                    <select id="feedbackStatus" class="crud-input">
+                        <option value="0">Pending</option>
+                        <option value="1">InProgress</option>
+                        <option value="2">Resolved</option>
+                        <option value="3">Closed</option>
+                    </select>
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="feedbackStaffId">Assigned Staff *</label>
+                    <select id="feedbackStaffId" class="crud-input">
+                        <option value="">— select staff —</option>
+                    </select>
+                </div>
+                <div class="crud-field crud-field--full">
+                    <label class="crud-field__label" for="feedbackResolution">Resolution Message</label>
+                    <textarea id="feedbackResolution" class="crud-input crud-textarea" rows="4"
+                              placeholder="Explain how this was resolved…"></textarea>
+                </div>
+            </div>
+            <div id="feedback-status" class="xml-status" style="margin:0.75rem 0 0;"></div>
+        </div>
+
+        <div id="feedback-panel-actions" class="xml-panel__actions panel-footer">
+            <button class="btn--admin btn--ghost btn--sm" id="cancelFeedbackBtn">Cancel</button>
+            <button class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="feedback" style="display:none;">Resolve</button>
+            <button class="btn--admin btn--primary btn--sm panel-save-btn" id="saveFeedbackBtn">&#10003; Save</button>
+        </div>
+    </div>
+</div>

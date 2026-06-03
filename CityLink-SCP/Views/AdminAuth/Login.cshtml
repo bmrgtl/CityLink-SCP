@@ -1,0 +1,196 @@
+@model CityLink_SCP.PageModels.AdminLoginViewModel
+
+@{
+    ViewData["Title"] = "Staff Login";
+    Layout = null;   // standalone page — no site chrome
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Portal — CityLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/index.css" />
+    <style>
+        /*  Login page — uses index.css variables  */
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--cream);
+        }
+
+        .login-card {
+            width: min(420px, 94vw);
+            background: var(--white);
+            border: 1.5px solid var(--mist);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 2.5rem 2rem;
+        }
+
+        .login-card__eyebrow {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .login-card__title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--green);
+            margin-bottom: 2rem;
+            line-height: 1.15;
+        }
+
+        .login-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .login-field label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .login-field input {
+            padding: 0.6rem 0.85rem;
+            border: 1.5px solid var(--mist);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            background: var(--cream);
+            color: var(--text);
+            outline: none;
+            transition: border-color var(--ease), background var(--ease);
+            width: 100%;
+        }
+
+        .login-field input:focus {
+            border-color: var(--green);
+            background: var(--white);
+        }
+
+        .login-field .field-error {
+            font-size: 0.72rem;
+            color: #c0392b;
+            margin-top: 0.1rem;
+        }
+
+        .login-remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .login-remember input[type="checkbox"] {
+            accent-color: var(--green);
+            width: 15px;
+            height: 15px;
+        }
+
+        .login-error {
+            background: rgba(192, 57, 43, 0.08);
+            color: #c0392b;
+            border: 1px solid rgba(192, 57, 43, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.85rem;
+            font-size: 0.82rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--green);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--ease), transform var(--ease);
+        }
+
+        .login-btn:hover {
+            background: var(--green-dark);
+            transform: translateY(-1px);
+        }
+
+        .login-card__back {
+            display: block;
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            transition: color var(--ease);
+        }
+
+        .login-card__back:hover { color: var(--green); }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <p class="login-card__eyebrow">CityLink Initiatives</p>
+        <h1 class="login-card__title">Staff Portal</h1>
+
+        @* Validation summary — shows model-level errors (wrong password, locked out) *@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="login-error" role="alert">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form asp-controller="AdminAuth" asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+            <div class="login-field">
+                <label asp-for="Email">Email address</label>
+                <input asp-for="Email" type="email" autocomplete="username" placeholder="you@citylink.wa.gov.au" />
+                <span asp-validation-for="Email" class="field-error"></span>
+            </div>
+
+            <div class="login-field">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" autocomplete="current-password" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="field-error"></span>
+            </div>
+
+            <label class="login-remember">
+                <input asp-for="RememberMe" type="checkbox" />
+                Keep me signed in for 8 hours
+            </label>
+
+            <button type="submit" class="login-btn">Sign in to Portal</button>
+        </form>
+
+        <a href="/" class="login-card__back">← Back to CityLink</a>
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>

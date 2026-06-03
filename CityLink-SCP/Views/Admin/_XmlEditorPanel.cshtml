@@ -1,0 +1,47 @@
+@using CityLink_SCP.PageModels
+@model AdminIndexViewModel
+
+<!-- XML EDITOR PANEL (slide-in drawer) -->
+<div id="xml-editor-overlay" class="xml-overlay" aria-hidden="true">
+    <div class="xml-panel">
+
+        <div class="xml-panel__header">
+            <div>
+                <p class="xml-panel__eyebrow">XML Configuration Editor</p>
+                <h2 class="xml-panel__title" id="xml-panel-title">New Configuration</h2>
+            </div>
+            <button class="xml-panel__close" id="closeXmlPanel" aria-label="Close editor">&#x2715;</button>
+        </div>
+
+        <div class="xml-panel__toolbar">
+            <div class="xml-panel__field">
+                <label for="xmlTypeSelect">Config Type</label>
+                <select id="xmlTypeSelect">
+                    <option value="">— select content type —</option>
+                    @foreach (var opt in Model.AvailableTypes)
+                    {
+                        <option value="@opt.Value">@opt.Label</option>
+                    }
+                </select>
+            </div>
+            <div class="xml-panel__field">
+                <label for="xmlLabelInput">Label <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                <input type="text" id="xmlLabelInput" placeholder="e.g. Default layout" />
+            </div>
+        </div>
+
+        <div class="xml-panel__actions">
+            <button class="btn--admin btn--ghost btn--sm" id="loadTemplateBtn">Load Template</button>
+            <button class="btn--admin btn--ghost btn--sm" id="previewXmlBtn">&#9654; Preview</button>
+            <button class="btn--admin btn--primary btn--sm" id="saveXmlBtn">&#10003; Save Version</button>
+        </div>
+
+        <div id="xml-status" class="xml-status"></div>
+
+        <div class="xml-panel__body">
+            <textarea id="xmlEditText" spellcheck="false" placeholder="Paste or load XML here…"></textarea>
+        </div>
+
+        <input type="hidden" id="xmlConfigId" value="" />
+    </div>
+</div>

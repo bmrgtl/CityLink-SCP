@@ -1,0 +1,52 @@
+@using CityLink_SCP.DbModels
+@model List<Service>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Services</h2>
+            <p class="admin-section__desc">Manage bookable community services.</p>
+        </div>
+        <button class="btn--admin btn--primary" id="newServiceBtn">+ New Service</button>
+    </div>
+
+    <div class="table-search" id="services-search-form">
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="svc-term">Search</label>
+                <input type="text" class="crud-input" id="svc-term" name="SearchTerm" placeholder="Title, description or location…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="svc-from">Available From</label>
+                <input type="time" class="crud-input" id="svc-from" name="From" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="svc-to">Available Until</label>
+                <input type="time" class="crud-input" id="svc-to" name="To" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="svc-staff-filter">Staff</label>
+                <select class="crud-input" id="svc-staff-filter" name="StaffId">
+                    <option value="">All Staff</option>
+                </select>
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="svc-sort">Sort By</label>
+                <select class="crud-input" id="svc-sort" name="SortBy">
+                    <option value="">Default</option>
+                    <option value="Title">A – Z</option>
+                    <option value="Cost">Cost ↑</option>
+                    <option value="Available_Start_Time">Start Time</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-search__actions">
+            <button type="button" class="btn--admin btn--primary btn--sm" id="serviceSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="serviceClearBtn" style="display:none;">Clear</button>
+        </div>
+    </div>
+
+    <div id="services-table-container">
+        <partial name="_ServicesTable" model="@Model" />
+    </div>
+</section>

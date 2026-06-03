@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="utf-16"?>
-<EventsViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Events>
-    <EventViewModel>
-      <Title>Event_0</Title>
-      <Description>Description for Event_0</Description>
-      <ButtonLabel>Register</ButtonLabel>
-    </EventViewModel>
-    <EventViewModel>
-      <Title>Event_1</Title>
-      <Description>Description for Event_1</Description>
-      <ButtonLabel>Register</ButtonLabel>
-    </EventViewModel>
-    <EventViewModel>
-      <Title>Event_2</Title>
-      <Description>Description for Event_2</Description>
-      <ButtonLabel>Register</ButtonLabel>
-    </EventViewModel>
-    <EventViewModel>
-      <Title>Event_3</Title>
-      <Description>Description for Event_3</Description>
-      <ButtonLabel>Register</ButtonLabel>
-    </EventViewModel>
-    <EventViewModel>
-      <Title>Event_4</Title>
-      <Description>Description for Event_4</Description>
-      <ButtonLabel>Register</ButtonLabel>
-    </EventViewModel>
-    <EventViewModel>
-      <Title>Event_5</Title>
-      <Description>Description for Event_5</Description>
-      <ButtonLabel>Register</ButtonLabel>
-    </EventViewModel>
-  </Events>
-</EventsViewModel>
+<FAQViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FAQs>
+    <FAQ>
+      <Question>What is CityLink Initiatives?</Question>
+      <Answer>CityLink Initiatives is a government platform that streamlines citizens' access to local services, announcements, and community events all in one place.</Answer>
+    </FAQ>
+    <FAQ>
+      <Question>How do I report an issue or concern?</Question>
+      <Answer>Navigate to the Services section and click "Feedback". Fill out the online form and a council representative will get back to you within 3 business days.</Answer>
+    </FAQ>
+    <FAQ>
+      <Question>Where can I find the waste collection schedule?</Question>
+      <Answer>The waste collection schedule is available under Waste Management in the Services section. You can also subscribe to receive email reminders.</Answer>
+    </FAQ>
+    <FAQ>
+      <Question>How do I book a community event?</Question>
+      <Answer>Visit the What's Happening section and click "Book Now" on any event. You'll need a free CityLink account or to log in to complete your booking.</Answer>
+    </FAQ>
+    <FAQ>
+      <Question>Is this service available 24/7?</Question>
+      <Answer>Yes, the CityLink online platform is available around the clock. For phone or in-person support, check our Contact Us page for office hours.</Answer>
+    </FAQ>
+  </FAQs>
+</FAQViewModel>

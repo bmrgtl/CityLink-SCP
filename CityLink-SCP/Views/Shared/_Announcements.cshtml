@@ -1,0 +1,36 @@
+@model CityLink_SCP.Models.AnnouncementsViewModel
+
+@if (!string.IsNullOrEmpty(Model.Eyebrow))
+{
+    <p class="eyebrow">@Model.Eyebrow</p>
+}
+@if (!string.IsNullOrEmpty(Model.Heading))
+{
+    <h2 class="heading-lg">@Model.Heading</h2>
+}
+
+@if (Model.Items != null && Model.Items.Any())
+{
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        var item = Model.Items[i];
+        var reverse = i % 2 == 1;
+        <div class="ann @(reverse ? "ann--reverse" : "")">
+            <div class="placeholder placeholder--ann @(reverse ? "ann__image" : "")"></div>
+            <div @(reverse ? Html.Raw("class=\"ann__copy\"") : Html.Raw(""))>
+                <h3 class="ann__title">@item.Title</h3>
+                <p class="ann__text">@item.Body</p>
+                @if (!string.IsNullOrWhiteSpace(item.ButtonLabel))
+                {
+                    <a href="@(string.IsNullOrWhiteSpace(item.ButtonUrl) ? "#" : item.ButtonUrl)" class="btn">
+                        @item.ButtonLabel
+                    </a>
+                }
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p style="color:var(--text-muted);font-size:0.9rem;">No announcements at this time.</p>
+}

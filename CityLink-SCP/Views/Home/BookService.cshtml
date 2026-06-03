@@ -1,45 +1,83 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@using CityLink_SCP.DbModels
+@model CityLink_SCP.ViewModels.BookService
+
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
-    <link rel="stylesheet" href="~/css/bookservice.css"/>
+    <link rel="stylesheet" href="~/css/bookservice.css" />
 }
 
 <section id="service">
     <div class="container">
-        <h2 class="news__heading">Book a Service</h2>
-        <p class="ann__text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
+        <h2 class="news__heading">@Model.PageHeading</h2>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+
         <hr />
 
         <div class="bookings-container">
-            <h3 class="booking-heading">Book a Service</h3>
+            <h3 class="booking-heading">@Model.FormHeading</h3>
             <div class="bookings">
-                <form method="post" class="book-form-col">
+                <form method="post"
+                      asp-controller="Home" asp-action="BookService"
+                      class="book-form-col">
+                    @Html.AntiForgeryToken()
+
                     <div class="form-left">
+
+                        @{
+                            var selectedId = ViewData["SelectedServiceId"] as int?;
+                        }
                         <div class="input-box">
-                            <select class="input-field" name="service" placeholder="Choose a Service" required>
-                                <option value="1">Service 1</option>
-                                <option value="2">Service 2</option>
-                                <option value="3">Service 3</option>
+                            <select class="input-field" name="serviceId" required id="serviceSelect">
+                                <option value="">— Choose a Service —</option>
+                                @foreach (var svc in Model.AvailableServices)
+                                {
+                                    var svcStart = svc.Available_Start_Time.ToString("HH:mm");
+                                    var svcEnd   = svc.Available_End_Time.ToString("HH:mm");
+                                    var svcCost  = svc.Cost.ToString("0.00");
+                                    var isSel    = selectedId.HasValue && selectedId.Value == svc.Id;
+                                    <option value="@svc.Id"
+                                            data-start="@svcStart"
+                                            data-end="@svcEnd"
+                                            data-cost="@svcCost"
+                                            selected="@isSel">
+                                        @svc.Title — $@svcCost/hr
+                                    </option>
+                                }
                             </select>
                         </div>
+
                         <div class="datetime-row">
                             <div class="input-box">
-                                <input class="input-field" name="date" placeholder="dd/mm/yyyy" type="date" />
+                                <label class="ann__text">Start Date &amp; Time</label>
+                                <input name="startTime" type="datetime-local" class="input-field" required
+                                       id="bookStartTime" />
                             </div>
                             <div class="input-box">
-                                <input class="input-field" name="time" placeholder="Time" type="time" />
+                                <label class="ann__text">End Date &amp; Time</label>
+                                <input name="endTime" type="datetime-local" class="input-field" required
+                                       id="bookEndTime" />
                             </div>
                         </div>
 
                         <div class="input-box">
-                            <input class="input-field" name="comments" placeholder="Comments" />
+                            <p class="ann__text" id="availHint" style="color:var(--muted,#666);font-size:0.9rem;"></p>
                         </div>
-                        
+
+                        @if (Model.User == null)
+                        {
+                            <p class="ann__text" style="color:var(--red,#c00);">
+                                Please <a asp-action="Signin">sign in</a> to book a service.
+                            </p>
+                        }
+
                         <div class="error-msg">
                             @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
                         </div>
@@ -47,34 +85,55 @@
 
                     <div class="summary-col">
                         <div class="service-details">
-                            <p>Service Name</p>
-                            <p>Day, Date, Time</p>
+                            <p id="summaryTitle">Select a service above</p>
                             <hr />
                             <div class="booking-details">
-                                <p>Service Name</p>
-                                <p>$0.00</p>
+                                <p>Cost/hr</p>
+                                <p id="summaryCost">—</p>
                             </div>
                             <hr />
                             <div class="booking-details">
-                                <p>Subtotal</p>
-                                <p>$0.00</p>
-                            </div>
-                            <hr />
-                            <div class="booking-details">
-                                <h3>Total</h3>
-                                <p>$0.00</p>
+                                <p>Available</p>
+                                <p id="summaryAvail">—</p>
                             </div>
                         </div>
 
                         <div class="input-submit">
-                            <button class="submit-btn" id="submit" type="submit">Book Service</button>
+                            @if (Model.User != null)
+                            {
+                                <button class="submit-btn" type="submit">Book Service</button>
+                            }
+                            else
+                            {
+                                <a asp-action="Signin" class="submit-btn" style="display:inline-block;text-align:center;">Sign In to Book</a>
+                            }
                         </div>
                     </div>
-
                 </form>
-                
             </div>
         </div>
     </div>
-
 </section>
+
+<script>
+    (function () {
+        var sel = document.getElementById('serviceSelect');
+        function updateSummary() {
+            var opt = sel.options[sel.selectedIndex];
+            if (!opt || !opt.value) {
+                document.getElementById('summaryTitle').textContent = 'Select a service above';
+                document.getElementById('summaryCost').textContent = '—';
+                document.getElementById('summaryAvail').textContent = '—';
+                document.getElementById('availHint').textContent = '';
+                return;
+            }
+            document.getElementById('summaryTitle').textContent = opt.text.split('—')[0].trim();
+            document.getElementById('summaryCost').textContent = '$' + opt.dataset.cost + '/hr';
+            var avail = opt.dataset.start + ' – ' + opt.dataset.end;
+            document.getElementById('summaryAvail').textContent = avail;
+            document.getElementById('availHint').textContent = 'Available: ' + avail;
+        }
+        sel.addEventListener('change', updateSummary);
+        updateSummary();
+    })();
+</script>

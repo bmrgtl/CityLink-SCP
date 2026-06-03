@@ -1,5 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Login";
+@model CityLink_SCP.PageModels.AdminLoginViewModel
+
+@{
+    var title = ViewData["LoginTitle"]?.ToString() ?? "Log Into CityLink";
+    var isStaffPortal = title == "Staff Portal";
 }
 
 @section Styles {
@@ -7,10 +10,19 @@
 }
 
 <div class="account-container">
-    <h1>Log Into CityLink.</h1>
-    <div class="sign-up-link">
-        <p>New to CityLink? <a class="sign-up-link" asp-area="" asp-controller="Home" asp-action="Signin">Sign Up Here</a>.</p>
-    </div>
-    <partial name="_LoginForm" />
-    
+    <h1>@title.</h1>
+    @if (isStaffPortal)
+    {
+        <div class="sign-up-link">
+            <p><a asp-area="" asp-controller="Home" asp-action="Index">← Back to CityLink</a></p>
+        </div>
+    }
+    else
+    {
+        <div class="sign-up-link">
+            <p>New to CityLink? <a class="sign-up-link" asp-area="" asp-controller="Home" asp-action="Signin">Sign Up Here</a>.</p>
+        </div>
+    }
+
+    <partial name="_LoginForm" model="@Model" />
 </div>

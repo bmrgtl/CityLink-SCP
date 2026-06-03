@@ -1,0 +1,45 @@
+@using CityLink_SCP.DbModels
+@model List<ServiceBooking>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Service Bookings</h2>
+            <p class="admin-section__desc">All community service bookings.</p>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Service</th><th>User</th><th>Start</th><th>End</th><th>Total Cost</th><th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        <tr data-booking-userid="@b.UserId" data-booking-serviceid="@b.ServiceId">
+                            <td>@b.Service?.Title</td>
+                            <td class="col-muted">@b.User?.FirstName @b.User?.LastName</td>
+                            <td class="col-muted">@b.Start_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td class="col-muted">@b.End_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td>$@b.TotalCost.ToString("0.00")</td>
+                            <td class="col-actions">
+                                <button class="btn--admin btn--danger btn--sm delete-booking-btn"
+                                        data-userid="@b.UserId"
+                                        data-serviceid="@b.ServiceId"
+                                        data-label="@b.User?.FirstName @b.User?.LastName — @b.Service?.Title">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else { <div class="empty-state">No service bookings found.</div> }
+</section>

@@ -1,4 +1,5 @@
-﻿@model CityLink_SCP.Models.AdminIndexViewModel
+﻿@using CityLink_SCP.PageModels
+@model AdminIndexViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/css/admin.css" />
@@ -7,79 +8,18 @@
 
 @section Scripts {
     <script src="~/js/admin.js"></script>
-    <script src="~/js/index.js"></script>
 }
 
-<!-- ═══════════════════════════════════════════
-     XML EDITOR PANEL (slide-in drawer, right)
-═══════════════════════════════════════════ -->
-<div id="xml-editor-overlay" class="xml-overlay" aria-hidden="true">
-    <div class="xml-panel">
-
-        <div class="xml-panel__header">
-            <div>
-                <p class="xml-panel__eyebrow">XML Configuration Editor</p>
-                <h2 class="xml-panel__title" id="xml-panel-title">New Configuration</h2>
-            </div>
-            <button class="xml-panel__close" id="closeXmlPanel" aria-label="Close editor">&#x2715;</button>
-        </div>
-
-        <div class="xml-panel__toolbar">
-            <div class="xml-panel__field">
-                <label for="xmlTypeSelect">Config Type</label>
-                <select id="xmlTypeSelect">
-                    <option value="">— select type —</option>
-                    @foreach (var type in Model.AvailableTypes)
-                    {
-                        <option value="@type">@type</option>
-                    }
-                </select>
-            </div>
-            <div class="xml-panel__field">
-                <label for="xmlLabelInput">Label <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
-                <input type="text" id="xmlLabelInput" placeholder="e.g. Summer layout" />
-            </div>
-        </div>
-
-        <div class="xml-panel__actions">
-            <button class="btn--admin btn--ghost btn--sm" id="loadTemplateBtn">Load Template</button>
-            <button class="btn--admin btn--ghost btn--sm" id="previewXmlBtn">&#9654; Preview</button>
-            <button class="btn--admin btn--primary btn--sm" id="saveXmlBtn">&#10003; Save Version</button>
-        </div>
-
-        <div id="xml-status" class="xml-status"></div>
-
-        <div class="xml-panel__body">
-            <textarea id="xmlEditText" spellcheck="false" placeholder="Paste or load XML here…"></textarea>
-        </div>
-
-        <input type="hidden" id="xmlConfigId" value="" />
-    </div>
-</div>
+@await Html.PartialAsync("_XmlEditorPanel", Model)
+@await Html.PartialAsync("_PreviewPanel")
+@await Html.PartialAsync("_EventPanel")
+@await Html.PartialAsync("_ServicePanel")
+@await Html.PartialAsync("_FeedbackPanel")
+@await Html.PartialAsync("_UserPanel")
+@await Html.PartialAsync("_StaffPanel")
 
 
-<!-- ═══════════════════════════════════════════
-     PREVIEW MODAL (centred)
-═══════════════════════════════════════════ -->
-<div id="xml-preview-overlay" class="xml-overlay" aria-hidden="true">
-    <div class="xml-preview-panel">
-        <div class="xml-panel__header">
-            <div>
-                <p class="xml-panel__eyebrow">Live Preview</p>
-                <h2 class="xml-panel__title">Rendered Output</h2>
-            </div>
-            <button class="xml-panel__close" id="closePreviewPanel" aria-label="Close preview">&#x2715;</button>
-        </div>
-        <div id="xml-preview-content" class="xml-preview-content">
-            <p style="color:var(--text-muted);font-size:.875rem;">Click "Preview" in the editor to render the current XML.</p>
-        </div>
-    </div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════
-     MAIN DASHBOARD
-═══════════════════════════════════════════ -->
+@*  Main Dashboard  *@
 <div class="admin-wrap">
 
     <header class="admin-header">
@@ -89,165 +29,13 @@
         </div>
     </header>
 
-    <!-- ── XML Configurations ── -->
-    <section class="admin-section">
-        <div class="admin-section__head">
-            <div>
-                <h2 class="admin-section__title">XML Configurations</h2>
-                <p class="admin-section__desc">Manage site-wide content layouts. The active version is applied live.</p>
-            </div>
-            <button class="btn--admin btn--primary" id="newConfigBtn">+ New Config</button>
-        </div>
-
-        @if (Model.XmlConfigs.Any())
-        {
-            <div class="table-wrap">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>Label</th>
-                            <th>Uploaded</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var cfg in Model.XmlConfigs)
-                        {
-                            <tr class="@(cfg.IsActive ? "row--active" : "")">
-                                <td class="col-muted">#@cfg.Id</td>
-                                <td><span class="tag">@cfg.Type</span></td>
-                                <td>@(string.IsNullOrEmpty(cfg.Label) ? "—" : cfg.Label)</td>
-                                <td class="col-muted">@cfg.UploadedAt.ToString("dd MMM yyyy, HH:mm")</td>
-                                <td>
-                                    @if (cfg.IsActive)
-                                    {
-                                        <span class="badge badge--active">Active</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge badge--inactive">Inactive</span>
-                                    }
-                                </td>
-                                <td class="col-actions">
-                                    <button class="btn--admin btn--ghost btn--sm edit-config-btn"
-                                            data-id="@cfg.Id"
-                                            data-type="@cfg.Type"
-                                            data-label="@cfg.Label">
-                                        Edit
-                                    </button>
-                                    <button class="btn--admin btn--ghost btn--sm preview-config-btn"
-                                            data-id="@cfg.Id">
-                                        Preview
-                                    </button>
-                                    @if (!cfg.IsActive)
-                                    {
-                                        <button class="btn--admin btn--activate btn--sm activate-config-btn"
-                                                data-id="@cfg.Id">
-                                            Activate
-                                        </button>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <div class="empty-state">No XML configurations yet. Create one with the button above.</div>
-        }
-    </section>
-
-    <!-- ── Events ── -->
-    <section class="admin-section">
-        <div class="admin-section__head">
-            <div>
-                <h2 class="admin-section__title">Events</h2>
-                <p class="admin-section__desc">All registered community events.</p>
-            </div>
-        </div>
-
-        @if (Model.Events.Any())
-        {
-            <div class="table-wrap">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Location</th>
-                            <th>Date &amp; Time</th>
-                            <th>Cost</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var ev in Model.Events)
-                        {
-                            <tr>
-                                <td>@ev.Title</td>
-                                <td class="col-muted">@ev.Location</td>
-                                <td class="col-muted">@ev.Start_Date_Time.ToString("dd MMM yyyy, HH:mm")</td>
-                                <td>$@ev.Cost.ToString("0.00")</td>
-                                <td class="col-actions">
-                                    <button class="btn--admin btn--ghost btn--sm">View</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <div class="empty-state">No events found.</div>
-        }
-    </section>
-
-    <!-- Feedback & Enquiries  -->
-    <section class="admin-section">
-        <div class="admin-section__head">
-            <div>
-                <h2 class="admin-section__title">Feedback &amp; Enquiries</h2>
-                <p class="admin-section__desc">Messages submitted by the community.</p>
-            </div>
-        </div>
-
-        @if (Model.Feedbacks.Any())
-        {
-            <div class="table-wrap">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>From</th>
-                            <th>Subject</th>
-                            <th>Received</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var fb in Model.Feedbacks)
-                        {
-                            <tr>
-                                <td>@($"{fb.User.First_Name} {fb.User.Last_Name}")</td>
-                                <td class="col-muted">@(string.IsNullOrEmpty(fb.Message) ? "—" : fb.Message)</td>
-                                <td class="col-muted">@fb.CreatedAt.ToString("dd MMM yyyy")</td>
-                                <td class="col-actions">
-                                    <button class="btn--admin btn--ghost btn--sm">View</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <div class="empty-state">No feedback messages yet.</div>
-        }
-    </section>
+    @await Html.PartialAsync("_XmlConfigsSection", Model)
+    @await Html.PartialAsync("_EventsSection", Model.Events)
+    @await Html.PartialAsync("_ServicesSection", Model.Services)
+    @await Html.PartialAsync("_FeedbackSection", Model.Feedbacks)
+    @await Html.PartialAsync("_EventRegistrationsSection", Model.EventRegistrations)
+    @await Html.PartialAsync("_ServiceBookingsSection", Model.ServiceBookings)
+    @await Html.PartialAsync("_UsersSection", Model.Users)
+    @await Html.PartialAsync("_StaffSection", Model.StaffMembers)
 
 </div>

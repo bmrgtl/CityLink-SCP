@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-16"?>
+<AnnouncementsViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Eyebrow>Announcements</Eyebrow>
+  <Heading>What's On</Heading>
+  <Items>
+    <Announcement>
+      <Title>Welcome to CityLink Initiatives</Title>
+      <Body>CityLink is your one-stop online portal for local council services, community events, and important announcements. We're here to make government services more accessible to everyone.</Body>
+      <ButtonLabel>Our Services</ButtonLabel>
+      <ButtonUrl>/Home/Services</ButtonUrl>
+    </Announcement>
+    <Announcement>
+      <Title>Community Events Now Open</Title>
+      <Body>Register for upcoming community events online. From farmers markets to cultural workshops, there is something for every resident. Browse the full events calendar and secure your spot today.</Body>
+      <ButtonLabel>View Events</ButtonLabel>
+      <ButtonUrl>/Home/Events</ButtonUrl>
+    </Announcement>
+  </Items>
+</AnnouncementsViewModel>

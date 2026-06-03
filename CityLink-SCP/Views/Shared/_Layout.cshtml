@@ -23,7 +23,30 @@
                 <li><a asp-area="" asp-controller="Home" asp-action="Events" class="nav_link">Events</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="Services" class="nav_link">Our Services</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="ContactUs" class="nav_link">Contact Us</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Login" class="nav_cta">Log In</a></li>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <li><a asp-area="" asp-controller="Home" asp-action="Profile" class="nav_link">Profile</a></li>
+                    <li>
+                        @if (User.IsInRole("Staff"))
+                        {
+                            <form asp-controller="AdminAuth" asp-action="Logout" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="nav_cta">Sign Out</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Home" asp-action="Logout" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="nav_cta">Sign Out</button>
+                            </form>
+                        }
+                    </li>
+                }
+                else
+                {
+                    <li><a asp-area="" asp-controller="Home" asp-action="Login" class="nav_cta">Log In</a></li>
+                }
             </ul>
 
             <button class="nav__hamburger" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
@@ -36,7 +59,28 @@
             <a asp-area="" asp-controller="Home" asp-action="Events" class="nav__mobile-link">Events</a>
             <a asp-area="" asp-controller="Home" asp-action="Services" class="nav__mobile-link">Services</a>
             <a asp-area="" asp-controller="Home" asp-action="ContactUs" class="nav__mobile-link">Contact Us</a>
-            <a asp-area="" asp-controller="Home" asp-action="Login" class="nav__mobile-link nav__mobile-link--bold">Log In</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-area="" asp-controller="Home" asp-action="Profile" class="nav__mobile-link">Profile</a>
+                @if (User.IsInRole("Staff"))
+                {
+                    <form asp-controller="AdminAuth" asp-action="Logout" method="post" style="margin:0;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="nav__mobile-link nav__mobile-link--bold" style="background:none;border:none;cursor:pointer;font-family:inherit;width:100%;text-align:left;padding:0;">Sign Out</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Home" asp-action="Logout" method="post" style="margin:0;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="nav__mobile-link nav__mobile-link--bold" style="background:none;border:none;cursor:pointer;font-family:inherit;width:100%;text-align:left;padding:0;">Sign Out</button>
+                    </form>
+                }
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Home" asp-action="Login" class="nav__mobile-link nav__mobile-link--bold">Log In</a>
+            }
         </div>
     </nav>
     <!-- BODY -->

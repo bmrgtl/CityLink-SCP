@@ -1,14 +1,18 @@
-﻿@model CityLink_SCP.Models.IndexViewModel
+@using CityLink_SCP.DbModels
+@model List<Service>
+
+@{
+    int page       = (int)(ViewData["Page"] ?? 1);
+    int totalPages = (int)(ViewData["TotalPages"] ?? 1);
+    int total      = (int)(ViewData["Total"] ?? 0);
+    var search     = ViewData["Search"]?.ToString();
+    var sort       = ViewData["Sort"]?.ToString();
+}
 
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/services.css" />
 }
-
-@section Scripts {
-    <script src="~/js/index.js"></script>
-}
-
 
 <section class="section-white">
     <div class="container">
@@ -23,51 +27,19 @@
                             <th scope="col">Fees</th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        <tr>
-                            <td>Green Waste Collection</td>
-                            <td>$45.00</td>
-                        </tr>
-                        <tr>
-                            <td>Service 2</td>
-                            <td>$5.00</td>
-                        </tr>
-                        <tr>
-                            <td>Service 3</td>
-                            <td>$45.00</td>
-                        </tr>
-                        <tr>
-                            <td>Service 4</td>
-                            <td>$145.00</td>
-                        </tr>
+                        <tr><td>Green Waste Collection</td><td>$45.00</td></tr>
+                        <tr><td>Service 2</td><td>$5.00</td></tr>
+                        <tr><td>Service 3</td><td>$45.00</td></tr>
+                        <tr><td>Service 4</td><td>$145.00</td></tr>
                     </tbody>
                 </table>
 
                 <div class="rates-questions">
                     <p class="ann__eyebrow">Can't Find What You're Looking For?</p>
-                    <p class="ann__text">Enquire Now</p>
-                    <form>
-                        <div class="contact-info">
-                            <div class="input-box">
-                                <input class="input-field" name="name" placeholder="Name" required />
-                            </div>
-                            <div class="input-box">
-                                <input class="input-field" name="email" placeholder="Email" type="email" required />
-                            </div>
-                        </div>
-                        
-                        <div class="input-box">
-                            <textarea rows="5" class="input-field" name="message" placeholder="Message" required></textarea>
-                        </div>
-                        <div class="input-submit">
-                            <button type="submit" class="submit-btn">Submit Enquiry</button>
-                        </div>
-                    </form>
+                    <p class="ann__text">Use the contact form below or browse our available services.</p>
                 </div>
             </div>
-
-            
         </div>
     </div>
 </section>
@@ -75,19 +47,86 @@
 <section class="section-white">
     <div class="container">
         <p class="ann__eyebrow">What We Offer</p>
-        <h3 class="heading-md"> Available Services</h3>
+        <h3 class="heading-md">Available Services</h3>
 
-        <div class="service-cards">
-            <div class="carousel__track" id="servicesTrack">
-                <partial name="_Card" model="@Model.Services" />
-            </div>
-
-            <div class="carousel__controls">
-                <button class="carousel__btn" id="servicesPrev">&#8592;</button>
-                <div class="carousel__dots" id="servicesDots"></div>
-                <button class="carousel__btn" id="servicesNext">&#8594;</button>
-            </div>
+        <div class="searchsort">
+            <form method="get" asp-controller="Home" asp-action="Services">
+                <div class="input-box">
+                    <input class="input-field" name="search" placeholder="Search services…" value="@search" />
+                </div>
+                <div class="sort-select">
+                    @{ var s = sort; }
+                    <select class="input-field" name="sort">
+                        <option value=""            selected="@(s == null)">Sort By</option>
+                        <option value="alphabetical"selected="@(s == "alphabetical")">A – Z</option>
+                        <option value="cost-asc"    selected="@(s == "cost-asc")">Cost: Low–High</option>
+                        <option value="cost-desc"   selected="@(s == "cost-desc")">Cost: High–Low</option>
+                    </select>
+                </div>
+                <div class="input-submit">
+                    <button class="submit-btn" type="submit">Search</button>
+                </div>
+                @if (!string.IsNullOrEmpty(search))
+                {
+                    <div class="input-submit" style="margin-left:0.5rem;">
+                        <a asp-action="Services" class="submit-btn" style="background:var(--text-muted,#666);">Clear</a>
+                    </div>
+                }
+            </form>
         </div>
+
+        @if (!string.IsNullOrEmpty(search))
+        {
+            <p class="ann__text" style="font-size:0.875rem;color:var(--text-muted);">
+                @total result@(total == 1 ? "" : "s") for &ldquo;@search&rdquo;
+            </p>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;">
+                @foreach (var svc in Model)
+                {
+                    <article class="card">
+                        <div class="placeholder placeholder--card"></div>
+                        <div class="card__body">
+                            <h3 class="card__title">@svc.Title</h3>
+                            <p class="card__text" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">
+                                @svc.Location &middot; @svc.Available_Start_Time.ToString(@"hh\:mm")–@svc.Available_End_Time.ToString(@"hh\:mm")
+                            </p>
+                            <p class="card__text">@(svc.Description.Length > 100 ? svc.Description[..100] + "…" : svc.Description)</p>
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
+                                <span style="font-size:0.8rem;color:var(--text-muted);">$@svc.Cost.ToString("0.00")/hr</span>
+                                <a asp-controller="Home" asp-action="BookService" asp-route-id="@svc.Id" class="btn btn--outline">Book Now</a>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <div style="display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:2rem;">
+                    @if (page > 1)
+                    {
+                        <a href="@Url.Action("Services", new { page = page - 1, search, sort })"
+                           class="btn btn--outline">&#8592; Previous</a>
+                    }
+                    <span style="font-size:0.875rem;color:var(--text-muted);">Page @(page) of @(totalPages)</span>
+                    @if (page < totalPages)
+                    {
+                        <a href="@Url.Action("Services", new { page = page + 1, search, sort })"
+                           class="btn btn--outline">Next &#8594;</a>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p class="ann__text" style="color:var(--text-muted);margin-top:2rem;">
+                No services found@(string.IsNullOrEmpty(search) ? "." : $" matching \"{search}\".")
+            </p>
+        }
     </div>
 </section>
 
@@ -97,29 +136,14 @@
         <div class="schedule-info">
             <table class="schedule-table">
                 <thead>
-                    <tr>
-                        <th scope="col">Bin</th>
-                        <th scope="col">Day</th>
-                    </tr>
+                    <tr><th scope="col">Bin</th><th scope="col">Day</th></tr>
                 </thead>
-
                 <tbody>
-                    <tr>
-                        <td>Yellow Bin (Recycling)</td>
-                        <td>Monday</td>
-                    </tr>
-                    <tr>
-                        <td>Red Lin Bin (Green Waste)</td>
-                        <td>Tuesday</td>
-                    </tr>
-                    <tr>
-                        <td>Other</td>
-                        <td>Wednesday</td>
-                    </tr>
+                    <tr><td>Yellow Bin (Recycling)</td><td>Monday</td></tr>
+                    <tr><td>Red Lid Bin (Green Waste)</td><td>Tuesday</td></tr>
+                    <tr><td>Other</td><td>Wednesday</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 </section>
-
-   

@@ -458,6 +458,165 @@
     flex: 1;
 }
 
+/*  Danger button  */
+
+.btn--admin.btn--danger {
+    background: rgba(192, 57, 43, 0.07);
+    color: #c0392b;
+    border-color: rgba(192, 57, 43, 0.25);
+}
+
+    .btn--admin.btn--danger:hover:not(:disabled) {
+        background: rgba(192, 57, 43, 0.14);
+        border-color: rgba(192, 57, 43, 0.45);
+    }
+
+/*  Table search bar — multi-field layout  */
+
+.table-search {
+    padding: 1rem 1.5rem 0.75rem;
+    border-bottom: 1.5px solid var(--mist);
+    background: var(--cream);
+}
+
+.table-search__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+/* A single labelled field inside the search row */
+.table-search__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1 1 150px;     /* grows to fill, wraps below 150 px */
+    min-width: 120px;
+}
+
+.table-search__field--lg {
+    flex: 2 1 220px;     /* wider — for SearchTerm, Address, etc. */
+}
+
+.table-search__field--sm {
+    flex: 0 1 100px;     /* narrow — for cost range, status, tickets */
+    min-width: 80px;
+}
+
+/* Buttons row */
+.table-search__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.15rem;
+}
+
+/* Fade container during AJAX fetch */
+#events-table-container,
+#services-table-container,
+#users-table-container,
+#staff-table-container,
+#feedback-table-container {
+    transition: opacity 0.15s ease;
+}
+
+/*  Panel scroll / footer helpers  */
+
+.panel-scroll {
+    overflow-y: auto;
+}
+
+.panel-footer {
+    border-top: 1.5px solid var(--mist) !important;
+    border-bottom: none !important;
+    justify-content: flex-end;
+}
+
+/*  CRUD form — panel interiors  */
+
+.crud-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.25rem;
+}
+
+.crud-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.25rem;
+}
+
+.crud-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.crud-field--full {
+    grid-column: 1 / -1;
+}
+
+.crud-field__label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.crud-field__hint {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.65rem;
+    color: var(--placeholder, #aaa);
+}
+
+.crud-detail-value {
+    font-size: 0.875rem;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.crud-input {
+    width: 100%;
+    padding: 0.55rem 0.85rem;
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    background: var(--cream);
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--ease), background var(--ease);
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+    .crud-input:focus {
+        border-color: var(--green);
+        background: var(--white);
+    }
+
+    .crud-input:disabled {
+        background: var(--cream);
+        color: var(--text-muted);
+        cursor: default;
+        opacity: 0.8;
+    }
+
+    .crud-input option {
+        background: var(--white);
+    }
+
+.crud-textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.6;
+}
+
 /*  Responsive  */
 
 @media (max-width: 640px) {

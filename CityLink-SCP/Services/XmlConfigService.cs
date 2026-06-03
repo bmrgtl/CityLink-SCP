@@ -4,6 +4,8 @@ using CityLink_SCP.Database;
 using CityLink_SCP.DbModels;
 using CityLink_SCP.Extensions;
 using System.Xml.Linq;
+using CityLink_SCP.PageModels;
+using System.Collections.ObjectModel;
 
 namespace CityLink_SCP.Services;
 
@@ -97,7 +99,7 @@ public class XmlConfigService
     }
 
     // Save new version; deactivate all previous for that type
-    public async Task SaveNewVersionAsync(Staff staff, XmlConfigDto xmlConfig)
+    public async Task SaveNewVersionAsync(ApplicationStaff staff, XmlConfigDto xmlConfig)
     {
         // Deactivate existing active records for this type
         var existing = _db.XML_Configurations.Where(r => r.Type == xmlConfig.Type && r.IsActive);
@@ -186,28 +188,41 @@ public class XmlConfigService
 
 	public static Type? GetViewModelType(string typeName) => typeName switch
     {
-        "FooterModel" => typeof(FooterModel),
-        "IndexViewModel" => typeof(IndexViewModel),
-        "FAQViewModel" => typeof(FAQViewModel),
-        "EventsViewModel" => typeof(EventsViewModel),
-        "ServicesViewModel" => typeof(ServicesViewModel),
-        "List<FAQViewModel>" => typeof(List<FAQViewModel>),
-        "List<CardViewModel>" => typeof(List<CardViewModel>),
-        "List<AdminIndexViewModel>" => typeof(List<AdminIndexViewModel>),
+        "AnnouncementsViewModel" => typeof(AnnouncementsViewModel),
+        "FAQViewModel"           => typeof(FAQViewModel),
+        "EventsViewModel"        => typeof(EventsViewModel),
+        "ServicesViewModel"      => typeof(ServicesViewModel),
+        "FooterModel"            => typeof(FooterModel),
+        // Legacy entries kept for existing DB records
+        "IndexViewModel"         => typeof(IndexViewModel),
+        "List<FAQViewModel>"     => typeof(List<FAQViewModel>),
+        "List<CardViewModel>"    => typeof(List<CardViewModel>),
 		_ => null
     };
 
-	/// <summary>Returns the list of registered type names for the admin UI dropdown.</summary>
-	public static List<string> GetAvailableTypes() =>
-		new() 
-        { 
-            "FooterModel", 
-            "IndexViewModel",
-			"FAQViewModel",
-            "EventsViewModel",
-            "ServicesViewModel",
-			"List<FAQViewModel>",
-		    "List<CardViewModel>",
-		    "List<AdminIndexViewModel>"
-		};
+    // Human-readable labels shown to admins in the editor dropdown and table.
+    private static readonly IReadOnlyDictionary<string, string> TypeLabels =
+        new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
+        {
+            ["AnnouncementsViewModel"] = "Announcements",
+            ["FAQViewModel"]           = "FAQ Section",
+            ["EventsViewModel"]        = "Events Carousel",
+            ["ServicesViewModel"]      = "Services Carousel",
+            ["FooterModel"]            = "Site Footer",
+        });
+
+    /// <summary>Returns the human-readable label for a stored type name, falling back to the raw name.</summary>
+    public static string GetFriendlyLabel(string typeName) =>
+        TypeLabels.TryGetValue(typeName, out var label) ? label : typeName;
+
+    /// <summary>Returns the editable config types for the admin UI dropdown.</summary>
+    public static List<XmlConfigTypeOption> GetAvailableTypes() =>
+        new()
+        {
+            new("AnnouncementsViewModel", "Announcements"),
+            new("FAQViewModel",           "FAQ Section"),
+            new("EventsViewModel",        "Events Carousel"),
+            new("ServicesViewModel",      "Services Carousel"),
+            new("FooterModel",            "Site Footer"),
+        };
 }

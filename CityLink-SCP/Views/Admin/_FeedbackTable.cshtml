@@ -1,0 +1,41 @@
+@using CityLink_SCP.DbModels
+@model List<Feedback>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-wrap">
+        <table class="admin-table" id="feedbackTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>From</th><th>Message</th><th>Status</th><th>Received</th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fb in Model)
+                {
+                    <tr data-feedback-id="@fb.Id">
+                        <td class="col-muted">#@fb.Id</td>
+                        <td>@(fb.User != null ? $"{fb.User.FirstName} {fb.User.LastName}" : "(Guest)")</td>
+                        <td class="col-muted">@(fb.Message.Length > 65 ? fb.Message[..65] + "…" : fb.Message)</td>
+                        <td>
+                            <span class="badge @(fb.Status == FeedbackStatus.Resolved || fb.Status == FeedbackStatus.Closed
+                                ? "badge--active" : "badge--inactive")">
+                                @fb.Status
+                            </span>
+                        </td>
+                        <td class="col-muted">@fb.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td class="col-actions">
+                            <button class="btn--admin btn--ghost btn--sm view-feedback-btn" data-id="@fb.Id">View</button>
+                            <button class="btn--admin btn--ghost btn--sm edit-feedback-btn" data-id="@fb.Id">Resolve</button>
+                            <button class="btn--admin btn--danger btn--sm delete-feedback-btn" data-id="@fb.Id">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state">No feedback matches your search.</div>
+}

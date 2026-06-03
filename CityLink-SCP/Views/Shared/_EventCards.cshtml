@@ -8,8 +8,13 @@
             <div class="card__body">
                 <h3 class="card__title">@card.Title</h3>
                 <p class="card__text">@card.Description</p>
-                <a asp-area="" asp-controller="Home" asp-action="BookEvent" class="btn btn--outline">@card.ButtonLabel</a>
+                <a asp-area="" asp-controller="Home" asp-action="BookEvent" asp-route-id="@card.Id" class="btn btn--outline">@card.ButtonLabel</a>
             </div>
         </article>
     }
+</div>
+<div class="carousel__controls">
+    <button class="carousel__btn" id="eventsPrev">&#8592;</button>
+    <div class="carousel__dots" id="eventsDots"></div>
+    <button class="carousel__btn" id="eventsNext">&#8594;</button>
 </div>
