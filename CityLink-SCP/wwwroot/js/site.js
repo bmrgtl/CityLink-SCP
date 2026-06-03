@@ -1,5 +1,5 @@
 ﻿
-/* ── Mobile nav ── */
+/*  Mobile nav  */
 const menuBtn = document.getElementById('menuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 

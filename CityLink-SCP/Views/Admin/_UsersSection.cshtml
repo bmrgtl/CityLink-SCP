@@ -1,0 +1,58 @@
+@using CityLink_SCP.DbModels
+@model List<ApplicationUser>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Users</h2>
+            <p class="admin-section__desc">Registered community members.</p>
+        </div>
+        <button class="btn--admin btn--primary" id="newUserBtn">+ New User</button>
+    </div>
+
+    <div class="table-search" id="users-search-form">
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="usr-term">Search</label>
+                <input type="text" class="crud-input" id="usr-term" name="SearchTerm" placeholder="Name or email…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="usr-first">First Name</label>
+                <input type="text" class="crud-input" id="usr-first" name="FirstName" placeholder="Contains…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="usr-last">Last Name</label>
+                <input type="text" class="crud-input" id="usr-last" name="LastName" placeholder="Contains…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="usr-email">Email</label>
+                <input type="text" class="crud-input" id="usr-email" name="Email" placeholder="Contains…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="usr-phone">Phone</label>
+                <input type="text" class="crud-input" id="usr-phone" name="PhoneNumber" placeholder="Exact match" />
+            </div>
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="usr-addr">Address</label>
+                <input type="text" class="crud-input" id="usr-addr" name="Address" placeholder="Contains…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="usr-sort">Sort By</label>
+                <select class="crud-input" id="usr-sort" name="SortBy">
+                    <option value="">Default</option>
+                    <option value="FirstName">First Name</option>
+                    <option value="LastName">Last Name</option>
+                    <option value="Email">Email</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-search__actions">
+            <button type="button" class="btn--admin btn--primary btn--sm" id="userSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="userClearBtn" style="display:none;">Clear</button>
+        </div>
+    </div>
+
+    <div id="users-table-container">
+        <partial name="_UsersTable" model="@Model" />
+    </div>
+</section>

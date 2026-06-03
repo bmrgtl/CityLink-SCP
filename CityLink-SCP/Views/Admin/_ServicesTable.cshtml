@@ -1,0 +1,39 @@
+@using CityLink_SCP.DbModels
+@model List<Service>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-wrap">
+        <table class="admin-table" id="servicesTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Title</th><th>Location</th><th>Cost / hr</th>
+                    <th>Available</th><th>Staff</th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var svc in Model)
+                {
+                    <tr data-service-id="@svc.Id">
+                        <td class="col-muted">#@svc.Id</td>
+                        <td>@svc.Title</td>
+                        <td class="col-muted">@svc.Location</td>
+                        <td>$@svc.Cost.ToString("0.00")</td>
+                        <td class="col-muted">@svc.Available_Start_Time.ToString(@"hh\:mm") – @svc.Available_End_Time.ToString(@"hh\:mm")</td>
+                        <td class="col-muted">@svc.Staff?.FirstName @svc.Staff?.LastName</td>
+                        <td class="col-actions">
+                            <button class="btn--admin btn--ghost btn--sm view-service-btn" data-id="@svc.Id">View</button>
+                            <button class="btn--admin btn--ghost btn--sm edit-service-btn" data-id="@svc.Id">Edit</button>
+                            <button class="btn--admin btn--danger btn--sm delete-service-btn"
+                                    data-id="@svc.Id" data-title="@svc.Title">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state">No services match your search.</div>
+}

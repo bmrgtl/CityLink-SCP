@@ -9,10 +9,12 @@
 		public double Cost { get; set; }
 		public TimeOnly Available_Start_Time { get; set; }
 		public TimeOnly Available_End_Time { get; set; }
+
+		// Navigation property for backwards queries
 		public ICollection<ServiceBooking> ServiceBookings { get; set; } = [];
 
         // Foreign key to Staff Member that created the Service
-        public int StaffId { get; set; }
-        public Staff Staff { get; set; } = null!;
+        public string StaffId { get; set; }
+        public ApplicationStaff Staff { get; set; } = null!;
     }
 }

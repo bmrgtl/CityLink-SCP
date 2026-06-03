@@ -1,0 +1,63 @@
+@using CityLink_SCP.DbModels
+@model List<Feedback>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Feedback &amp; Enquiries</h2>
+            <p class="admin-section__desc">Review and resolve messages submitted by the community.</p>
+        </div>
+    </div>
+
+    <div class="table-search" id="feedback-search-form">
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="fb-term">Search</label>
+                <input type="text" class="crud-input" id="fb-term" name="SearchTerm" placeholder="Message or resolution…" />
+            </div>
+            <div class="table-search__field table-search__field--sm">
+                <label class="crud-field__label" for="fb-status">Status</label>
+                <select class="crud-input" id="fb-status" name="Status">
+                    <option value="">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="fb-created-after">Received After</label>
+                <input type="date" class="crud-input" id="fb-created-after" name="CreatedAfter" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="fb-created-before">Received Before</label>
+                <input type="date" class="crud-input" id="fb-created-before" name="CreatedBefore" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="fb-resolved-after">Resolved After</label>
+                <input type="date" class="crud-input" id="fb-resolved-after" name="ResolvedAfter" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="fb-resolved-before">Resolved Before</label>
+                <input type="date" class="crud-input" id="fb-resolved-before" name="ResolvedBefore" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="fb-sort">Sort By</label>
+                <select class="crud-input" id="fb-sort" name="SortBy">
+                    <option value="">Default</option>
+                    <option value="CreatedAt">Received</option>
+                    <option value="Status">Status</option>
+                    <option value="ResolvedAt">Resolved</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-search__actions">
+            <button type="button" class="btn--admin btn--primary btn--sm" id="feedbackSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="feedbackClearBtn" style="display:none;">Clear</button>
+        </div>
+    </div>
+
+    <div id="feedback-table-container">
+        <partial name="_FeedbackTable" model="@Model" />
+    </div>
+</section>

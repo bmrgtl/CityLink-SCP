@@ -1,0 +1,44 @@
+@using CityLink_SCP.DbModels
+@model List<EventRegistration>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Event Registrations</h2>
+            <p class="admin-section__desc">All community event sign-ups.</p>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Event</th><th>User</th><th>Attendees</th><th>Total Cost</th><th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr data-reg-userid="@r.UserId" data-reg-eventid="@r.EventId">
+                            <td>@r.Event?.Title</td>
+                            <td class="col-muted">@r.User?.FirstName @r.User?.LastName</td>
+                            <td class="col-muted">@r.NumberOfAttendees</td>
+                            <td>$@r.TotalCost.ToString("0.00")</td>
+                            <td class="col-actions">
+                                <button class="btn--admin btn--danger btn--sm delete-reg-btn"
+                                        data-userid="@r.UserId"
+                                        data-eventid="@r.EventId"
+                                        data-label="@r.User?.FirstName @r.User?.LastName — @r.Event?.Title">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else { <div class="empty-state">No event registrations found.</div> }
+</section>

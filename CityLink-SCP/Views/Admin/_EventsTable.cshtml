@@ -1,0 +1,39 @@
+@using CityLink_SCP.DbModels
+@model List<Event>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-wrap">
+        <table class="admin-table" id="eventsTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Title</th><th>Location</th><th>Start</th>
+                    <th>Cost</th><th>Capacity</th><th>Staff</th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ev in Model)
+                {
+                    <tr data-event-id="@ev.Id">
+                        <td class="col-muted">#@ev.Id</td>
+                        <td>@ev.Title</td>
+                        <td class="col-muted">@ev.Location</td>
+                        <td class="col-muted">@ev.Start_Date_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>$@ev.Cost.ToString("0.00")</td>
+                        <td class="col-muted">@ev.Max_Capcity</td>
+                        <td class="col-muted">@ev.Staff?.FirstName @ev.Staff?.LastName</td>
+                        <td class="col-actions">
+                            <button class="btn--admin btn--ghost btn--sm view-event-btn" data-id="@ev.Id">View</button>
+                            <button class="btn--admin btn--ghost btn--sm edit-event-btn" data-id="@ev.Id">Edit</button>
+                            <button class="btn--admin btn--danger btn--sm delete-event-btn" data-id="@ev.Id" data-title="@ev.Title">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state">No events match your search.</div>
+}

@@ -1,0 +1,42 @@
+@using CityLink_SCP.DbModels
+@model List<ApplicationStaff>
+
+<section class="admin-section">
+    <div class="admin-section__head">
+        <div>
+            <h2 class="admin-section__title">Staff Members</h2>
+            <p class="admin-section__desc">Manage portal staff accounts and roles.</p>
+        </div>
+        <button class="btn--admin btn--primary" id="newStaffBtn">+ New Staff</button>
+    </div>
+
+    <div class="table-search" id="staff-search-form">
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="stf-term">Search</label>
+                <input type="text" class="crud-input" id="stf-term" name="SearchTerm" placeholder="Name or email…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="stf-role">Role</label>
+                <input type="text" class="crud-input" id="stf-role" name="JobTitle" placeholder="Contains…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="stf-sort">Sort By</label>
+                <select class="crud-input" id="stf-sort" name="SortBy">
+                    <option value="">Default</option>
+                    <option value="FirstName">First Name</option>
+                    <option value="LastName">Last Name</option>
+                    <option value="JobTitle">Role</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-search__actions">
+            <button type="button" class="btn--admin btn--primary btn--sm" id="staffSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="staffClearBtn" style="display:none;">Clear</button>
+        </div>
+    </div>
+
+    <div id="staff-table-container">
+        <partial name="_StaffTable" model="@Model" />
+    </div>
+</section>

@@ -10,12 +10,12 @@
 		public DateTime? ResolvedAt { get; set; }
 		
 		// Foreign key to Staff
-		public int StaffId { get; set; }
-		public Staff Staff { get; set; } = null!;
+		public string StaffId { get; set; }
+		public ApplicationStaff Staff { get; set; } = null!;
 		
-		// Foreign key to User
-		public int UserId { get; set; }
-		public User User { get; set; } = null!;
+		// Foreign key to User (nullable — allows guest submissions)
+		public string? UserId { get; set; }
+		public ApplicationUser? User { get; set; }
 	}
 	public enum FeedbackStatus
 	{

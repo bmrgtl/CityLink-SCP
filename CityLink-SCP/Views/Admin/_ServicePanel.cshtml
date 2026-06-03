@@ -1,0 +1,54 @@
+<div id="service-overlay" class="xml-overlay" aria-hidden="true">
+    <div class="xml-panel">
+        <div class="xml-panel__header">
+            <div>
+                <p class="xml-panel__eyebrow">Services</p>
+                <h2 class="xml-panel__title" id="service-panel-title">New Service</h2>
+            </div>
+            <button class="xml-panel__close" id="closeServicePanel" aria-label="Close">&#x2715;</button>
+        </div>
+
+        <div id="service-form-pane" class="xml-panel__body panel-scroll">
+            <input type="hidden" id="serviceId" value="" />
+            <div class="crud-form-grid">
+                <div class="crud-field">
+                    <label class="crud-field__label" for="serviceTitle">Title *</label>
+                    <input type="text" id="serviceTitle" class="crud-input" placeholder="e.g. Tennis Court" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="serviceLocation">Location *</label>
+                    <input type="text" id="serviceLocation" class="crud-input" placeholder="e.g. Recreation Centre" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="serviceCost">Cost / hr ($) *</label>
+                    <input type="number" id="serviceCost" class="crud-input" min="0" step="0.01" placeholder="0.00" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="serviceStaffId">Assigned Staff *</label>
+                    <select id="serviceStaffId" class="crud-input">
+                        <option value="">— select staff —</option>
+                    </select>
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="serviceAvailStart">Available From *</label>
+                    <input type="time" id="serviceAvailStart" class="crud-input" />
+                </div>
+                <div class="crud-field">
+                    <label class="crud-field__label" for="serviceAvailEnd">Available Until *</label>
+                    <input type="time" id="serviceAvailEnd" class="crud-input" />
+                </div>
+                <div class="crud-field crud-field--full">
+                    <label class="crud-field__label" for="serviceDesc">Description</label>
+                    <textarea id="serviceDesc" class="crud-input crud-textarea" rows="4" placeholder="Brief description…"></textarea>
+                </div>
+            </div>
+            <div id="service-status" class="xml-status" style="margin:0.75rem 0 0;"></div>
+        </div>
+
+        <div id="service-panel-actions" class="xml-panel__actions panel-footer">
+            <button class="btn--admin btn--ghost btn--sm" id="cancelServiceBtn">Cancel</button>
+            <button class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="service" style="display:none;">Edit</button>
+            <button class="btn--admin btn--primary btn--sm panel-save-btn" id="saveServiceBtn">&#10003; Save Service</button>
+        </div>
+    </div>
+</div>

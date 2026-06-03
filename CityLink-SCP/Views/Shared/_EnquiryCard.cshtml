@@ -1,13 +1,69 @@
-﻿@model CityLink_SCP.ViewModels.Enquiry
+@model CityLink_SCP.ViewModels.Enquiry
 
 <div id="contact" class="contact">
     <p class="contact__title">@Model.Heading</p>
     <p class="contact__sub">@Model.SubHeading</p>
-    <div class="contact__row">
-        <input type="email" placeholder="@(Model.User?.Email ?? "Email")" />
-        <input type="tel" placeholder="@(Model.User?.Phone_Number ?? "Phone")" />
-    </div>
-    <input type="text" placeholder="Subject" />
-    <textarea placeholder="Message" rows="5"></textarea>
-    <button class="btn--submit" type="button">Submit</button>
+
+    <div id="enquiry-result" style="display:none;padding:0.6rem 0.85rem;border-radius:4px;margin-bottom:0.75rem;font-size:0.875rem;"></div>
+
+    <form id="enquiryForm">
+        @Html.AntiForgeryToken()
+
+        @if (Model.User == null)
+        {
+            <div class="contact__row">
+                <input type="text" name="guestName" class="input-field" placeholder="Your Name" />
+                <input type="email" name="guestEmail" class="input-field" placeholder="Your Email" />
+            </div>
+            <input type="tel" name="guestPhone" class="input-field" placeholder="Phone (optional)"
+                   style="width:100%;margin-bottom:0.75rem;" />
+        }
+
+        <input type="text" name="subject" class="input-field" placeholder="Subject"
+               style="width:100%;margin-bottom:0.75rem;" />
+        <textarea name="message" class="input-field" placeholder="Message" rows="5"
+                  style="width:100%;resize:vertical;" required></textarea>
+
+        <button class="btn--submit" type="submit" id="enquirySubmitBtn"
+                style="margin-top:0.75rem;">Submit</button>
+    </form>
 </div>
+
+<script>
+(function () {
+    var form = document.getElementById('enquiryForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('enquirySubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+
+        var data = new FormData(form);
+        fetch('/Home/SubmitEnquiry', {
+            method: 'POST',
+            body: new URLSearchParams(data)
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            var el = document.getElementById('enquiry-result');
+            el.textContent = res.message;
+            el.style.background  = res.success ? 'rgba(45,122,58,0.1)' : 'rgba(192,57,43,0.08)';
+            el.style.color       = res.success ? 'var(--green,#2d7a3a)' : '#c0392b';
+            el.style.border      = res.success ? '1px solid rgba(45,122,58,0.25)' : '1px solid rgba(192,57,43,0.2)';
+            el.style.display     = 'block';
+            if (res.success) { form.reset(); form.style.display = 'none'; }
+        })
+        .catch(function () {
+            var el = document.getElementById('enquiry-result');
+            el.textContent = 'Something went wrong. Please try again.';
+            el.style.color = '#c0392b';
+            el.style.display = 'block';
+        })
+        .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Submit';
+        });
+    });
+})();
+</script>

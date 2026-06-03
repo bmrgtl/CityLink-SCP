@@ -6,7 +6,7 @@ namespace CityLink_SCP.Models
     {
         public Service Service { get; set; }
         public ServiceBooking ServiceBooking { get; set; }
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
         private DateOnly _serviceDate;
         public DateOnly ServiceDate

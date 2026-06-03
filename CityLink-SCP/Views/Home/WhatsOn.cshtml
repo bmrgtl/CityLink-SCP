@@ -10,27 +10,7 @@
 }
 <section id="news" class="section section--cream">
     <div class="container">
-        <p class="eyebrow">Announcements</p>
-        <h2 class="heading-lg">What's New?</h2>
-
-        <!-- Announcement 1: image left, text right -->
-        <div class="ann">
-            <div class="placeholder placeholder--ann"></div>
-            <div>
-                <h3 class="ann__title">Announcement 1</h3>
-                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a href="#" class="btn">Read More</a>
-            </div>
-        </div>
-
-        <h3 class="ann__title">Other Announcements</h3>
-        <partial name="@Model.Services.PartialName" model="@Model.Services" />
-
-        <div class="carousel__controls">
-            <button class="carousel__btn" id="eventsPrev">&#8592;</button>
-            <div class="carousel__dots" id="eventsDots"></div>
-            <button class="carousel__btn" id="eventsNext">&#8594;</button>
-        </div>
+        <partial name="_Announcements" model="@Model.Announcements" />
     </div>
 </section>
 
@@ -39,23 +19,30 @@
         <h2 class="news__heading">Other News</h2>
 
         <div class="searchsort">
-            <form method="get">
+            <form method="get" asp-controller="Home" asp-action="WhatsOn">
                 <div class="input-box">
-                    <input class="input-field" name="search" placeholder="Search"/>
+                    <input class="input-field" name="search" placeholder="Search events…"
+                           value="@ViewData["Search"]" />
                 </div>
                 <div class="sort-select">
+                    @{
+                        var currentSort = ViewData["Sort"]?.ToString();
+                    }
                     <select class="input-field" name="sort">
-                        <option value="">Sort By</option>
-                        <option value="alphabetical">A - Z</option>
-                        <option value="date">Date</option>
+                        <option value="" selected="@(currentSort == null)">Sort By</option>
+                        <option value="alphabetical" selected="@(currentSort == "alphabetical")">A – Z</option>
+                        <option value="date" selected="@(currentSort == "date")">Date</option>
                     </select>
                 </div>
                 <div class="input-submit">
-                    <button class="submit-btn" id="submit" type="submit">Apply</button>
+                    <button class="submit-btn" type="submit">Apply</button>
                 </div>
-                <div class="error-msg">
-                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-                </div>
+                @if (!string.IsNullOrEmpty(ViewData["Search"]?.ToString()))
+                {
+                    <div class="input-submit" style="margin-left:0.5rem;">
+                        <a asp-action="WhatsOn" class="submit-btn" style="background:var(--muted,#666);">Clear</a>
+                    </div>
+                }
             </form>
         </div>
      

@@ -7,6 +7,7 @@ namespace CityLink_SCP.PageModels
     public class IndexViewModel : IXmlViewModel
     {
         public string PartialName => "Index";
+        public AnnouncementsViewModel Announcements { get; set; } = new();
         public EventsViewModel Events { get; set; } = new();
         public ServicesViewModel Services { get; set; } = new();
         public FAQViewModel FAQs { get; set; } = new ();

@@ -11,7 +11,7 @@
         public string Label { get; set; } = string.Empty;
 
         // Foreign key to Staff
-        public int StaffId { get; set; }
-        public Staff Staff { get; set; } = null!;
+        public string StaffId { get; set; }
+        public ApplicationStaff Staff { get; set; } = null!;
     }
 }

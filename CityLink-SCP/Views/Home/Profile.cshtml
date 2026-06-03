@@ -1,0 +1,322 @@
+@using CityLink_SCP.PageModels
+@model ProfileViewModel
+
+@{
+    ViewData["Title"] = Model.IsGuest ? "Profile" : $"{Model.FullName} — Profile";
+}
+
+<div class="container section">
+
+    @if (Model.IsGuest)
+    {
+        <!--  Guest state  -->
+        <div style="max-width:480px; margin:4rem auto; text-align:center;">
+            <p class="eyebrow">Profile</p>
+            <h1 class="heading-lg" style="font-size:clamp(1.8rem,5vw,2.4rem);">You're not signed in</h1>
+            <p style="color:var(--text-muted); margin-bottom:2rem; font-size:0.9rem;">
+                Sign in to view your bookings, event registrations and account details.
+            </p>
+            <a href="/Admin/Login" class="btn">Sign in to Staff Portal</a>
+        </div>
+    }
+    else
+    {
+        <!--  Profile header  -->
+        <div class="profile-header">
+            <div class="profile-avatar" aria-hidden="true">
+                @(Model.FirstName.Length > 0 ? Model.FirstName[0].ToString().ToUpper() : "?")@(Model.LastName.Length > 0 ? Model.LastName[0].ToString().ToUpper() : "")
+            </div>
+            <div class="profile-header__info">
+                <p class="eyebrow" style="text-align:left;">
+                    @(Model.IsStaff ? (Model.JobTitle ?? "Staff") : "Community Member")
+                </p>
+                <h1 class="profile-header__name">@Model.FullName</h1>
+                <p class="profile-header__email">@Model.Email</p>
+            </div>
+        </div>
+
+        <!--  Details card  -->
+        <section class="profile-section">
+            <h2 class="profile-section__title">Account Details</h2>
+            <div class="profile-detail-grid">
+                <div class="profile-detail">
+                    <p class="profile-detail__label">First Name</p>
+                    <p class="profile-detail__value">@(string.IsNullOrEmpty(Model.FirstName) ? "—" : Model.FirstName)</p>
+                </div>
+                <div class="profile-detail">
+                    <p class="profile-detail__label">Last Name</p>
+                    <p class="profile-detail__value">@(string.IsNullOrEmpty(Model.LastName) ? "—" : Model.LastName)</p>
+                </div>
+                <div class="profile-detail">
+                    <p class="profile-detail__label">Email</p>
+                    <p class="profile-detail__value">@Model.Email</p>
+                </div>
+                <div class="profile-detail">
+                    <p class="profile-detail__label">Phone</p>
+                    <p class="profile-detail__value">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "—" : Model.PhoneNumber)</p>
+                </div>
+                <div class="profile-detail" style="grid-column: 1 / -1;">
+                    <p class="profile-detail__label">Address</p>
+                    <p class="profile-detail__value">@(string.IsNullOrEmpty(Model.Address) ? "—" : Model.Address)</p>
+                </div>
+                @if (Model.IsStaff)
+                {
+                    <div class="profile-detail">
+                        <p class="profile-detail__label">Role</p>
+                        <p class="profile-detail__value">@Model.JobTitle</p>
+                    </div>
+                }
+            </div>
+        </section>
+
+        @if (TempData["Success"] != null)
+        {
+            <div style="background:rgba(27,58,47,0.1);color:var(--green);border:1px solid rgba(27,58,47,0.2);border-radius:var(--radius-sm);padding:0.6rem 1rem;margin-bottom:1rem;font-size:0.875rem;">
+                @TempData["Success"]
+            </div>
+        }
+
+        <!--  Event Registrations  -->
+        <section class="profile-section">
+            <h2 class="profile-section__title">Event Registrations</h2>
+            @if (Model.EventRegistrations.Any())
+            {
+                <div class="profile-table-wrap">
+                    <table class="profile-table">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Attendees</th>
+                                <th>Total Cost</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reg in Model.EventRegistrations)
+                            {
+                                <tr>
+                                    <td>@reg.Event.Title</td>
+                                    <td class="profile-muted">@reg.Event.Start_Date_Time.ToString("dd MMM yyyy")</td>
+                                    <td class="profile-muted">@reg.NumberOfAttendees</td>
+                                    <td>$@reg.TotalCost.ToString("0.00")</td>
+                                    <td style="text-align:right;">
+                                        <form asp-controller="Home" asp-action="CancelEventRegistration" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="eventId" value="@reg.EventId" />
+                                            <button type="submit" class="profile-cancel-btn"
+                                                    onclick="return confirm('Cancel your registration for \'@reg.Event.Title\'?');">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="profile-empty">No event registrations yet.</p>
+            }
+        </section>
+
+        <!--  Service Bookings  -->
+        <section class="profile-section">
+            <h2 class="profile-section__title">Service Bookings</h2>
+            @if (Model.ServiceBookings.Any())
+            {
+                <div class="profile-table-wrap">
+                    <table class="profile-table">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Total Cost</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model.ServiceBookings)
+                            {
+                                <tr>
+                                    <td>@booking.Service.Title</td>
+                                    <td class="profile-muted">@booking.Start_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                                    <td class="profile-muted">@booking.End_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                                    <td>$@booking.TotalCost.ToString("0.00")</td>
+                                    <td style="text-align:right;">
+                                        <form asp-controller="Home" asp-action="CancelServiceBooking" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="serviceId" value="@booking.ServiceId" />
+                                            <button type="submit" class="profile-cancel-btn"
+                                                    onclick="return confirm('Cancel your booking for \'@booking.Service.Title\'?');">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="profile-empty">No service bookings yet.</p>
+            }
+        </section>
+    }
+
+</div>
+
+@section Styles {
+    <style>
+        /*  Profile page styles — uses index.css variables  */
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--mist);
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--green);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 900;
+            flex-shrink: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .profile-header__name {
+            font-family: var(--font-heading);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 900;
+            color: var(--green);
+            margin: 0.2rem 0 0.1rem;
+        }
+
+        .profile-header__email {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .profile-section {
+            background: var(--white);
+            border: 1.5px solid var(--mist);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-section__title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--mist);
+        }
+
+        .profile-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .profile-detail__label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .profile-detail__value {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .profile-table-wrap {
+            overflow-x: auto;
+        }
+
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .profile-table thead th {
+            background: var(--cream);
+            padding: 0.6rem 1rem;
+            text-align: left;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            border-bottom: 1.5px solid var(--mist);
+        }
+
+        .profile-table tbody tr {
+            border-bottom: 1px solid var(--mist);
+            transition: background var(--ease);
+        }
+
+        .profile-table tbody tr:last-child { border-bottom: none; }
+        .profile-table tbody tr:hover { background: var(--cream); }
+
+        .profile-table td {
+            padding: 0.7rem 1rem;
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .profile-muted { color: var(--text-muted); font-size: 0.825rem; }
+
+        .profile-cancel-btn {
+            background: none;
+            border: 1.5px solid rgba(192, 57, 43, 0.3);
+            color: #c0392b;
+            border-radius: var(--radius-sm);
+            padding: 0.25rem 0.6rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: background var(--ease), border-color var(--ease);
+            white-space: nowrap;
+        }
+        .profile-cancel-btn:hover {
+            background: rgba(192, 57, 43, 0.08);
+            border-color: rgba(192, 57, 43, 0.5);
+        }
+
+        .profile-empty {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            padding: 1rem 0;
+        }
+
+        <link rel="stylesheet" href="~/css/index.css" / >
+        </style>
+}

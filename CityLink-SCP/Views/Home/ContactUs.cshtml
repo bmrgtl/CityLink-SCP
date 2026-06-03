@@ -1,4 +1,4 @@
-﻿@model CityLink_SCP.ViewModels.ContactUs
+@model CityLink_SCP.ViewModels.ContactUs
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/bookservice.css" />
@@ -9,25 +9,52 @@
         <h2 class="news__heading">@Model.PageHeading</h2>
         <p class="ann__text">@Model.PageSubHeading</p>
 
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
         <div class="feedback-form">
             <p class="ann__text" style="font-size:1.2rem;">@Model.FormTitle</p>
-            <form>
-                <div class="datetime-row">
-                    <div class="input-box">
-                        <input class="input-field" name="name" placeholder="@Model.NamePlaceHolder"/>
-                    </div>
-                    <div class="input-box">
-                        <input class="input-field" name="contact" placeholder="@Model.ContactPlaceHolder"/>
-                    </div>
-                </div>
 
-                <div class="input-box">
-                    <textarea rows="10" class="input-field" name="message" placeholder="@Model.InputAreaPlaceHolder" required></textarea>
-                </div>
-                <div class="input-submit">
-                    <button type="submit" class="submit-btn">@Model.ButtonLabel</button>
-                </div>
-            </form>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form method="post" asp-controller="Home" asp-action="ContactUs">
+                    @Html.AntiForgeryToken()
+                    <div class="input-box">
+                        <textarea rows="10" class="input-field" name="message"
+                                  placeholder="Your Message..." required></textarea>
+                    </div>
+                    <div class="input-submit">
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <form>
+                    <div class="datetime-row">
+                        <div class="input-box">
+                            <input class="input-field" name="name" placeholder="Your Name" required />
+                        </div>
+                        <div class="input-box">
+                            <input class="input-field" name="contact" placeholder="Your Email" required />
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <textarea rows="10" class="input-field" name="message" placeholder="Your Message..." required></textarea>
+                    </div>
+                    <div class="input-submit">
+                        <p class="ann__text" style="color:var(--muted,#666);">
+                            Please <a asp-controller="Home" asp-action="Signin">sign in</a> to send a message.
+                        </p>
+                    </div>
+                </form>
+            }
         </div>
     </div>
 </section>

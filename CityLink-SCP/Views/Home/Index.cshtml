@@ -20,7 +20,7 @@
         <div>
             <h1 class="hero__title">CityLink<br />Initiatives</h1>
             <p class="hero__sub">Streamlining access to services and information online.</p>
-            <a href="services.html" class="btn">View Services</a>
+            <a asp-controller="Home" asp-action="Services" class="btn">View Services</a>
         </div>
         <div class="placeholder placeholder--hero"></div>
     </div>
@@ -39,31 +39,10 @@
 </section>
 
 
-<!-- NEWS -->
+<!-- ANNOUNCEMENTS -->
 <section id="news" class="section section--cream">
     <div class="container">
-        <p class="eyebrow">Announcements</p>
-        <h2 class="heading-lg">What's On</h2>
-
-        <!-- Announcement 1: image left, text right -->
-        <div class="ann">
-            <div class="placeholder placeholder--ann"></div>
-            <div>
-                <h3 class="ann__title">Announcement 1</h3>
-                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a asp-area="" asp-controller="Home" asp-action="News" class="btn">Read More</a>
-            </div>
-        </div>
-
-        <!-- Announcement 2: text left, image right (reversed) -->
-        <div class="ann ann--reverse">
-            <div class="placeholder placeholder--ann ann__image"></div>
-            <div class="ann__copy">
-                <h3 class="ann__title">Announcement 2</h3>
-                <p class="ann__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a asp-area="" asp-controller="Home" asp-action="News" class="btn">Read More</a>
-            </div>
-        </div>
+        <partial name="_Announcements" model="@Model.Announcements" />
     </div>
 </section>
 

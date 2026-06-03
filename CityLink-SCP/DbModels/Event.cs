@@ -10,10 +10,12 @@
 		public int Max_Capcity { get; set; }
 		public DateTime Start_Date_Time { get; set; }
 		public DateTime End_Date_Time { get; set; }
-		public ICollection<EventRegistration> EventRegistrations { get; set; } = [];
+
+        // Navigation property for backwards queries
+        public ICollection<EventRegistration> EventRegistrations { get; set; } = [];
 
         // Foreign key to Staff Member that created the Event
-        public int StaffId { get; set; }
-		public Staff Staff { get; set; } = null!;
+        public string StaffId { get; set; }
+		public ApplicationStaff Staff { get; set; } = null!;
 	}
 }

@@ -1,14 +1,37 @@
-﻿<form method="post">
+@model CityLink_SCP.PageModels.AdminLoginViewModel
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
     <div class="input-box">
-        <input class="input-field" name="username" placeholder="Username" required />
+        <input asp-for="Email" class="input-field" placeholder="Email address"
+               type="email" autocomplete="username" required />
+        <span asp-validation-for="Email" style="color:#c00;font-size:0.8rem;display:block;margin-top:0.2rem;"></span>
     </div>
+
     <div class="input-box">
-        <input class="input-field" name="password" placeholder="Password" required type="password" />
+        <input asp-for="Password" class="input-field" placeholder="Password"
+               type="password" autocomplete="current-password" required />
+        <span asp-validation-for="Password" style="color:#c00;font-size:0.8rem;display:block;margin-top:0.2rem;"></span>
     </div>
-    <div class="input-submit">
-        <button class="submit-btn" id="submit" type="submit">Log In</button>
+
+    <div class="input-box" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
+        <input asp-for="RememberMe" type="checkbox" id="rememberMeChk"
+               style="accent-color:var(--green,#2d7a3a);width:15px;height:15px;cursor:pointer;" />
+        <label for="rememberMeChk"
+               style="font-size:0.875rem;cursor:pointer;color:var(--text-muted,#666);margin:0;">
+            Remember me
+        </label>
     </div>
+
     <div class="error-msg">
-        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+    </div>
+
+    <div class="input-submit">
+        <button class="submit-btn" type="submit">Log In</button>
     </div>
 </form>
+
+<partial name="_ValidationScriptsPartial" />

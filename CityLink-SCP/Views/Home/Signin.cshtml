@@ -1,16 +1,62 @@
-﻿@{
-    ViewData["Title"] = "Signin";
-}
+@model CityLink_SCP.PageModels.RegisterViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/css/login.css" />
 }
 
 <div class="account-container">
-    <h1>Sign Into CityLink.</h1>
+    <h1>Create Account.</h1>
     <div class="sign-up-link">
-        <p>Already have an account? <a class="sign-up-link" asp-area="" asp-controller="Home" asp-action="Login">Log In Here</a>.</p>
+        <p>Already have an account? <a class="sign-up-link" asp-controller="Home" asp-action="Login">Log In Here</a>.</p>
     </div>
-    <partial name="_LoginForm" />
 
+    <form method="post" asp-controller="Home" asp-action="Signin">
+        @Html.AntiForgeryToken()
+
+        <div class="datetime-row">
+            <div class="input-box">
+                <input asp-for="FirstName" class="input-field" placeholder="First Name" required />
+                <span asp-validation-for="FirstName" style="color:#c00;font-size:0.8rem;display:block;margin-top:0.2rem;"></span>
+            </div>
+            <div class="input-box">
+                <input asp-for="LastName" class="input-field" placeholder="Last Name" />
+            </div>
+        </div>
+
+        <div class="input-box">
+            <input asp-for="Email" class="input-field" placeholder="Email address"
+                   type="email" autocomplete="username" required />
+            <span asp-validation-for="Email" style="color:#c00;font-size:0.8rem;display:block;margin-top:0.2rem;"></span>
+        </div>
+
+        <div class="input-box">
+            <input asp-for="PhoneNumber" class="input-field" placeholder="Phone number (optional)" type="tel" />
+        </div>
+
+        <div class="input-box">
+            <input asp-for="Address" class="input-field" placeholder="Address (optional)" />
+        </div>
+
+        <div class="input-box">
+            <input asp-for="Password" class="input-field" placeholder="Password (min. 8 characters)"
+                   type="password" autocomplete="new-password" required />
+            <span asp-validation-for="Password" style="color:#c00;font-size:0.8rem;display:block;margin-top:0.2rem;"></span>
+        </div>
+
+        <div class="input-box">
+            <input asp-for="ConfirmPassword" class="input-field" placeholder="Confirm Password"
+                   type="password" autocomplete="new-password" required />
+            <span asp-validation-for="ConfirmPassword" style="color:#c00;font-size:0.8rem;display:block;margin-top:0.2rem;"></span>
+        </div>
+
+        <div class="error-msg">
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        </div>
+
+        <div class="input-submit">
+            <button class="submit-btn" type="submit">Create Account</button>
+        </div>
+    </form>
+
+    <partial name="_ValidationScriptsPartial" />
 </div>

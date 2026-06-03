@@ -1,4 +1,4 @@
-﻿@model CityLink_SCP.ViewModels.BookEvent
+@model CityLink_SCP.ViewModels.BookEvent
 
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
@@ -7,76 +7,100 @@
 
 <section id="service">
     <div class="container">
-        <h2 class="news__heading">@Model.Event.Title</h2>
-        <p class="ann__text">@Model.Event.Location | @Model.Event.Start_Date_Time.ToString("R")</p>
-        <p class="ann__text">
-            @Model.Event.Description
-        </p>
-        <hr />
 
-        <div class="bookings-container">
-            <h3 class="booking-heading">Book Event</h3>
-            <div class="bookings">
-                <form method="post" class="book-form-col" >
-                    <div class="form-left">
-                        <div class="datetime-row">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+
+        @if (Model.Event == null)
+        {
+            <h2 class="news__heading">Book an Event</h2>
+            <p class="ann__text">Please select an event from the <a asp-action="WhatsOn">What's On</a> page.</p>
+        }
+        else
+        {
+            <h2 class="news__heading">@Model.Event.Title</h2>
+            <p class="ann__text">@Model.Event.Location | @Model.Event.Start_Date_Time.ToString("f")</p>
+            <p class="ann__text">@Model.Event.Description</p>
+            <hr />
+
+            <div class="bookings-container">
+                <h3 class="booking-heading">Book Event</h3>
+                <div class="bookings">
+                    <form method="post"
+                          asp-controller="Home" asp-action="BookEvent"
+                          class="book-form-col">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="eventId" value="@Model.Event.Id" />
+
+                        <div class="form-left">
+                            <div class="datetime-row">
+                                <div class="input-box">
+                                    <input class="input-field" value="@Model.User?.FirstName" placeholder="First Name" readonly />
+                                </div>
+                                <div class="input-box">
+                                    <input class="input-field" value="@Model.User?.LastName" placeholder="Last Name" readonly />
+                                </div>
+                            </div>
+
                             <div class="input-box">
-                                <input asp-for="User.First_Name" class="input-field" placeholder="First Name" required/>
+                                <input class="input-field" value="@Model.User?.PhoneNumber" placeholder="Mobile Number" readonly />
                             </div>
-                            <div class="input-box">
-                                <input asp-for="User.Last_Name" class="input-field" placeholder="Last Name" required />
+
+                            <div class="datetime-row">
+                                <div class="input-box">
+                                    <label class="ann__text">Number of Tickets</label>
+                                </div>
+                                <div class="input-box">
+                                    <input name="numberOfAttendees" class="input-field"
+                                           style="width:30%;text-align:center;"
+                                           type="number" value="1" min="1" max="@Model.Event.Max_Capcity" step="1" required />
+                                </div>
                             </div>
+
+                            @if (Model.User == null)
+                            {
+                                <p class="ann__text" style="color:var(--red,#c00);">
+                                    Please <a asp-action="Signin">sign in</a> to book an event.
+                                </p>
+                            }
                         </div>
 
-                        <div class="input-box">
-                            <input asp-for="User.Phone_Number" class="input-field" placeholder="Mobile Number" />
-                        </div>
-
-                        <div class="datetime-row">
-                            <div class="input-box">
-                                <p class="ann__text">Number of Tickets </p>
+                        <div class="summary-col">
+                            <div class="service-details">
+                                <p>@Model.Event.Title</p>
+                                <p>@Model.Event.Start_Date_Time.ToString("f")</p>
+                                <hr />
+                                <div class="booking-details">
+                                    <p>Cost per ticket</p>
+                                    <p>$@Model.Event.Cost.ToString("0.00")</p>
+                                </div>
+                                <hr />
+                                <div class="booking-details">
+                                    <p>Capacity</p>
+                                    <p>@Model.Event.Max_Capcity spots</p>
+                                </div>
                             </div>
-                            <div class="input-box">
-                                <input asp-for="EventRegistration.NumberOfAttendees" class="input-field" style="width: 30%; text-align:center; " type="number" value="1" min="1" max="5" step="1" />
-                            </div>
 
-                        </div>
-
-                        <div class="error-msg">
-                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-                        </div>
-                    </div>
-
-                    <div class="summary-col">
-                        <div class="service-details">
-                            <p>@Model.Event.Title</p>
-                            <p>@Model.Event.Start_Date_Time.ToString("f")</p>
-                            <hr />
-                            <div class="booking-details">
-                                <p>1x Ticket</p>
-                                <p>$0.00</p>
-                            </div>
-                            <hr />
-                            <div class="booking-details">
-                                <p>Subtotal</p>
-                                <p>$0.00</p>
-                            </div>
-                            <hr />
-                            <div class="booking-details">
-                                <h3>Total</h3>
-                                <p>$0.00</p>
+                            <div class="input-submit">
+                                @if (Model.User != null)
+                                {
+                                    <button class="submit-btn" type="submit">Book Event</button>
+                                }
+                                else
+                                {
+                                    <a asp-action="Signin" class="submit-btn" style="display:inline-block;text-align:center;">Sign In to Book</a>
+                                }
                             </div>
                         </div>
-
-                        <div class="input-submit">
-                            <button class="submit-btn" id="submit" type="submit">Book Event</button>
-                        </div>
-                    </div>
-
-                </form>
-
+                    </form>
+                </div>
             </div>
-        </div>
+        }
     </div>
-
 </section>
