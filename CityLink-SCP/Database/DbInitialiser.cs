@@ -123,7 +123,7 @@ namespace CityLink_SCP.Database
                     new TitleLink { Title = "Our Services", Url = "/Home/Services" },
                     new TitleLink { Title = "FAQs", Url = "/Home/FAQs" },
                     new TitleLink { Title = "Feedback Form", Url = "/Home/ContactUs" },
-                    new TitleLink { Title = "ApplicationStaff Portal", Url = "/Admin/Index" }
+                    new TitleLink { Title = "Staff Portal", Url = "/Admin/Index" }
                 },
                 SocialMedia = new List<TitleLink>
                 {

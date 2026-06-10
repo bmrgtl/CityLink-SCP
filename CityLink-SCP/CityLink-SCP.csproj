@@ -23,7 +23,7 @@
     <None Update="XML\Card.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="XML\footer.xml">
+    <None Update="XML\FooterDefault.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

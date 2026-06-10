@@ -156,6 +156,15 @@ namespace CityLink_SCP.Controllers
 				.ToList();
 			return Json(records);
 		}
+        [HttpPost]
+        public IActionResult DeleteXmlConfig(int id)
+        {
+            var r = _dbService._context.XML_Configurations.FirstOrDefault(x => x.Id == id);
+            if (r == null) return NotFound();
+            _dbService._context.XML_Configurations.Remove(r);
+            _dbService._context.SaveChanges();
+            return Ok(new { message = $"XML configuration: {r.Label} deleted." });
+		}
         #endregion
         #region Users & Staff Endpoints
 

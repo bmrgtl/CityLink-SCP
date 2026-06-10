@@ -11,6 +11,6 @@ namespace CityLink_SCP.PageModels
         public EventsViewModel Events { get; set; } = new();
         public ServicesViewModel Services { get; set; } = new();
         public FAQViewModel FAQs { get; set; } = new ();
-        public Enquiry Enquiry { get; set; } = new ();
+		public Enquiry Enquiry { get; set; } = new ();
 	}
 }

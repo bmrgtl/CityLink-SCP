@@ -45,16 +45,6 @@
                                 }
                             </td>
                             <td class="col-actions">
-                                <button class="btn--admin btn--ghost btn--sm edit-config-btn"
-                                        data-id="@cfg.Id"
-                                        data-type="@cfg.Type"
-                                        data-label="@cfg.Label">
-                                    Edit
-                                </button>
-                                <button class="btn--admin btn--ghost btn--sm preview-config-btn"
-                                        data-id="@cfg.Id">
-                                    Preview
-                                </button>
                                 @if (!cfg.IsActive)
                                 {
                                     <button class="btn--admin btn--activate btn--sm activate-config-btn"
@@ -62,6 +52,9 @@
                                         Activate
                                     </button>
                                 }
+                                <button class="btn--admin btn--ghost btn--sm edit-config-btn" data-id="@cfg.Id" data-type="@cfg.Type" data-label="@cfg.Label">Edit</button>
+                                <button class="btn--admin btn--ghost btn--sm preview-config-btn" data-id="@cfg.Id">Preview</button>
+                                <button class="btn--admin btn--danger btn--sm delete-config-btn" data-id="@cfg.Id" data-title="@cfg.Version">Delete</button>
                             </td>
                         </tr>
                     }
