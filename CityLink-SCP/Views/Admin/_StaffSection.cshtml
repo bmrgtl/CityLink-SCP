@@ -10,7 +10,11 @@
         <button class="btn--admin btn--primary" id="newStaffBtn">+ New Staff</button>
     </div>
 
-    <div class="table-search" id="staff-search-form">
+    <form class="table-search" id="staff-search-form">
+        <input type="hidden" name="SortBy"    value="LastName" />
+        <input type="hidden" name="SortOrder" value="asc" />
+        <input type="hidden" name="Page"      value="1" />
+        <input type="hidden" name="Size"      value="20" />
         <div class="table-search__row">
             <div class="table-search__field table-search__field--lg">
                 <label class="crud-field__label" for="stf-term">Search</label>
@@ -20,21 +24,12 @@
                 <label class="crud-field__label" for="stf-role">Role</label>
                 <input type="text" class="crud-input" id="stf-role" name="JobTitle" placeholder="Contains…" />
             </div>
-            <div class="table-search__field">
-                <label class="crud-field__label" for="stf-sort">Sort By</label>
-                <select class="crud-input" id="stf-sort" name="SortBy">
-                    <option value="">Default</option>
-                    <option value="FirstName">First Name</option>
-                    <option value="LastName">Last Name</option>
-                    <option value="JobTitle">Role</option>
-                </select>
-            </div>
         </div>
         <div class="table-search__actions">
-            <button type="button" class="btn--admin btn--primary btn--sm" id="staffSearchBtn">Search</button>
+            <button type="submit" class="btn--admin btn--primary btn--sm" id="staffSearchBtn">Search</button>
             <button type="button" class="btn--admin btn--ghost btn--sm" id="staffClearBtn" style="display:none;">Clear</button>
         </div>
-    </div>
+    </form>
 
     <div id="staff-table-container">
         <partial name="_StaffTable" model="@Model" />

@@ -10,7 +10,11 @@
         <button class="btn--admin btn--primary" id="newUserBtn">+ New User</button>
     </div>
 
-    <div class="table-search" id="users-search-form">
+    <form class="table-search" id="users-search-form">
+        <input type="hidden" name="SortBy"    value="LastName" />
+        <input type="hidden" name="SortOrder" value="asc" />
+        <input type="hidden" name="Page"      value="1" />
+        <input type="hidden" name="Size"      value="20" />
         <div class="table-search__row">
             <div class="table-search__field table-search__field--lg">
                 <label class="crud-field__label" for="usr-term">Search</label>
@@ -36,21 +40,12 @@
                 <label class="crud-field__label" for="usr-addr">Address</label>
                 <input type="text" class="crud-input" id="usr-addr" name="Address" placeholder="Contains…" />
             </div>
-            <div class="table-search__field">
-                <label class="crud-field__label" for="usr-sort">Sort By</label>
-                <select class="crud-input" id="usr-sort" name="SortBy">
-                    <option value="">Default</option>
-                    <option value="FirstName">First Name</option>
-                    <option value="LastName">Last Name</option>
-                    <option value="Email">Email</option>
-                </select>
-            </div>
         </div>
         <div class="table-search__actions">
-            <button type="button" class="btn--admin btn--primary btn--sm" id="userSearchBtn">Search</button>
+            <button type="submit" class="btn--admin btn--primary btn--sm" id="userSearchBtn">Search</button>
             <button type="button" class="btn--admin btn--ghost btn--sm" id="userClearBtn" style="display:none;">Clear</button>
         </div>
-    </div>
+    </form>
 
     <div id="users-table-container">
         <partial name="_UsersTable" model="@Model" />

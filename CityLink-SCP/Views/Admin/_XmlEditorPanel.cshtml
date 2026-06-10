@@ -1,47 +1,52 @@
 @using CityLink_SCP.PageModels
-@model AdminIndexViewModel
+@using CityLink_SCP.DbModels
+@using CityLink_SCP.Models
+@model XmlConfig?
+@{
+    var types      = ViewData["AvailableTypes"] as List<XmlConfigTypeOption> ?? new List<XmlConfigTypeOption>();
+    var xmlContent = ViewData["XmlContent"] as string ?? "";
+}
 
-<!-- XML EDITOR PANEL (slide-in drawer) -->
-<div id="xml-editor-overlay" class="xml-overlay" aria-hidden="true">
-    <div class="xml-panel">
-
-        <div class="xml-panel__header">
-            <div>
-                <p class="xml-panel__eyebrow">XML Configuration Editor</p>
-                <h2 class="xml-panel__title" id="xml-panel-title">New Configuration</h2>
-            </div>
-            <button class="xml-panel__close" id="closeXmlPanel" aria-label="Close editor">&#x2715;</button>
+<div class="xml-panel">
+    <div class="xml-panel__header">
+        <div>
+            <p class="xml-panel__eyebrow">XML Configuration Editor</p>
+            <h2 class="xml-panel__title" id="xml-panel-title">@(Model != null ? "Edit — " + Model.Type : "New Configuration")</h2>
         </div>
+        <button type="button" class="xml-panel__close" id="closeXmlPanel" aria-label="Close editor">&#x2715;</button>
+    </div>
+
+    <form id="xml-form" method="post" action="/Admin/UploadXmlConfig">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="ExistingId" value="@Model?.Id" />
 
         <div class="xml-panel__toolbar">
             <div class="xml-panel__field">
                 <label for="xmlTypeSelect">Config Type</label>
-                <select id="xmlTypeSelect">
+                <select id="xmlTypeSelect" name="Type">
                     <option value="">— select content type —</option>
-                    @foreach (var opt in Model.AvailableTypes)
+                    @foreach (var opt in types)
                     {
-                        <option value="@opt.Value">@opt.Label</option>
+                        <option value="@opt.Value" selected="@(Model?.Type == opt.Value)">@opt.Label</option>
                     }
                 </select>
             </div>
             <div class="xml-panel__field">
                 <label for="xmlLabelInput">Label <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
-                <input type="text" id="xmlLabelInput" placeholder="e.g. Default layout" />
+                <input type="text" id="xmlLabelInput" name="Label" placeholder="e.g. Default layout" value="@Model?.Label" />
             </div>
         </div>
 
         <div class="xml-panel__actions">
-            <button class="btn--admin btn--ghost btn--sm" id="loadTemplateBtn">Load Template</button>
-            <button class="btn--admin btn--ghost btn--sm" id="previewXmlBtn">&#9654; Preview</button>
-            <button class="btn--admin btn--primary btn--sm" id="saveXmlBtn">&#10003; Save Version</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="loadTemplateBtn">Load Template</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="previewXmlBtn">&#9654; Preview</button>
+            <button type="submit" class="btn--admin btn--primary btn--sm" id="saveXmlBtn">&#10003; Save Version</button>
         </div>
 
         <div id="xml-status" class="xml-status"></div>
 
         <div class="xml-panel__body">
-            <textarea id="xmlEditText" spellcheck="false" placeholder="Paste or load XML here…"></textarea>
+            <textarea id="xmlEditText" name="XmlContent" spellcheck="false" placeholder="Paste or load XML here…">@xmlContent</textarea>
         </div>
-
-        <input type="hidden" id="xmlConfigId" value="" />
-    </div>
+    </form>
 </div>

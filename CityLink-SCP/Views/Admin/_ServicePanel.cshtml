@@ -1,54 +1,70 @@
-<div id="service-overlay" class="xml-overlay" aria-hidden="true">
-    <div class="xml-panel">
-        <div class="xml-panel__header">
-            <div>
-                <p class="xml-panel__eyebrow">Services</p>
-                <h2 class="xml-panel__title" id="service-panel-title">New Service</h2>
-            </div>
-            <button class="xml-panel__close" id="closeServicePanel" aria-label="Close">&#x2715;</button>
+@using CityLink_SCP.DbModels
+@model Service?
+@{
+    var isNew     = Model == null || Model.Id == 0;
+    var action    = isNew ? "/Admin/CreateService" : "/Admin/UpdateService";
+    var startTime = Model != null ? Model.Available_Start_Time.ToString("HH:mm") : "";
+    var endTime   = Model != null ? Model.Available_End_Time.ToString("HH:mm") : "";
+    var staff     = ViewData["Staff"] as List<ApplicationStaff> ?? new List<ApplicationStaff>();
+}
+
+<div class="xml-panel">
+    <div class="xml-panel__header">
+        <div>
+            <p class="xml-panel__eyebrow">Services</p>
+            <h2 class="xml-panel__title" id="service-panel-title">@(isNew ? "New Service" : Model!.Title)</h2>
         </div>
+        <button type="button" class="xml-panel__close" id="closeServicePanel" aria-label="Close">&#x2715;</button>
+    </div>
+
+    <form id="service-form" method="post" action="@action">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="Id" value="@(Model?.Id ?? 0)" />
 
         <div id="service-form-pane" class="xml-panel__body panel-scroll">
-            <input type="hidden" id="serviceId" value="" />
             <div class="crud-form-grid">
                 <div class="crud-field">
                     <label class="crud-field__label" for="serviceTitle">Title *</label>
-                    <input type="text" id="serviceTitle" class="crud-input" placeholder="e.g. Tennis Court" />
+                    <input type="text" id="serviceTitle" name="Title" class="crud-input" placeholder="e.g. Tennis Court" value="@Model?.Title" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="serviceLocation">Location *</label>
-                    <input type="text" id="serviceLocation" class="crud-input" placeholder="e.g. Recreation Centre" />
+                    <input type="text" id="serviceLocation" name="Location" class="crud-input" placeholder="e.g. Recreation Centre" value="@Model?.Location" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="serviceCost">Cost / hr ($) *</label>
-                    <input type="number" id="serviceCost" class="crud-input" min="0" step="0.01" placeholder="0.00" />
+                    <input type="number" id="serviceCost" name="Cost" class="crud-input" min="0" step="0.01" placeholder="0.00" value="@Model?.Cost" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="serviceStaffId">Assigned Staff *</label>
-                    <select id="serviceStaffId" class="crud-input">
+                    <select id="serviceStaffId" name="StaffId" class="crud-input">
                         <option value="">— select staff —</option>
+                        @foreach (var s in staff)
+                        {
+                            <option value="@s.Id" selected="@(Model?.StaffId == s.Id)">@s.FirstName @s.LastName</option>
+                        }
                     </select>
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="serviceAvailStart">Available From *</label>
-                    <input type="time" id="serviceAvailStart" class="crud-input" />
+                    <input type="time" id="serviceAvailStart" name="Available_Start_Time" class="crud-input" value="@startTime" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="serviceAvailEnd">Available Until *</label>
-                    <input type="time" id="serviceAvailEnd" class="crud-input" />
+                    <input type="time" id="serviceAvailEnd" name="Available_End_Time" class="crud-input" value="@endTime" />
                 </div>
                 <div class="crud-field crud-field--full">
                     <label class="crud-field__label" for="serviceDesc">Description</label>
-                    <textarea id="serviceDesc" class="crud-input crud-textarea" rows="4" placeholder="Brief description…"></textarea>
+                    <textarea id="serviceDesc" name="Description" class="crud-input crud-textarea" rows="4" placeholder="Brief description…">@Model?.Description</textarea>
                 </div>
             </div>
             <div id="service-status" class="xml-status" style="margin:0.75rem 0 0;"></div>
         </div>
 
         <div id="service-panel-actions" class="xml-panel__actions panel-footer">
-            <button class="btn--admin btn--ghost btn--sm" id="cancelServiceBtn">Cancel</button>
-            <button class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="service" style="display:none;">Edit</button>
-            <button class="btn--admin btn--primary btn--sm panel-save-btn" id="saveServiceBtn">&#10003; Save Service</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="cancelServiceBtn">Cancel</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="service" style="display:none;">Edit</button>
+            <button type="submit" class="btn--admin btn--primary btn--sm panel-save-btn">&#10003; Save Service</button>
         </div>
-    </div>
+    </form>
 </div>

@@ -1,50 +1,59 @@
-<div id="user-overlay" class="xml-overlay" aria-hidden="true">
-    <div class="xml-panel">
-        <div class="xml-panel__header">
-            <div>
-                <p class="xml-panel__eyebrow">Users</p>
-                <h2 class="xml-panel__title" id="user-panel-title">New User</h2>
-            </div>
-            <button class="xml-panel__close" id="closeUserPanel" aria-label="Close">&#x2715;</button>
+@using CityLink_SCP.DbModels
+@model ApplicationUser?
+@{
+    var isNew  = string.IsNullOrEmpty(Model?.Id);
+    var action = isNew ? "/Admin/CreateUser" : "/Admin/UpdateUser";
+}
+
+<div class="xml-panel">
+    <div class="xml-panel__header">
+        <div>
+            <p class="xml-panel__eyebrow">Users</p>
+            <h2 class="xml-panel__title" id="user-panel-title">@(isNew ? "New User" : Model!.FirstName + " " + Model!.LastName)</h2>
         </div>
+        <button type="button" class="xml-panel__close" id="closeUserPanel" aria-label="Close">&#x2715;</button>
+    </div>
+
+    <form id="user-form" method="post" action="@action">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="Id" value="@Model?.Id" />
 
         <div id="user-form-pane" class="xml-panel__body panel-scroll">
-            <input type="hidden" id="userId" value="" />
             <div class="crud-form-grid">
                 <div class="crud-field">
                     <label class="crud-field__label" for="userFirstName">First Name *</label>
-                    <input type="text" id="userFirstName" class="crud-input" placeholder="Jane" />
+                    <input type="text" id="userFirstName" name="First_Name" class="crud-input" placeholder="Jane" value="@Model?.FirstName" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="userLastName">Last Name</label>
-                    <input type="text" id="userLastName" class="crud-input" placeholder="Smith" />
+                    <input type="text" id="userLastName" name="Last_Name" class="crud-input" placeholder="Smith" value="@Model?.LastName" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="userEmail">Email *</label>
-                    <input type="email" id="userEmail" class="crud-input" placeholder="jane@example.com" />
+                    <input type="email" id="userEmail" name="Email" class="crud-input" placeholder="jane@example.com" value="@Model?.Email" />
                 </div>
                 <div class="crud-field">
                     <label class="crud-field__label" for="userPhone">Phone</label>
-                    <input type="text" id="userPhone" class="crud-input" placeholder="08 XXXX XXXX" />
+                    <input type="text" id="userPhone" name="Phone_Number" class="crud-input" placeholder="08 XXXX XXXX" value="@Model?.PhoneNumber" />
                 </div>
                 <div class="crud-field crud-field--full">
                     <label class="crud-field__label" for="userAddress">Address</label>
-                    <input type="text" id="userAddress" class="crud-input" placeholder="123 Example St, Perth WA" />
+                    <input type="text" id="userAddress" name="Address" class="crud-input" placeholder="123 Example St, Perth WA" value="@Model?.Address" />
                 </div>
                 <div class="crud-field crud-field--full">
                     <label class="crud-field__label" for="userPassword">
                         Password <span class="crud-field__hint">(leave blank to keep unchanged)</span>
                     </label>
-                    <input type="password" id="userPassword" class="crud-input" placeholder="••••••••" autocomplete="new-password" />
+                    <input type="password" id="userPassword" name="Password" class="crud-input" placeholder="••••••••" autocomplete="new-password" />
                 </div>
             </div>
             <div id="user-status" class="xml-status" style="margin:0.75rem 0 0;"></div>
         </div>
 
         <div id="user-panel-actions" class="xml-panel__actions panel-footer">
-            <button class="btn--admin btn--ghost btn--sm" id="cancelUserBtn">Cancel</button>
-            <button class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="user" style="display:none;">Edit</button>
-            <button class="btn--admin btn--primary btn--sm panel-save-btn" id="saveUserBtn">&#10003; Save User</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="cancelUserBtn">Cancel</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm panel-edit-btn" data-prefix="user" style="display:none;">Edit</button>
+            <button type="submit" class="btn--admin btn--primary btn--sm panel-save-btn">&#10003; Save User</button>
         </div>
-    </div>
+    </form>
 </div>

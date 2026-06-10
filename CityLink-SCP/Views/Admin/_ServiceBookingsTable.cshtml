@@ -1,0 +1,50 @@
+@using CityLink_SCP.DbModels
+@model List<ServiceBooking>
+@{
+    string sortBy    = ViewData["SortBy"]    as string ?? "Start_Time";
+    string sortOrder = ViewData["SortOrder"] as string ?? "desc";
+    string SortClass(string field) => sortBy == field ? "th-sort-" + sortOrder : "";
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-wrap">
+        <table class="admin-table" id="bookingsTable">
+            <thead>
+                <tr>
+                    <th data-sort="ServiceName" class="@SortClass("ServiceName")">Service</th>
+                    <th data-sort="UserName"    class="@SortClass("UserName")">User</th>
+                    <th data-sort="Start_Time"  class="@SortClass("Start_Time")">Start</th>
+                    <th data-sort="End_Time"    class="@SortClass("End_Time")">End</th>
+                    <th data-sort="TotalCost"   class="@SortClass("TotalCost")">Total Cost</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr data-booking-userid="@b.UserId" data-booking-serviceid="@b.ServiceId">
+                        <td>@b.Service?.Title</td>
+                        <td class="col-muted">@b.User?.FirstName @b.User?.LastName</td>
+                        <td class="col-muted">@b.Start_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td class="col-muted">@b.End_Time.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>$@b.TotalCost.ToString("0.00")</td>
+                        <td class="col-actions">
+                            <button class="btn--admin btn--danger btn--sm delete-booking-btn"
+                                    data-userid="@b.UserId"
+                                    data-serviceid="@b.ServiceId"
+                                    data-label="@b.User?.FirstName @b.User?.LastName — @b.Service?.Title">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <partial name="_Pager" />
+}
+else
+{
+    <div class="empty-state">No service bookings found.</div>
+}

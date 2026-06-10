@@ -1,3 +1,4 @@
+using CityLink_SCP.Common;
 using CityLink_SCP.DbModels;
 using CityLink_SCP.Extensions;
 using CityLink_SCP.Models;
@@ -144,65 +145,18 @@ namespace CityLink_SCP.Controllers
             return View(vm);
         }
 
-        // GET: /Home/Events?search=&sort=&page=1
         [HttpGet]
-        public IActionResult Events(string? search, string? sort, int page = 1)
+        public IActionResult Events([ModelBinder(typeof(RestrictedQueryModelBinder))] EventQueryParams query)
         {
-            const int pageSize = 6;
-            var query = _dbService._context.Events.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(e => e.Title.Contains(search) || e.Description.Contains(search) || e.Location.Contains(search));
-
-            query = sort switch
-            {
-                "alphabetical" => query.OrderBy(e => e.Title),
-                "date"         => query.OrderBy(e => e.Start_Date_Time),
-                "cost-asc"     => query.OrderBy(e => e.Cost),
-                "cost-desc"    => query.OrderByDescending(e => e.Cost),
-                _              => query.OrderByDescending(e => e.Start_Date_Time)
-            };
-
-            int total = query.Count();
-            var events = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            ViewData["Search"] = search;
-            ViewData["Sort"] = sort;
-            ViewData["Page"] = page;
-            ViewData["TotalPages"] = (int)Math.Ceiling(total / (double)pageSize);
-            ViewData["Total"] = total;
-
-            return View(events);
+            var events = _dbService._context.Events.ApplyQuery(query).ToList();
+            return View("Events", events);
         }
 
-        // GET: /Home/Services?search=&sort=&page=1
         [HttpGet]
-        public IActionResult Services(string? search, string? sort, int page = 1)
+        public IActionResult Services([ModelBinder(typeof(RestrictedQueryModelBinder))] ServiceQueryParams query)
         {
-            const int pageSize = 6;
-            var query = _dbService._context.Services.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(s => s.Title.Contains(search) || s.Description.Contains(search) || s.Location.Contains(search));
-
-            query = sort switch
-            {
-                "alphabetical" => query.OrderBy(s => s.Title),
-                "cost-asc"     => query.OrderBy(s => s.Cost),
-                "cost-desc"    => query.OrderByDescending(s => s.Cost),
-                _              => query.OrderBy(s => s.Title)
-            };
-
-            int total = query.Count();
-            var services = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            ViewData["Search"] = search;
-            ViewData["Sort"] = sort;
-            ViewData["Page"] = page;
-            ViewData["TotalPages"] = (int)Math.Ceiling(total / (double)pageSize);
-            ViewData["Total"] = total;
-
-            return View(services);
+            var services = _dbService._context.Services.ApplyQuery(query).ToList();
+            return View("Services", services);
         }
 
         // GET: /Home/ContactUs
