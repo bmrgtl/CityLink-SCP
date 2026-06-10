@@ -10,7 +10,11 @@
         <button class="btn--admin btn--primary" id="newEventBtn">+ New Event</button>
     </div>
 
-    <div class="table-search" id="events-search-form">
+    <form class="table-search" id="events-search-form">
+        <input type="hidden" name="SortBy"    value="Id" />
+        <input type="hidden" name="SortOrder" value="desc" />
+        <input type="hidden" name="Page"      value="1" />
+        <input type="hidden" name="Size"      value="20" />
         <div class="table-search__row">
             <div class="table-search__field table-search__field--lg">
                 <label class="crud-field__label" for="ev-term">Search</label>
@@ -49,22 +53,12 @@
                     <option value="">All Staff</option>
                 </select>
             </div>
-            <div class="table-search__field">
-                <label class="crud-field__label" for="ev-sort">Sort By</label>
-                <select class="crud-input" id="ev-sort" name="SortBy">
-                    <option value="">Default</option>
-                    <option value="Title">A – Z</option>
-                    <option value="Start_Date_Time">Date</option>
-                    <option value="Cost">Cost ↑</option>
-                    <option value="Max_Capcity">Capacity</option>
-                </select>
-            </div>
         </div>
         <div class="table-search__actions">
-            <button type="button" class="btn--admin btn--primary btn--sm" id="eventSearchBtn">Search</button>
+            <button type="submit" class="btn--admin btn--primary btn--sm" id="eventSearchBtn">Search</button>
             <button type="button" class="btn--admin btn--ghost btn--sm" id="eventClearBtn" style="display:none;">Clear</button>
         </div>
-    </div>
+    </form>
 
     <div id="events-table-container">
         <partial name="_EventsTable" model="@Model" />

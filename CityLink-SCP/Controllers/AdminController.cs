@@ -37,58 +37,29 @@ namespace CityLink_SCP.Controllers
 		// GET: /Admin  — Dashboard
 		public IActionResult Index()
 		{
-			var vm = new AdminIndexViewModel
-			{
-				XmlConfigs = _dbService._context.XML_Configurations
-					.OrderByDescending(x => x.UploadedAt)
-					.Select(x => x.ToViewModel())
-					.ToList(),
-
-				Events = _dbService._context.Events
-					.Include(e => e.Staff)
-					.OrderByDescending(x => x.Id)
-					.ToList(),
-
-				Services = _dbService._context.Services
-					.Include(s => s.Staff)
-					.OrderBy(x => x.Title)
-					.ToList(),
-
-				Feedbacks = _dbService._context.Feedbacks
-					.Include(f => f.User)
-					.Include(f => f.Staff)
-					.OrderByDescending(x => x.Id)
-					.ToList(),
-
-				Users = _dbService._context.AppUsers
-					.Where(u => !(u is ApplicationStaff))
-					.OrderBy(u => u.LastName)
-					.ToList(),
-
-				StaffMembers = _dbService._context.AppStaff
-					.OrderBy(s => s.LastName)
-					.ToList(),
-
-				ServiceBookings = _dbService._context.ServiceBookings
-					.Include(b => b.User)
-					.Include(b => b.Service)
-					.OrderByDescending(b => b.Start_Time)
-					.ToList(),
-
-				EventRegistrations = _dbService._context.EventRegistrations
-					.Include(r => r.User)
-					.Include(r => r.Event)
-					.OrderByDescending(r => r.EventId)
-					.ToList(),
-
-				AvailableTypes = XmlConfigService.GetAvailableTypes()
-			};
-
-			return View(vm);
+			return View();
 		}
 
 
         #region XML Config Endpoints
+
+        [HttpGet]
+        public IActionResult NewXmlPanel()
+        {
+            ViewData["AvailableTypes"] = XmlConfigService.GetAvailableTypes();
+            return PartialView("_XmlEditorPanel", (XmlConfig?)null);
+        }
+
+        [HttpGet]
+        public IActionResult GetXmlConfig(int id)
+        {
+            var config = _dbService._context.XML_Configurations.FirstOrDefault(x => x.Id == id);
+            if (config == null) return NotFound();
+            ViewData["AvailableTypes"] = XmlConfigService.GetAvailableTypes();
+            ViewData["XmlContent"] = _xmlService.GetXmlContentById(id);
+            return PartialView("_XmlEditorPanel", config);
+        }
+
         [HttpGet]
 		public IActionResult LoadXml(int id)
 		{
@@ -117,11 +88,11 @@ namespace CityLink_SCP.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UploadXmlConfig([FromForm] XmlConfigDto xmlConfig)
 		{
-			if (string.IsNullOrWhiteSpace(xmlConfig.XmlContent)) return BadRequest("XML content cannot be empty.");
-			if (string.IsNullOrWhiteSpace(xmlConfig.Type)) return BadRequest("Config type must be specified.");
+			if (string.IsNullOrWhiteSpace(xmlConfig.XmlContent)) return BadRequest(new { error = "XML content cannot be empty." });
+			if (string.IsNullOrWhiteSpace(xmlConfig.Type)) return BadRequest(new { error = "Config type must be specified." });
 
 			var (valid, error) = _xmlService.Validate(xmlConfig.Type, xmlConfig.XmlContent);
-			if (!valid) return BadRequest("Invalid XML: " + error);
+			if (!valid) return BadRequest(new { error = "Invalid XML: " + error });
 
 			try
 			{
@@ -129,12 +100,12 @@ namespace CityLink_SCP.Controllers
 				var staff = _dbService._context.AppStaff.FirstOrDefault(s => s.Id == staffId)
 					?? _dbService._context.AppStaff.First();
 				await _xmlService.SaveNewVersionAsync(staff, xmlConfig);
-				return Ok(new { message = "Configuration saved successfully." });
+				return PartialView("_XmlConfigsTable", XmlConfigsList());
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Failed to save XML config");
-				return StatusCode(500, ex.Message);
+				return BadRequest(new { error = ex.Message });
 			}
 		}
 
@@ -142,8 +113,8 @@ namespace CityLink_SCP.Controllers
 		public async Task<IActionResult> ActivateVersion(int recordId)
 		{
 			var success = await _xmlService.ActivateVersionAsync(recordId);
-			if (!success) return NotFound();
-			return Ok(new { message = $"Version {recordId} is now active." });
+			if (!success) return BadRequest(new { error = "Config not found." });
+			return PartialView("_XmlConfigsTable", XmlConfigsList());
 		}
 
 		[HttpGet]
@@ -160,11 +131,21 @@ namespace CityLink_SCP.Controllers
         public IActionResult DeleteXmlConfig(int id)
         {
             var r = _dbService._context.XML_Configurations.FirstOrDefault(x => x.Id == id);
-            if (r == null) return NotFound();
+            if (r == null) return BadRequest(new { error = "Config not found." });
             _dbService._context.XML_Configurations.Remove(r);
             _dbService._context.SaveChanges();
-            return Ok(new { message = $"XML configuration: {r.Label} deleted." });
+            return PartialView("_XmlConfigsTable", XmlConfigsList());
 		}
+
+        private List<XmlConfigDto> XmlConfigsList()
+        {
+            const int size = 20;
+            var items = _dbService._context.XML_Configurations
+                .OrderByDescending(x => x.UploadedAt).Take(size)
+                .Select(x => x.ToViewModel()).ToList();
+            SetPagerViewData(1, size, items.Count == size, "Id", "desc");
+            return items;
+        }
         #endregion
         #region Users & Staff Endpoints
 
@@ -179,18 +160,24 @@ namespace CityLink_SCP.Controllers
         }
 
         [HttpGet]
+        public IActionResult NewUserPanel()
+        {
+            return PartialView("_UserPanel", (ApplicationUser?)null);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || user is ApplicationStaff) return NotFound();
-            return Json(new { user.Id, user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Address });
+            return PartialView("_UserPanel", user as ApplicationUser);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromForm] UserDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Password))
-                return BadRequest("Password is required for new users.");
+                return BadRequest(new { error = "Password is required for new users." });
 
             var user = new ApplicationUser
             {
@@ -201,38 +188,53 @@ namespace CityLink_SCP.Controllers
             };
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
-                return BadRequest(string.Join("; ", result.Errors.Select(e => e.Description)));
-            return Ok(new { message = "User created.", id = user.Id });
+                return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
+            return PartialView("_UsersTable", UsersList());
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateUser([FromForm] UserDto dto)
         {
             var user = await _userManager.FindByIdAsync(dto.Id);
-            if (user == null || user is ApplicationStaff) return NotFound();
+            if (user == null || user is ApplicationStaff) return BadRequest(new { error = "User not found." });
             user.FirstName = dto.First_Name; user.LastName = dto.Last_Name;
             user.Email = dto.Email; user.UserName = dto.Email;
             user.PhoneNumber = dto.Phone_Number; user.Address = dto.Address;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
-                return BadRequest(string.Join("; ", result.Errors.Select(e => e.Description)));
+                return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
             if (!string.IsNullOrWhiteSpace(dto.Password))
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 await _userManager.ResetPasswordAsync(user, token, dto.Password);
             }
-            return Ok(new { message = "User updated." });
+            return PartialView("_UsersTable", UsersList());
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null || user is ApplicationStaff) return NotFound();
+            if (user == null || user is ApplicationStaff) return BadRequest(new { error = "User not found." });
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
-                return BadRequest(string.Join("; ", result.Errors.Select(e => e.Description)));
-            return Ok(new { message = "User deleted." });
+                return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
+            return PartialView("_UsersTable", UsersList());
+        }
+
+        private List<ApplicationUser> UsersList()
+        {
+            const int size = 20;
+            var items = _dbService._context.AppUsers
+                .Where(u => !(u is ApplicationStaff)).OrderBy(u => u.LastName).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "LastName", "asc");
+            return items;
+        }
+
+        [HttpGet]
+        public IActionResult NewStaffPanel()
+        {
+            return PartialView("_StaffPanel", (ApplicationStaff?)null);
         }
 
         [HttpGet]
@@ -240,14 +242,14 @@ namespace CityLink_SCP.Controllers
         {
             var staff = await _userManager.FindByIdAsync(id) as ApplicationStaff;
             if (staff == null) return NotFound();
-            return Json(new { staff.Id, staff.FirstName, staff.LastName, staff.Email, staff.PhoneNumber, staff.Address, staff.JobTitle });
+            return PartialView("_StaffPanel", staff);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateStaff([FromForm] StaffDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Password))
-                return BadRequest("Password is required for new staff.");
+                return BadRequest(new { error = "Password is required for new staff." });
 
             var staff = new ApplicationStaff
             {
@@ -258,44 +260,59 @@ namespace CityLink_SCP.Controllers
             };
             var result = await _userManager.CreateAsync(staff, dto.Password);
             if (!result.Succeeded)
-                return BadRequest(string.Join("; ", result.Errors.Select(e => e.Description)));
+                return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
             await _userManager.AddToRoleAsync(staff, "Staff");
-            return Ok(new { message = "Staff created.", id = staff.Id });
+            return PartialView("_StaffTable", StaffList());
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateStaff([FromForm] StaffDto dto)
         {
             var staff = await _userManager.FindByIdAsync(dto.Id) as ApplicationStaff;
-            if (staff == null) return NotFound();
+            if (staff == null) return BadRequest(new { error = "Staff member not found." });
             staff.FirstName = dto.First_Name; staff.LastName = dto.Last_Name;
             staff.Email = dto.Email; staff.UserName = dto.Email;
             staff.PhoneNumber = dto.Phone_Number; staff.Address = dto.Address;
             staff.JobTitle = dto.JobTitle;
             var result = await _userManager.UpdateAsync(staff);
             if (!result.Succeeded)
-                return BadRequest(string.Join("; ", result.Errors.Select(e => e.Description)));
+                return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
             if (!string.IsNullOrWhiteSpace(dto.Password))
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(staff);
                 await _userManager.ResetPasswordAsync(staff, token, dto.Password);
             }
-            return Ok(new { message = "Staff updated." });
+            return PartialView("_StaffTable", StaffList());
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteStaff(string id)
         {
             var staff = await _userManager.FindByIdAsync(id) as ApplicationStaff;
-            if (staff == null) return NotFound();
+            if (staff == null) return BadRequest(new { error = "Staff member not found." });
             var result = await _userManager.DeleteAsync(staff);
             if (!result.Succeeded)
-                return BadRequest(string.Join("; ", result.Errors.Select(e => e.Description)));
-            return Ok(new { message = "Staff deleted." });
+                return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
+            return PartialView("_StaffTable", StaffList());
+        }
+
+        private List<ApplicationStaff> StaffList()
+        {
+            const int size = 20;
+            var items = _dbService._context.AppStaff.OrderBy(s => s.LastName).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "LastName", "asc");
+            return items;
         }
 
         #endregion
         #region Events EndPoints
+
+        [HttpGet]
+        public IActionResult NewEventPanel()
+        {
+            ViewData["Staff"] = _dbService._context.AppStaff.OrderBy(s => s.LastName).ToList();
+            return PartialView("_EventPanel", (Event?)null);
+        }
 
         [HttpGet]
         public IActionResult GetEvent(int id)
@@ -304,20 +321,15 @@ namespace CityLink_SCP.Controllers
                 .Include(e => e.Staff)
                 .FirstOrDefault(e => e.Id == id);
             if (ev == null) return NotFound();
-            return Json(new
-            {
-                ev.Id, ev.Title, ev.Description, ev.Location, ev.Cost, ev.Max_Capcity,
-                Start_Date_Time = ev.Start_Date_Time.ToString("s"),
-                End_Date_Time = ev.End_Date_Time.ToString("s"),
-                ev.StaffId
-            });
+            ViewData["Staff"] = _dbService._context.AppStaff.OrderBy(s => s.LastName).ToList();
+            return PartialView("_EventPanel", ev);
         }
 
         [HttpPost]
         public IActionResult CreateEvent([FromForm] EventDto dto)
         {
             if (!_dbService._context.AppStaff.Any(s => s.Id == dto.StaffId))
-                return BadRequest("Invalid staff member.");
+                return BadRequest(new { error = "Invalid staff member." });
             var ev = new Event
             {
                 Title = dto.Title, Description = dto.Description, Location = dto.Location,
@@ -327,34 +339,50 @@ namespace CityLink_SCP.Controllers
             };
             _dbService._context.Events.Add(ev);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Event created.", id = ev.Id });
+            return PartialView("_EventsTable", EventsList());
         }
 
         [HttpPost]
         public IActionResult UpdateEvent([FromForm] EventDto dto)
         {
             var ev = _dbService._context.Events.FirstOrDefault(e => e.Id == dto.Id);
-            if (ev == null) return NotFound();
+            if (ev == null) return BadRequest(new { error = "Event not found." });
             ev.Title = dto.Title; ev.Description = dto.Description; ev.Location = dto.Location;
             ev.Cost = dto.Cost; ev.Max_Capcity = dto.Max_Capcity;
             ev.Start_Date_Time = dto.Start_Date_Time; ev.End_Date_Time = dto.End_Date_Time;
             ev.StaffId = dto.StaffId;
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Event updated." });
+            return PartialView("_EventsTable", EventsList());
         }
 
         [HttpPost]
         public IActionResult DeleteEvent(int id)
         {
             var ev = _dbService._context.Events.FirstOrDefault(e => e.Id == id);
-            if (ev == null) return NotFound();
+            if (ev == null) return BadRequest(new { error = "Event not found." });
             _dbService._context.Events.Remove(ev);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Event deleted." });
+            return PartialView("_EventsTable", EventsList());
+        }
+
+        private List<Event> EventsList()
+        {
+            const int size = 20;
+            var items = _dbService._context.Events.Include(e => e.Staff)
+                .OrderByDescending(e => e.Id).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "Id", "desc");
+            return items;
         }
 
         #endregion
         #region Services
+
+        [HttpGet]
+        public IActionResult NewServicePanel()
+        {
+            ViewData["Staff"] = _dbService._context.AppStaff.OrderBy(s => s.LastName).ToList();
+            return PartialView("_ServicePanel", (Service?)null);
+        }
 
         [HttpGet]
         public IActionResult GetService(int id)
@@ -363,20 +391,15 @@ namespace CityLink_SCP.Controllers
                 .Include(s => s.Staff)
                 .FirstOrDefault(s => s.Id == id);
             if (svc == null) return NotFound();
-            return Json(new
-            {
-                svc.Id, svc.Title, svc.Description, svc.Location, svc.Cost,
-                Available_Start_Time = svc.Available_Start_Time.ToString("HH:mm"),
-                Available_End_Time = svc.Available_End_Time.ToString("HH:mm"),
-                svc.StaffId
-            });
+            ViewData["Staff"] = _dbService._context.AppStaff.OrderBy(s => s.LastName).ToList();
+            return PartialView("_ServicePanel", svc);
         }
 
         [HttpPost]
         public IActionResult CreateService([FromForm] ServiceDto dto)
         {
             if (!_dbService._context.AppStaff.Any(s => s.Id == dto.StaffId))
-                return BadRequest("Invalid staff member.");
+                return BadRequest(new { error = "Invalid staff member." });
             var svc = new Service
             {
                 Title = dto.Title, Description = dto.Description, Location = dto.Location,
@@ -387,31 +410,40 @@ namespace CityLink_SCP.Controllers
             };
             _dbService._context.Services.Add(svc);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Service created.", id = svc.Id });
+            return PartialView("_ServicesTable", ServicesList());
         }
 
         [HttpPost]
         public IActionResult UpdateService([FromForm] ServiceDto dto)
         {
             var svc = _dbService._context.Services.FirstOrDefault(s => s.Id == dto.Id);
-            if (svc == null) return NotFound();
+            if (svc == null) return BadRequest(new { error = "Service not found." });
             svc.Title = dto.Title; svc.Description = dto.Description; svc.Location = dto.Location;
             svc.Cost = dto.Cost;
             svc.Available_Start_Time = dto.Available_Start_Time;
             svc.Available_End_Time = dto.Available_End_Time;
             svc.StaffId = dto.StaffId;
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Service updated." });
+            return PartialView("_ServicesTable", ServicesList());
         }
 
         [HttpPost]
         public IActionResult DeleteService(int id)
         {
             var svc = _dbService._context.Services.FirstOrDefault(s => s.Id == id);
-            if (svc == null) return NotFound();
+            if (svc == null) return BadRequest(new { error = "Service not found." });
             _dbService._context.Services.Remove(svc);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Service deleted." });
+            return PartialView("_ServicesTable", ServicesList());
+        }
+
+        private List<Service> ServicesList()
+        {
+            const int size = 20;
+            var items = _dbService._context.Services.Include(s => s.Staff)
+                .OrderBy(s => s.Title).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "Title", "asc");
+            return items;
         }
 
         #endregion
@@ -425,38 +457,41 @@ namespace CityLink_SCP.Controllers
                 .Include(f => f.Staff)
                 .FirstOrDefault(f => f.Id == id);
             if (fb == null) return NotFound();
-            return Json(new
-            {
-                fb.Id, fb.Message, fb.Resolution_Message,
-                Status = (int)fb.Status,
-                fb.StaffId,
-                From = fb.User != null ? fb.User.FirstName + " " + fb.User.LastName : "(Guest)",
-                CreatedAt = fb.CreatedAt.ToString("dd MMM yyyy")
-            });
+            ViewData["Staff"] = _dbService._context.AppStaff.OrderBy(s => s.LastName).ToList();
+            return PartialView("_FeedbackPanel", fb);
         }
 
         [HttpPost]
         public IActionResult UpdateFeedback([FromForm] FeedbackDto dto)
         {
             var fb = _dbService._context.Feedbacks.FirstOrDefault(f => f.Id == dto.Id);
-            if (fb == null) return NotFound();
+            if (fb == null) return BadRequest(new { error = "Feedback not found." });
             fb.Status = (FeedbackStatus)dto.Status;
             fb.Resolution_Message = dto.Resolution_Message;
             fb.StaffId = dto.StaffId;
             if (fb.Status == FeedbackStatus.Resolved || fb.Status == FeedbackStatus.Closed)
                 fb.ResolvedAt ??= DateTime.UtcNow;
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Feedback updated." });
+            return PartialView("_FeedbackTable", FeedbackList());
         }
 
         [HttpPost]
         public IActionResult DeleteFeedback(int id)
         {
             var fb = _dbService._context.Feedbacks.FirstOrDefault(f => f.Id == id);
-            if (fb == null) return NotFound();
+            if (fb == null) return BadRequest(new { error = "Feedback not found." });
             _dbService._context.Feedbacks.Remove(fb);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Feedback deleted." });
+            return PartialView("_FeedbackTable", FeedbackList());
+        }
+
+        private List<Feedback> FeedbackList()
+        {
+            const int size = 20;
+            var items = _dbService._context.Feedbacks.Include(f => f.User).Include(f => f.Staff)
+                .OrderByDescending(f => f.Id).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "Id", "desc");
+            return items;
         }
 
         #endregion
@@ -467,10 +502,15 @@ namespace CityLink_SCP.Controllers
         {
             var reg = _dbService._context.EventRegistrations
                 .FirstOrDefault(r => r.UserId == userId && r.EventId == eventId);
-            if (reg == null) return NotFound();
+            if (reg == null) return BadRequest(new { error = "Registration not found." });
             _dbService._context.EventRegistrations.Remove(reg);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Registration deleted." });
+            const int size = 20;
+            var items = _dbService._context.EventRegistrations
+                .Include(r => r.User).Include(r => r.Event)
+                .OrderByDescending(r => r.EventId).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "EventId", "desc");
+            return PartialView("_EventRegistrationsTable", items);
         }
 
         [HttpPost]
@@ -478,10 +518,15 @@ namespace CityLink_SCP.Controllers
         {
             var booking = _dbService._context.ServiceBookings
                 .FirstOrDefault(b => b.UserId == userId && b.ServiceId == serviceId);
-            if (booking == null) return NotFound();
+            if (booking == null) return BadRequest(new { error = "Booking not found." });
             _dbService._context.ServiceBookings.Remove(booking);
             _dbService._context.SaveChanges();
-            return Ok(new { message = "Booking deleted." });
+            const int size = 20;
+            var items = _dbService._context.ServiceBookings
+                .Include(b => b.User).Include(b => b.Service)
+                .OrderByDescending(b => b.Start_Time).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "Start_Time", "desc");
+            return PartialView("_ServiceBookingsTable", items);
         }
 
         #endregion
@@ -494,11 +539,9 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchEvents(
             [ModelBinder(typeof(RestrictedQueryModelBinder))] EventQueryParams query)
         {
-            query.Size = 100;
-            var events = _dbService._context.Events
-                .Include(e => e.Staff)
-                .ApplyQuery(query)
-                .ToList();
+            if (query.Size <= 1) query.Size = 20;
+            var events = _dbService._context.Events.Include(e => e.Staff).ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, events.Count == query.Size, query.SortBy, query.SortOrder);
             return PartialView("_EventsTable", events);
         }
 
@@ -506,11 +549,9 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchServices(
             [ModelBinder(typeof(RestrictedQueryModelBinder))] ServiceQueryParams query)
         {
-            query.Size = 100;
-            var services = _dbService._context.Services
-                .Include(s => s.Staff)
-                .ApplyQuery(query)
-                .ToList();
+            if (query.Size <= 1) query.Size = 20;
+            var services = _dbService._context.Services.Include(s => s.Staff).ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, services.Count == query.Size, query.SortBy, query.SortOrder);
             return PartialView("_ServicesTable", services);
         }
 
@@ -518,11 +559,10 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchUsers(
             [ModelBinder(typeof(RestrictedQueryModelBinder))] UserQueryParams query)
         {
-            query.Size = 100;
+            if (query.Size <= 1) query.Size = 20;
             var users = _dbService._context.AppUsers
-                .Where(u => !(u is ApplicationStaff))
-                .ApplyQuery(query)
-                .ToList();
+                .Where(u => !(u is ApplicationStaff)).ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, users.Count == query.Size, query.SortBy, query.SortOrder);
             return PartialView("_UsersTable", users);
         }
 
@@ -530,10 +570,9 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchStaff(
             [ModelBinder(typeof(RestrictedQueryModelBinder))] StaffQueryParams query)
         {
-            query.Size = 100;
-            var staff = _dbService._context.AppStaff
-                .ApplyQuery(query)
-                .ToList();
+            if (query.Size <= 1) query.Size = 20;
+            var staff = _dbService._context.AppStaff.ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, staff.Count == query.Size, query.SortBy, query.SortOrder);
             return PartialView("_StaffTable", staff);
         }
 
@@ -541,13 +580,104 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchFeedback(
             [ModelBinder(typeof(RestrictedQueryModelBinder))] FeedBackQueryParams query)
         {
-            query.Size = 100;
+            if (query.Size <= 1) query.Size = 20;
             var feedback = _dbService._context.Feedbacks
-                .Include(f => f.User)
-                .Include(f => f.Staff)
-                .ApplyQuery(query)
-                .ToList();
+                .Include(f => f.User).Include(f => f.Staff).ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, feedback.Count == query.Size, query.SortBy, query.SortOrder);
             return PartialView("_FeedbackTable", feedback);
+        }
+
+        #endregion
+
+        [HttpGet]
+        public IActionResult SearchXmlConfigs(
+            [ModelBinder(typeof(RestrictedQueryModelBinder))] XmlConfigQueryParams query)
+        {
+            if (query.Size <= 1) query.Size = 20;
+            var configs = _dbService._context.XML_Configurations
+                .ApplyQuery(query).ToList()
+                .Select(x => x.ToViewModel()).ToList();
+            SetPagerViewData(query.Page, query.Size, configs.Count == query.Size, query.SortBy, query.SortOrder);
+            return PartialView("_XmlConfigsTable", configs);
+        }
+
+        [HttpGet]
+        public IActionResult SearchServiceBookings(
+            [ModelBinder(typeof(RestrictedQueryModelBinder))] ServiceBookingQueryParams query)
+        {
+            if (query.Size <= 1) query.Size = 20;
+            var bookings = _dbService._context.ServiceBookings
+                .Include(b => b.User).Include(b => b.Service).ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, bookings.Count == query.Size, query.SortBy, query.SortOrder);
+            return PartialView("_ServiceBookingsTable", bookings);
+        }
+
+        [HttpGet]
+        public IActionResult SearchEventRegistrations(
+            [ModelBinder(typeof(RestrictedQueryModelBinder))] EventRegistrationQueryParams query)
+        {
+            if (query.Size <= 1) query.Size = 20;
+            var regs = _dbService._context.EventRegistrations
+                .Include(r => r.User).Include(r => r.Event).ApplyQuery(query).ToList();
+            SetPagerViewData(query.Page, query.Size, regs.Count == query.Size, query.SortBy, query.SortOrder);
+            return PartialView("_EventRegistrationsTable", regs);
+        }
+
+        private void SetPagerViewData(int page, int size, bool hasMore, string sortBy, string sortOrder)
+        {
+            ViewData["Page"]      = page;
+            ViewData["Size"]      = size;
+            ViewData["HasMore"]   = hasMore;
+            ViewData["SortBy"]    = sortBy;
+            ViewData["SortOrder"] = sortOrder;
+        }
+
+        #region Tab Section Endpoints
+
+        [HttpGet]
+        public IActionResult GetXmlConfigsSection() =>
+            PartialView("_XmlConfigsSection", XmlConfigsList());
+
+        [HttpGet]
+        public IActionResult GetUsersSection() =>
+            PartialView("_UsersSection", UsersList());
+
+        [HttpGet]
+        public IActionResult GetStaffSection() =>
+            PartialView("_StaffSection", StaffList());
+
+        [HttpGet]
+        public IActionResult GetFeedbackSection() =>
+            PartialView("_FeedbackSection", FeedbackList());
+
+        [HttpGet]
+        public IActionResult GetServicesSection() =>
+            PartialView("_ServicesSection", ServicesList());
+
+        [HttpGet]
+        public IActionResult GetEventsSection() =>
+            PartialView("_EventsSection", EventsList());
+
+        [HttpGet]
+        public IActionResult GetBookingsSection()
+        {
+            const int size = 20;
+            var items = _dbService._context.ServiceBookings
+                .Include(b => b.User).Include(b => b.Service)
+                .OrderByDescending(b => b.Start_Time).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "Start_Time", "desc");
+            return PartialView("_ServiceBookingsSection", items);
+        }
+
+        [HttpGet]
+        public IActionResult GetRegistrationsSection()
+        {
+            const int size = 20;
+            var items = _dbService._context.EventRegistrations
+                .Include(r => r.User).Include(r => r.Event)
+                .OrderByDescending(r => r.EventId).Take(size).ToList();
+            SetPagerViewData(1, size, items.Count == size, "EventId", "desc");
+            return PartialView("_EventRegistrationsSection", items);
         }
 
         #endregion

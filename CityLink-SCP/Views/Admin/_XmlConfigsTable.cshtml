@@ -1,0 +1,61 @@
+@using CityLink_SCP.Models
+@using CityLink_SCP.Services
+@model List<XmlConfigDto>
+@{
+    string sortBy    = ViewData["SortBy"]    as string ?? "Id";
+    string sortOrder = ViewData["SortOrder"] as string ?? "desc";
+    string SortClass(string field) => sortBy == field ? "th-sort-" + sortOrder : "";
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-wrap">
+        <table class="admin-table" id="xmlConfigsTable">
+            <thead>
+                <tr>
+                    <th data-sort="Id"         class="@SortClass("Id")">ID</th>
+                    <th data-sort="Type"       class="@SortClass("Type")">Type</th>
+                    <th data-sort="Label"      class="@SortClass("Label")">Label</th>
+                    <th data-sort="UploadedAt" class="@SortClass("UploadedAt")">Uploaded</th>
+                    <th data-sort="IsActive"   class="@SortClass("IsActive")">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cfg in Model)
+                {
+                    <tr class="@(cfg.IsActive ? "row--active" : "")">
+                        <td class="col-muted">#@cfg.Id</td>
+                        <td><span class="tag" title="@cfg.Type">@XmlConfigService.GetFriendlyLabel(cfg.Type)</span></td>
+                        <td>@(string.IsNullOrEmpty(cfg.Label) ? "—" : cfg.Label)</td>
+                        <td class="col-muted">@cfg.UploadedAt.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>
+                            @if (cfg.IsActive)
+                            {
+                                <span class="badge badge--active">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge--inactive">Inactive</span>
+                            }
+                        </td>
+                        <td class="col-actions">
+                            @if (!cfg.IsActive)
+                            {
+                                <button class="btn--admin btn--activate btn--sm activate-config-btn" data-id="@cfg.Id">Activate</button>
+                            }
+                            <button class="btn--admin btn--ghost btn--sm edit-config-btn" data-id="@cfg.Id" data-type="@cfg.Type" data-label="@cfg.Label">Edit</button>
+                            <button class="btn--admin btn--ghost btn--sm preview-config-btn" data-id="@cfg.Id">Preview</button>
+                            <button class="btn--admin btn--danger btn--sm delete-config-btn" data-id="@cfg.Id" data-title="@cfg.Version">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <partial name="_Pager" />
+}
+else
+{
+    <div class="empty-state">No XML configurations yet. Create one with the button above.</div>
+}

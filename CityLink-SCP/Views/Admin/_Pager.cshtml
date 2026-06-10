@@ -1,0 +1,14 @@
+@{
+    int page    = ViewData["Page"]    as int?  ?? 1;
+    bool hasMore = ViewData["HasMore"] as bool? ?? false;
+}
+@if (page > 1 || hasMore)
+{
+    <div class="admin-pager">
+        <button type="button" class="pager-btn btn--admin btn--ghost btn--sm"
+                data-page="@(page - 1)" @(page <= 1 ? "disabled" : "")>&#8592; Prev</button>
+        <span class="pager-info">Page @(page)</span>
+        <button type="button" class="pager-btn btn--admin btn--ghost btn--sm"
+                data-page="@(page + 1)" @(!hasMore ? "disabled" : "")>Next &#8594;</button>
+    </div>
+}

@@ -1,5 +1,12 @@
 @using CityLink_SCP.DbModels
 @model List<Feedback>
+@{
+    string sortBy    = ViewData["SortBy"]    as string ?? "Id";
+    string sortOrder = ViewData["SortOrder"] as string ?? "desc";
+
+    string SortClass(string field) =>
+        sortBy == field ? "th-sort-" + sortOrder : "";
+}
 
 @if (Model != null && Model.Any())
 {
@@ -7,7 +14,12 @@
         <table class="admin-table" id="feedbackTable">
             <thead>
                 <tr>
-                    <th>ID</th><th>From</th><th>Message</th><th>Status</th><th>Received</th><th></th>
+                    <th data-sort="Id"        class="@SortClass("Id")">ID</th>
+                    <th data-sort="UserName" class="@SortClass("UserName")">From</th>
+                    <th data-sort="Message" class="@SortClass("Message")">Message</th>
+                    <th data-sort="Status"    class="@SortClass("Status")">Status</th>
+                    <th data-sort="CreatedAt" class="@SortClass("CreatedAt")">Received</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +46,7 @@
             </tbody>
         </table>
     </div>
+    <partial name="_Pager" />
 }
 else
 {

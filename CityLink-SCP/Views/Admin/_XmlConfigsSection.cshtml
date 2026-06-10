@@ -1,6 +1,6 @@
-@using CityLink_SCP.PageModels
+@using CityLink_SCP.Models
 @using CityLink_SCP.Services
-@model AdminIndexViewModel
+@model List<XmlConfigDto>
 
 <!--  XML Configurations  -->
 <section class="admin-section">
@@ -12,58 +12,32 @@
         <button class="btn--admin btn--primary" id="newConfigBtn">+ New Config</button>
     </div>
 
-    @if (Model.XmlConfigs.Any())
-    {
-        <div class="table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Type</th>
-                        <th>Label</th>
-                        <th>Uploaded</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var cfg in Model.XmlConfigs)
-                    {
-                        <tr class="@(cfg.IsActive ? "row--active" : "")">
-                            <td class="col-muted">#@cfg.Id</td>
-                            <td><span class="tag" title="@cfg.Type">@XmlConfigService.GetFriendlyLabel(cfg.Type)</span></td>
-                            <td>@(string.IsNullOrEmpty(cfg.Label) ? "—" : cfg.Label)</td>
-                            <td class="col-muted">@cfg.UploadedAt.ToString("dd MMM yyyy, HH:mm")</td>
-                            <td>
-                                @if (cfg.IsActive)
-                                {
-                                    <span class="badge badge--active">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge badge--inactive">Inactive</span>
-                                }
-                            </td>
-                            <td class="col-actions">
-                                @if (!cfg.IsActive)
-                                {
-                                    <button class="btn--admin btn--activate btn--sm activate-config-btn"
-                                            data-id="@cfg.Id">
-                                        Activate
-                                    </button>
-                                }
-                                <button class="btn--admin btn--ghost btn--sm edit-config-btn" data-id="@cfg.Id" data-type="@cfg.Type" data-label="@cfg.Label">Edit</button>
-                                <button class="btn--admin btn--ghost btn--sm preview-config-btn" data-id="@cfg.Id">Preview</button>
-                                <button class="btn--admin btn--danger btn--sm delete-config-btn" data-id="@cfg.Id" data-title="@cfg.Version">Delete</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    <form class="table-search" id="xml-search-form">
+        <input type="hidden" name="SortBy"    value="Id" />
+        <input type="hidden" name="SortOrder" value="desc" />
+        <input type="hidden" name="Page"      value="1" />
+        <input type="hidden" name="Size"      value="20" />
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--lg">
+                <label class="crud-field__label" for="xml-label">Label</label>
+                <input type="text" class="crud-input" id="xml-label" name="Label" placeholder="Contains…" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="xml-active">Status</label>
+                <select class="crud-input" id="xml-active" name="IsActive">
+                    <option value="">All</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
         </div>
-    }
-    else
-    {
-        <div class="empty-state">No XML configurations yet. Create one with the button above.</div>
-    }
+        <div class="table-search__actions">
+            <button type="submit" class="btn--admin btn--primary btn--sm" id="xmlSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="xmlClearBtn" style="display:none;">Clear</button>
+        </div>
+    </form>
+
+    <div id="xml-configs-table-container">
+        <partial name="_XmlConfigsTable" model="@Model" />
+    </div>
 </section>

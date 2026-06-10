@@ -39,11 +39,14 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "Title" => query.SortOrder == "asc" ? source.OrderBy(e => e.Title) : source.OrderByDescending(e => e.Title),
-            "Cost" => query.SortOrder == "asc" ? source.OrderBy(e => e.Cost) : source.OrderByDescending(e => e.Cost),
-            "Start_Date_Time" => query.SortOrder == "asc" ? source.OrderBy(e => e.Start_Date_Time) : source.OrderByDescending(e => e.Start_Date_Time),
-            "Max_Capcity" => query.SortOrder == "asc" ? source.OrderBy(e => e.Max_Capcity) : source.OrderByDescending(e => e.Max_Capcity),
-            _ => query.SortOrder == "asc" ? source.OrderBy(e => e.Id) : source.OrderByDescending(e => e.Id),
+            "Title"          => query.SortOrder == "asc" ? source.OrderBy(e => e.Title)          : source.OrderByDescending(e => e.Title),
+            "Location"       => query.SortOrder == "asc" ? source.OrderBy(e => e.Location)       : source.OrderByDescending(e => e.Location),
+            "Cost"           => query.SortOrder == "asc" ? source.OrderBy(e => e.Cost)           : source.OrderByDescending(e => e.Cost),
+            "Start_Date_Time"=> query.SortOrder == "asc" ? source.OrderBy(e => e.Start_Date_Time): source.OrderByDescending(e => e.Start_Date_Time),
+            "End_Date_Time"  => query.SortOrder == "asc" ? source.OrderBy(e => e.End_Date_Time)  : source.OrderByDescending(e => e.End_Date_Time),
+            "Max_Capcity"    => query.SortOrder == "asc" ? source.OrderBy(e => e.Max_Capcity)    : source.OrderByDescending(e => e.Max_Capcity),
+            "StaffName"      => query.SortOrder == "asc" ? source.OrderBy(e => e.Staff.LastName) : source.OrderByDescending(e => e.Staff.LastName),
+            _                => query.SortOrder == "asc" ? source.OrderBy(e => e.Id)             : source.OrderByDescending(e => e.Id),
         };
 
         return source
@@ -75,9 +78,11 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "NumberOfAttendees" => query.SortOrder == "asc" ? source.OrderBy(er => er.NumberOfAttendees) : source.OrderByDescending(er => er.NumberOfAttendees),
-            "TotalCost" => query.SortOrder == "asc" ? source.OrderBy(er => er.TotalCost) : source.OrderByDescending(er => er.TotalCost),
-            _ => query.SortOrder == "asc" ? source.OrderBy(er => er.EventId) : source.OrderByDescending(er => er.EventId),
+            "NumberOfAttendees" => query.SortOrder == "asc" ? source.OrderBy(er => er.NumberOfAttendees)   : source.OrderByDescending(er => er.NumberOfAttendees),
+            "TotalCost"         => query.SortOrder == "asc" ? source.OrderBy(er => er.TotalCost)           : source.OrderByDescending(er => er.TotalCost),
+            "EventName"         => query.SortOrder == "asc" ? source.OrderBy(er => er.Event.Title)         : source.OrderByDescending(er => er.Event.Title),
+            "UserName"          => query.SortOrder == "asc" ? source.OrderBy(er => er.User.LastName)       : source.OrderByDescending(er => er.User.LastName),
+            _                   => query.SortOrder == "asc" ? source.OrderBy(er => er.EventId)             : source.OrderByDescending(er => er.EventId),
         };
 
         return source
@@ -109,10 +114,13 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "Title" => query.SortOrder == "asc" ? source.OrderBy(s => s.Title) : source.OrderByDescending(s => s.Title),
-            "Cost" => query.SortOrder == "asc" ? source.OrderBy(s => s.Cost) : source.OrderByDescending(s => s.Cost),
+            "Title"                => query.SortOrder == "asc" ? source.OrderBy(s => s.Title)                : source.OrderByDescending(s => s.Title),
+            "Location"             => query.SortOrder == "asc" ? source.OrderBy(s => s.Location)             : source.OrderByDescending(s => s.Location),
+            "Cost"                 => query.SortOrder == "asc" ? source.OrderBy(s => s.Cost)                 : source.OrderByDescending(s => s.Cost),
             "Available_Start_Time" => query.SortOrder == "asc" ? source.OrderBy(s => s.Available_Start_Time) : source.OrderByDescending(s => s.Available_Start_Time),
-            _ => query.SortOrder == "asc" ? source.OrderBy(s => s.Id) : source.OrderByDescending(s => s.Id),
+            "Available_End_Time"   => query.SortOrder == "asc" ? source.OrderBy(s => s.Available_End_Time)   : source.OrderByDescending(s => s.Available_End_Time),
+            "StaffName"            => query.SortOrder == "asc" ? source.OrderBy(s => s.Staff.LastName)        : source.OrderByDescending(s => s.Staff.LastName),
+            _                      => query.SortOrder == "asc" ? source.OrderBy(s => s.Id)                   : source.OrderByDescending(s => s.Id),
         };
 
         return source
@@ -144,10 +152,12 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "TotalCost" => query.SortOrder == "asc" ? source.OrderBy(sb => sb.TotalCost) : source.OrderByDescending(sb => sb.TotalCost),
-            "Start_Time" => query.SortOrder == "asc" ? source.OrderBy(sb => sb.Start_Time) : source.OrderByDescending(sb => sb.Start_Time),
-            "End_Time" => query.SortOrder == "asc" ? source.OrderBy(sb => sb.End_Time) : source.OrderByDescending(sb => sb.End_Time),
-            _ => query.SortOrder == "asc" ? source.OrderBy(sb => sb.ServiceId) : source.OrderByDescending(sb => sb.ServiceId),
+            "TotalCost"   => query.SortOrder == "asc" ? source.OrderBy(sb => sb.TotalCost)         : source.OrderByDescending(sb => sb.TotalCost),
+            "Start_Time"  => query.SortOrder == "asc" ? source.OrderBy(sb => sb.Start_Time)        : source.OrderByDescending(sb => sb.Start_Time),
+            "End_Time"    => query.SortOrder == "asc" ? source.OrderBy(sb => sb.End_Time)          : source.OrderByDescending(sb => sb.End_Time),
+            "ServiceName" => query.SortOrder == "asc" ? source.OrderBy(sb => sb.Service.Title)     : source.OrderByDescending(sb => sb.Service.Title),
+            "UserName"    => query.SortOrder == "asc" ? source.OrderBy(sb => sb.User.LastName)     : source.OrderByDescending(sb => sb.User.LastName),
+            _             => query.SortOrder == "asc" ? source.OrderBy(sb => sb.ServiceId)         : source.OrderByDescending(sb => sb.ServiceId),
         };
 
         return source
@@ -190,10 +200,12 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "Status" => query.SortOrder == "asc" ? source.OrderBy(f => f.Status) : source.OrderByDescending(f => f.Status),
-            "CreatedAt" => query.SortOrder == "asc" ? source.OrderBy(f => f.CreatedAt) : source.OrderByDescending(f => f.CreatedAt),
-            "ResolvedAt" => query.SortOrder == "asc" ? source.OrderBy(f => f.ResolvedAt) : source.OrderByDescending(f => f.ResolvedAt),
-            _ => query.SortOrder == "asc" ? source.OrderBy(f => f.Id) : source.OrderByDescending(f => f.Id),
+            "Status"     => query.SortOrder == "asc" ? source.OrderBy(f => f.Status)     : source.OrderByDescending(f => f.Status),
+            "Message"    => query.SortOrder == "asc" ? source.OrderBy(f => f.Message)    : source.OrderByDescending(f => f.Message),
+            "CreatedAt"  => query.SortOrder == "asc" ? source.OrderBy(f => f.CreatedAt)  : source.OrderByDescending(f => f.CreatedAt),
+            "ResolvedAt" => query.SortOrder == "asc" ? source.OrderBy(f => f.ResolvedAt)       : source.OrderByDescending(f => f.ResolvedAt),
+            "UserName"   => query.SortOrder == "asc" ? source.OrderBy(f => f.User.LastName)   : source.OrderByDescending(f => f.User.LastName),
+            _            => query.SortOrder == "asc" ? source.OrderBy(f => f.Id)               : source.OrderByDescending(f => f.Id),
         };
 
         return source
@@ -231,11 +243,12 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "Label" => query.SortOrder == "asc" ? source.OrderBy(x => x.Label) : source.OrderByDescending(x => x.Label),
-            "Type" => query.SortOrder == "asc" ? source.OrderBy(x => x.Type) : source.OrderByDescending(x => x.Type),
-            "Version" => query.SortOrder == "asc" ? source.OrderBy(x => x.Version) : source.OrderByDescending(x => x.Version),
+            "Label"      => query.SortOrder == "asc" ? source.OrderBy(x => x.Label)      : source.OrderByDescending(x => x.Label),
+            "Type"       => query.SortOrder == "asc" ? source.OrderBy(x => x.Type)       : source.OrderByDescending(x => x.Type),
+            "Version"    => query.SortOrder == "asc" ? source.OrderBy(x => x.Version)    : source.OrderByDescending(x => x.Version),
             "UploadedAt" => query.SortOrder == "asc" ? source.OrderBy(x => x.UploadedAt) : source.OrderByDescending(x => x.UploadedAt),
-            _ => query.SortOrder == "asc" ? source.OrderBy(x => x.Id) : source.OrderByDescending(x => x.Id),
+            "IsActive"   => query.SortOrder == "asc" ? source.OrderBy(x => x.IsActive)   : source.OrderByDescending(x => x.IsActive),
+            _            => query.SortOrder == "asc" ? source.OrderBy(x => x.Id)         : source.OrderByDescending(x => x.Id),
         };
 
         return source
@@ -275,10 +288,12 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "FirstName" => query.SortOrder == "asc" ? source.OrderBy(u => u.FirstName) : source.OrderByDescending(u => u.FirstName),
-            "LastName"  => query.SortOrder == "asc" ? source.OrderBy(u => u.LastName)  : source.OrderByDescending(u => u.LastName),
-            "Email"     => query.SortOrder == "asc" ? source.OrderBy(u => u.Email)     : source.OrderByDescending(u => u.Email),
-            _           => query.SortOrder == "asc" ? source.OrderBy(u => u.Id)        : source.OrderByDescending(u => u.Id),
+            "FirstName"   => query.SortOrder == "asc" ? source.OrderBy(u => u.FirstName)   : source.OrderByDescending(u => u.FirstName),
+            "LastName"    => query.SortOrder == "asc" ? source.OrderBy(u => u.LastName)    : source.OrderByDescending(u => u.LastName),
+            "Email"       => query.SortOrder == "asc" ? source.OrderBy(u => u.Email)       : source.OrderByDescending(u => u.Email),
+            "PhoneNumber" => query.SortOrder == "asc" ? source.OrderBy(u => u.PhoneNumber) : source.OrderByDescending(u => u.PhoneNumber),
+            "Address"     => query.SortOrder == "asc" ? source.OrderBy(u => u.Address)     : source.OrderByDescending(u => u.Address),
+            _             => query.SortOrder == "asc" ? source.OrderBy(u => u.Id)          : source.OrderByDescending(u => u.Id),
         };
 
         return source
@@ -301,11 +316,12 @@ public static class QueryExtensions
 
         source = query.SortBy switch
         {
-            "FirstName" => query.SortOrder == "asc" ? source.OrderBy(s => s.FirstName)  : source.OrderByDescending(s => s.FirstName),
-            "LastName"  => query.SortOrder == "asc" ? source.OrderBy(s => s.LastName)   : source.OrderByDescending(s => s.LastName),
-            "Email"     => query.SortOrder == "asc" ? source.OrderBy(s => s.Email)      : source.OrderByDescending(s => s.Email),
-            "JobTitle"  => query.SortOrder == "asc" ? source.OrderBy(s => s.JobTitle)   : source.OrderByDescending(s => s.JobTitle),
-            _           => query.SortOrder == "asc" ? source.OrderBy(s => s.Id)         : source.OrderByDescending(s => s.Id),
+            "FirstName"   => query.SortOrder == "asc" ? source.OrderBy(s => s.FirstName)   : source.OrderByDescending(s => s.FirstName),
+            "LastName"    => query.SortOrder == "asc" ? source.OrderBy(s => s.LastName)    : source.OrderByDescending(s => s.LastName),
+            "Email"       => query.SortOrder == "asc" ? source.OrderBy(s => s.Email)       : source.OrderByDescending(s => s.Email),
+            "PhoneNumber" => query.SortOrder == "asc" ? source.OrderBy(s => s.PhoneNumber) : source.OrderByDescending(s => s.PhoneNumber),
+            "JobTitle"    => query.SortOrder == "asc" ? source.OrderBy(s => s.JobTitle)    : source.OrderByDescending(s => s.JobTitle),
+            _             => query.SortOrder == "asc" ? source.OrderBy(s => s.Id)          : source.OrderByDescending(s => s.Id),
         };
 
         return source

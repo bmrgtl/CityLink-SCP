@@ -1,6 +1,3 @@
-﻿@using CityLink_SCP.PageModels
-@model AdminIndexViewModel
-
 @section Styles {
     <link rel="stylesheet" href="~/css/admin.css" />
     <link rel="stylesheet" href="~/css/index.css" />
@@ -10,16 +7,29 @@
     <script src="~/js/admin.js"></script>
 }
 
-@await Html.PartialAsync("_XmlEditorPanel", Model)
-@await Html.PartialAsync("_PreviewPanel")
-@await Html.PartialAsync("_EventPanel")
-@await Html.PartialAsync("_ServicePanel")
-@await Html.PartialAsync("_FeedbackPanel")
-@await Html.PartialAsync("_UserPanel")
-@await Html.PartialAsync("_StaffPanel")
+@Html.AntiForgeryToken()
 
+<div id="xml-editor-overlay" class="xml-overlay" aria-hidden="true"></div>
+<div id="xml-preview-overlay" class="xml-overlay" aria-hidden="true">
+    <div class="xml-preview-panel">
+        <div class="xml-panel__header">
+            <div>
+                <p class="xml-panel__eyebrow">Live Preview</p>
+                <h2 class="xml-panel__title">Rendered Output</h2>
+            </div>
+            <button type="button" class="xml-panel__close" id="closePreviewPanel" aria-label="Close preview">&#x2715;</button>
+        </div>
+        <div id="xml-preview-content" class="xml-preview-content">
+            <p style="color:var(--text-muted);font-size:.875rem;">Click "Preview" in the editor to render the current XML.</p>
+        </div>
+    </div>
+</div>
+<div id="event-overlay"    class="xml-overlay" aria-hidden="true"></div>
+<div id="service-overlay"  class="xml-overlay" aria-hidden="true"></div>
+<div id="user-overlay"     class="xml-overlay" aria-hidden="true"></div>
+<div id="staff-overlay"    class="xml-overlay" aria-hidden="true"></div>
+<div id="feedback-overlay" class="xml-overlay" aria-hidden="true"></div>
 
-@*  Main Dashboard  *@
 <div class="admin-wrap">
 
     <header class="admin-header">
@@ -29,13 +39,41 @@
         </div>
     </header>
 
-    @await Html.PartialAsync("_XmlConfigsSection", Model)
-    @await Html.PartialAsync("_EventsSection", Model.Events)
-    @await Html.PartialAsync("_ServicesSection", Model.Services)
-    @await Html.PartialAsync("_FeedbackSection", Model.Feedbacks)
-    @await Html.PartialAsync("_EventRegistrationsSection", Model.EventRegistrations)
-    @await Html.PartialAsync("_ServiceBookingsSection", Model.ServiceBookings)
-    @await Html.PartialAsync("_UsersSection", Model.Users)
-    @await Html.PartialAsync("_StaffSection", Model.StaffMembers)
+    <nav class="admin-tab-nav" role="tablist">
+        <button class="admin-tab-btn active" data-tab="xml"             role="tab">XML Configurations</button>
+        <button class="admin-tab-btn"         data-tab="users-staff"    role="tab">Users &amp; Staff</button>
+        <button class="admin-tab-btn"         data-tab="feedback"       role="tab">Feedback &amp; Enquiries</button>
+        <button class="admin-tab-btn"         data-tab="services-events" role="tab">Services &amp; Events</button>
+        <button class="admin-tab-btn"         data-tab="bookings-regs"  role="tab">Bookings &amp; Registrations</button>
+    </nav>
+
+    <div id="tab-xml" class="admin-tab-panel">
+        <div id="xml-section-container"></div>
+    </div>
+
+    <div id="tab-users-staff" class="admin-tab-panel" style="display:none">
+        <div class="tab-columns">
+            <div id="users-section-container"></div>
+            <div id="staff-section-container"></div>
+        </div>
+    </div>
+
+    <div id="tab-feedback" class="admin-tab-panel" style="display:none">
+        <div id="feedback-section-container"></div>
+    </div>
+
+    <div id="tab-services-events" class="admin-tab-panel" style="display:none">
+        <div class="tab-columns">
+            <div id="services-section-container"></div>
+            <div id="events-section-container"></div>
+        </div>
+    </div>
+
+    <div id="tab-bookings-regs" class="admin-tab-panel" style="display:none">
+        <div class="tab-columns">
+            <div id="bookings-section-container"></div>
+            <div id="registrations-section-container"></div>
+        </div>
+    </div>
 
 </div>

@@ -9,37 +9,36 @@
         </div>
     </div>
 
-    @if (Model != null && Model.Any())
-    {
-        <div class="table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Service</th><th>User</th><th>Start</th><th>End</th><th>Total Cost</th><th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var b in Model)
-                    {
-                        <tr data-booking-userid="@b.UserId" data-booking-serviceid="@b.ServiceId">
-                            <td>@b.Service?.Title</td>
-                            <td class="col-muted">@b.User?.FirstName @b.User?.LastName</td>
-                            <td class="col-muted">@b.Start_Time.ToString("dd MMM yyyy, HH:mm")</td>
-                            <td class="col-muted">@b.End_Time.ToString("dd MMM yyyy, HH:mm")</td>
-                            <td>$@b.TotalCost.ToString("0.00")</td>
-                            <td class="col-actions">
-                                <button class="btn--admin btn--danger btn--sm delete-booking-btn"
-                                        data-userid="@b.UserId"
-                                        data-serviceid="@b.ServiceId"
-                                        data-label="@b.User?.FirstName @b.User?.LastName — @b.Service?.Title">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    <form class="table-search" id="bookings-search-form">
+        <input type="hidden" name="SortBy"    value="Start_Time" />
+        <input type="hidden" name="SortOrder" value="desc" />
+        <input type="hidden" name="Page"      value="1" />
+        <input type="hidden" name="Size"      value="20" />
+        <div class="table-search__row">
+            <div class="table-search__field table-search__field--sm">
+                <label class="crud-field__label" for="bk-mincost">Min $</label>
+                <input type="number" class="crud-input" id="bk-mincost" name="MinCost" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="table-search__field table-search__field--sm">
+                <label class="crud-field__label" for="bk-maxcost">Max $</label>
+                <input type="number" class="crud-input" id="bk-maxcost" name="MaxCost" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="bk-from">From</label>
+                <input type="datetime-local" class="crud-input" id="bk-from" name="From" />
+            </div>
+            <div class="table-search__field">
+                <label class="crud-field__label" for="bk-to">To</label>
+                <input type="datetime-local" class="crud-input" id="bk-to" name="To" />
+            </div>
         </div>
-    }
-    else { <div class="empty-state">No service bookings found.</div> }
+        <div class="table-search__actions">
+            <button type="submit" class="btn--admin btn--primary btn--sm" id="bookingSearchBtn">Search</button>
+            <button type="button" class="btn--admin btn--ghost btn--sm" id="bookingClearBtn" style="display:none;">Clear</button>
+        </div>
+    </form>
+
+    <div id="bookings-table-container">
+        <partial name="_ServiceBookingsTable" model="@Model" />
+    </div>
 </section>

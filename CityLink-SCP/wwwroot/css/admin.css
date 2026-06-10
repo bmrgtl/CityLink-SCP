@@ -6,7 +6,7 @@
 /*  Layout  */
 
 .admin-wrap {
-    max-width: var(--max-width);
+    max-width: 90%;
     margin-inline: auto;
     padding-inline: var(--padding);
     padding-block: clamp(2rem, 6vw, 3.5rem);
@@ -646,4 +646,107 @@
     .col-actions {
         flex-wrap: wrap;
     }
+}
+
+/* ----------------------------------------------------------------
+   Tab navigation
+---------------------------------------------------------------- */
+
+.admin-tab-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.75rem;
+    border-bottom: 2px solid var(--mist);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.admin-tab-nav::-webkit-scrollbar { display: none; }
+
+.admin-tab-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    padding: 0.65rem 1.15rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--ease), border-color var(--ease), background var(--ease);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.admin-tab-btn:hover {
+    color: var(--text);
+    background: var(--cream);
+}
+
+.admin-tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+    background: none;
+}
+
+/* ----------------------------------------------------------------
+   Dual-section flex layout
+---------------------------------------------------------------- */
+
+.tab-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.tab-columns > * {
+    flex: 1 1 28rem;
+    min-width: 0;
+}
+
+/* ----------------------------------------------------------------
+   Sortable table headers
+---------------------------------------------------------------- */
+
+.admin-table th[data-sort] {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.admin-table th[data-sort]:hover {
+    color: var(--green);
+}
+
+.admin-table th.th-sort-asc::after,
+.admin-table th.th-sort-desc::after {
+    margin-left: 0.3em;
+    font-size: 0.7em;
+    color: var(--green);
+}
+
+.admin-table th.th-sort-asc::after  { content: "↑"; }
+.admin-table th.th-sort-desc::after { content: "↓"; }
+
+/* ----------------------------------------------------------------
+   Pagination
+---------------------------------------------------------------- */
+
+.admin-pager {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1.5px solid var(--mist);
+    background: var(--cream);
+}
+
+.pager-info {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 600;
 }

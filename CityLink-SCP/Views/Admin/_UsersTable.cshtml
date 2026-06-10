@@ -1,5 +1,12 @@
 @using CityLink_SCP.DbModels
 @model List<ApplicationUser>
+@{
+    string sortBy    = ViewData["SortBy"]    as string ?? "Id";
+    string sortOrder = ViewData["SortOrder"] as string ?? "asc";
+
+    string SortClass(string field) =>
+        sortBy == field ? "th-sort-" + sortOrder : "";
+}
 
 @if (Model != null && Model.Any())
 {
@@ -7,7 +14,12 @@
         <table class="admin-table" id="usersTable">
             <thead>
                 <tr>
-                    <th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th></th>
+                    <th data-sort="Id"        class="@SortClass("Id")">ID</th>
+                    <th data-sort="LastName"  class="@SortClass("LastName")">Name</th>
+                    <th data-sort="Email"     class="@SortClass("Email")">Email</th>
+                    <th data-sort="PhoneNumber" class="@SortClass("PhoneNumber")">Phone</th>
+                    <th data-sort="Address"     class="@SortClass("Address")">Address</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,14 +34,14 @@
                         <td class="col-actions">
                             <button class="btn--admin btn--ghost btn--sm view-user-btn" data-id="@u.Id">View</button>
                             <button class="btn--admin btn--ghost btn--sm edit-user-btn" data-id="@u.Id">Edit</button>
-                            <button class="btn--admin btn--danger btn--sm delete-user-btn"
-                                    data-id="@u.Id" data-name="@u.FirstName @u.LastName">Delete</button>
+                            <button class="btn--admin btn--danger btn--sm delete-user-btn" data-id="@u.Id" data-name="@u.FirstName @u.LastName">Delete</button>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+    <partial name="_Pager" />
 }
 else
 {
