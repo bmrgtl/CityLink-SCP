@@ -126,7 +126,9 @@ select.input-field {
     border-radius: var(--radius-pill);
     border: 2px solid var(--green);
     transition: background var(--ease), transform var(--ease), box-shadow var(--ease);
-    position: center;
+    display: flex;
+    justify-content: center; /* horizontal */
+    align-items: center; /* vertical */
 }
 
     .submit-btn:hover {
