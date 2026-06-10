@@ -153,8 +153,8 @@ namespace CityLink_SCP.Database
 					new() {
 						Title       = "Welcome to CityLink Initiatives",
 						Body        = "CityLink is your one-stop online portal for local council services, community events, and important announcements. We're here to make government services more accessible to everyone.",
-						ButtonLabel = "Our Services",
-						ButtonUrl   = "/Home/Services"
+						ButtonLabel = "See What's On",
+						ButtonUrl   = "/Home/WhatsOn"
 					},
 					new() {
 						Title       = "Community Events Now Open",

@@ -26,23 +26,3 @@
     initCarousel("eventsTrack", "eventsPrev", "eventsNext");
     initFAQAccordian();
 });
-
-function initFAQAccordian() {
-    const faqTriggers = document.querySelectorAll(".faq__trigger");
-
-    faqTriggers.forEach(trigger => {
-        trigger.addEventListener("click", () => {
-            const panel = document.getElementById(
-                trigger.getAttribute("aria-controls")
-            );
-
-            const isOpen = trigger.getAttribute("aria-expanded") === "true";
-
-            trigger.setAttribute("aria-expanded", !isOpen);
-
-            if (panel) {
-                panel.style.maxHeight = isOpen ? null : panel.scrollHeight + "px";
-            }
-        });
-    });
-}
