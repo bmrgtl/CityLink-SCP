@@ -439,34 +439,20 @@ namespace CityLink_SCP.Controllers
             var services      = _dbService._context.Services.ToList().ToCardViewModel();
             var faqs          = _xmlService.GetActive<FAQViewModel>();
             var announcements = _xmlService.GetActive<AnnouncementsViewModel>();
-            return new IndexViewModel
+            var footer        = _xmlService.GetActive<FooterModel>();
+			return new IndexViewModel
             {
                 Events        = events.Events.Count > 0 ? events : GetEventsDefault(),
                 Services      = services.Services.Count > 0 ? services : GetServicesDefault(),
                 FAQs          = faqs?.FAQs?.Count > 0 ? faqs : GetFAQsDefault(),
                 Announcements = announcements?.Items?.Count > 0 ? announcements : GetAnnouncementsDefault(),
-            };
+			};
         }
         private EventsViewModel        GetEventsDefault()        => _xmlService.ToViewModel<EventsViewModel>(System.IO.File.ReadAllText("XML\\EventsDefault.xml"))!;
         private ServicesViewModel      GetServicesDefault()      => _xmlService.ToViewModel<ServicesViewModel>(System.IO.File.ReadAllText("XML\\ServicesDefault.xml"))!;
         private FAQViewModel           GetFAQsDefault()          => _xmlService.ToViewModel<FAQViewModel>(System.IO.File.ReadAllText("XML\\FAQsDefault.xml"))!;
-        private AnnouncementsViewModel GetAnnouncementsDefault()
-        {
-            var path = "XML\\AnnouncementsDefault.xml";
-            if (System.IO.File.Exists(path))
-                return _xmlService.ToViewModel<AnnouncementsViewModel>(System.IO.File.ReadAllText(path)) ?? DefaultAnnouncements();
-            return DefaultAnnouncements();
-        }
-        private static AnnouncementsViewModel DefaultAnnouncements() => new()
-        {
-            Eyebrow = "Announcements",
-            Heading = "What's On",
-            Items   =
-            [
-                new() { Title = "Welcome to CityLink", Body = "Stay up to date with local council announcements, events, and services — all in one place.", ButtonLabel = "Our Services", ButtonUrl = "/Home/Services" },
-                new() { Title = "Community Events", Body = "Browse upcoming community events and register online. From markets to workshops, there's something for everyone.", ButtonLabel = "View Events", ButtonUrl = "/Home/Events" },
-            ]
-        };
+        private AnnouncementsViewModel GetAnnouncementsDefault() => _xmlService.ToViewModel<AnnouncementsViewModel>(System.IO.File.ReadAllText("XML\\AnnouncementsDefault.xml"))!;
+		
         #endregion
     }
 }

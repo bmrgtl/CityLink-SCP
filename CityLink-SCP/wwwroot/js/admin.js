@@ -253,7 +253,21 @@ $(function () {
         });
     }
 
+    $("#deleteXmlBtn").on("click", function () { deleteXmlConfig() });
 
+    $(document).on("click", ".delete-config-btn", function () { deleteXmlConfig() });
+
+    function deleteXmlConfig() {
+       var id = $(this).data("id"), title = $(this).data("label") || "this xml config";
+        if (!confirm("Delete \"" + title + "\"? This cannot be undone.")) return;
+        var $btn = $(this).prop("disabled", true);
+        $.ajax({
+            url: "/Admin/DeleteXmlConfig", type: "POST",
+            data: { id: id, __RequestVerificationToken: csrf() },
+            success: function () { $btn.closest("tr").fadeOut(300, function () { $(this).remove(); }); },
+            error: function (xhr) { alert("Delete failed: " + (xhr.responseText || "Unknown error")); $btn.prop("disabled", false); }
+        });
+    }
     // ═══════════════════════════════════════════════════════
     //  Events Panel
     // ═══════════════════════════════════════════════════════
