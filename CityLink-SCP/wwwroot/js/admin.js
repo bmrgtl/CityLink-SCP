@@ -13,7 +13,6 @@ $(function () {
         $("body").css("overflow", "");
     }
 
-    // Backdrop click — works on static overlay shells
     $(document).on("click", ".xml-overlay", function (e) {
         if ($(e.target).is(".xml-overlay")) closePanel($(this).attr("id"));
     });
@@ -57,6 +56,10 @@ $(function () {
     function errMsg(xhr) {
         try { return JSON.parse(xhr.responseText).error || xhr.responseText; }
         catch (e) { return xhr.responseText || xhr.statusText || "Unknown error"; }
+    }
+
+    function resubmit(formId) {
+        $("#" + formId).trigger("submit");
     }
 
     // ═══════════════════════════════════════════════════════
@@ -145,7 +148,7 @@ $(function () {
             $.ajax({
                 url: "/Admin/" + endpoint + "?" + params,
                 method: "GET",
-                success: function (html) { $c.html(html).css("opacity", "1");  },
+                success: function (html) { $c.html(html).css("opacity", "1"); applyAllTables(); },
                 error: function (xhr) { $c.css("opacity", "1"); alert("Search failed: " + errMsg(xhr)); }
             });
         });
@@ -220,7 +223,6 @@ $(function () {
 
     $(document).on("click", "#closeXmlPanel", function () { closePanel("xml-editor-overlay"); });
 
-    // Load Template — populates textarea, not a form submit
     $(document).on("click", "#loadTemplateBtn", function () {
         var type = $("#xmlTypeSelect").val();
         if (!type) { showStatus("xml-status", "Select a config type first.", "error"); return; }
@@ -231,7 +233,6 @@ $(function () {
         });
     });
 
-    // Preview — opens preview overlay
     $(document).on("click", "#previewXmlBtn", function () {
         var id = $("#xml-editor-overlay input[name='ExistingId']").val();
         if (!id) { showStatus("xml-status", "Save the config first, or preview an existing row.", "info"); return; }
@@ -256,8 +257,9 @@ $(function () {
         var $btn = $form.find("#saveXmlBtn").prop("disabled", true).text("Saving…");
         $.ajax({
             url: $form.attr("action"), type: "POST", data: $form.serialize(),
-            success: function (html) {
-                $("#xml-configs-table-container").html(html);
+            success: function () {
+                closePanel("xml-editor-overlay");
+                resubmit("xml-search-form");
                 showStatus("xml-status", "Saved.", "success");
                 $btn.prop("disabled", false).text("✓ Save Version");
             },
@@ -275,7 +277,7 @@ $(function () {
         $.ajax({
             url: "/Admin/ActivateVersion", type: "POST",
             data: { recordId: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#xml-configs-table-container").html(html); },
+            success: function () { resubmit("xml-search-form"); },
             error: function (xhr) { alert("Error: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -287,7 +289,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteXmlConfig", type: "POST",
             data: { id: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#xml-configs-table-container").html(html); },
+            success: function () { resubmit("xml-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -330,7 +332,7 @@ $(function () {
         var $btn = $form.find(".panel-save-btn").prop("disabled", true);
         $.ajax({
             url: $form.attr("action"), type: "POST", data: $form.serialize(),
-            success: function (html) { $("#events-table-container").html(html); closePanel("event-overlay"); },
+            success: function () { closePanel("event-overlay"); resubmit("events-search-form"); },
             error: function (xhr) { showStatus("event-status", errMsg(xhr), "error"); $btn.prop("disabled", false); }
         });
     });
@@ -342,7 +344,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteEvent", type: "POST",
             data: { id: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#events-table-container").html(html); },
+            success: function () { resubmit("events-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -385,7 +387,7 @@ $(function () {
         var $btn = $form.find(".panel-save-btn").prop("disabled", true);
         $.ajax({
             url: $form.attr("action"), type: "POST", data: $form.serialize(),
-            success: function (html) { $("#services-table-container").html(html); closePanel("service-overlay"); },
+            success: function () { closePanel("service-overlay"); resubmit("services-search-form"); },
             error: function (xhr) { showStatus("service-status", errMsg(xhr), "error"); $btn.prop("disabled", false); }
         });
     });
@@ -397,7 +399,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteService", type: "POST",
             data: { id: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#services-table-container").html(html); },
+            success: function () { resubmit("services-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -432,7 +434,7 @@ $(function () {
         var $btn = $form.find(".panel-save-btn").prop("disabled", true);
         $.ajax({
             url: $form.attr("action"), type: "POST", data: $form.serialize(),
-            success: function (html) { $("#feedback-table-container").html(html); closePanel("feedback-overlay"); },
+            success: function () { closePanel("feedback-overlay"); resubmit("feedback-search-form"); },
             error: function (xhr) { showStatus("feedback-status", errMsg(xhr), "error"); $btn.prop("disabled", false); }
         });
     });
@@ -444,7 +446,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteFeedback", type: "POST",
             data: { id: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#feedback-table-container").html(html); },
+            success: function () { resubmit("feedback-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -487,7 +489,7 @@ $(function () {
         var $btn = $form.find(".panel-save-btn").prop("disabled", true);
         $.ajax({
             url: $form.attr("action"), type: "POST", data: $form.serialize(),
-            success: function (html) { $("#users-table-container").html(html); closePanel("user-overlay"); },
+            success: function () { closePanel("user-overlay"); resubmit("users-search-form"); },
             error: function (xhr) { showStatus("user-status", errMsg(xhr), "error"); $btn.prop("disabled", false); }
         });
     });
@@ -499,7 +501,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteUser", type: "POST",
             data: { id: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#users-table-container").html(html); },
+            success: function () { resubmit("users-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -542,7 +544,7 @@ $(function () {
         var $btn = $form.find(".panel-save-btn").prop("disabled", true);
         $.ajax({
             url: $form.attr("action"), type: "POST", data: $form.serialize(),
-            success: function (html) { $("#staff-table-container").html(html); closePanel("staff-overlay"); },
+            success: function () { closePanel("staff-overlay"); resubmit("staff-search-form"); },
             error: function (xhr) { showStatus("staff-status", errMsg(xhr), "error"); $btn.prop("disabled", false); }
         });
     });
@@ -554,7 +556,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteStaff", type: "POST",
             data: { id: id, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#staff-table-container").html(html); },
+            success: function () { resubmit("staff-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -572,7 +574,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteEventRegistration", type: "POST",
             data: { userId: userId, eventId: eventId, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#regs-table-container").html(html); },
+            success: function () { resubmit("regs-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
@@ -590,7 +592,7 @@ $(function () {
         $.ajax({
             url: "/Admin/DeleteServiceBooking", type: "POST",
             data: { userId: userId, serviceId: serviceId, __RequestVerificationToken: csrf() },
-            success: function (html) { $("#bookings-table-container").html(html); },
+            success: function () { resubmit("bookings-search-form"); },
             error: function (xhr) { alert("Delete failed: " + errMsg(xhr)); $btn.prop("disabled", false); }
         });
     });
