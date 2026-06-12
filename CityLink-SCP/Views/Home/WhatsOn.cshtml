@@ -1,9 +1,20 @@
 ﻿@using CityLink_SCP.PageModels
 @model IndexViewModel
+
+@{
+    int page = (int)(ViewData["Page"] ?? 1);
+    int totalPages = (int)(ViewData["TotalPages"] ?? 1);
+    int total = (int)(ViewData["Total"] ?? 0);
+    var search = ViewData["Search"]?.ToString();
+    var sort = ViewData["Sort"]?.ToString();
+}
+
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/whatson.css" />
 }
+
+
 
 @section Scripts {
     <script src="~/js/index.js"></script>
@@ -14,40 +25,95 @@
     </div>
 </section>
 
-<section id="events" class="section">
+<section id="newsgrid" class="section">
     <div class="container">
-        <h2 class="news__heading">Other News</h2>
+        <p class="eyebrow">Community Events</p>
+        <h2 class="heading-lg">What's Happening</h2>
 
         <div class="searchsort">
-            <form method="get" asp-controller="Home" asp-action="WhatsOn">
+            <form method="get" asp-controller="Home" asp-action="WhatsOn" asp-fragment="newsgrid">
                 <div class="input-box">
-                    <input class="input-field" name="search" placeholder="Search events…"
-                           value="@ViewData["Search"]" />
+                    <input class="input-field" name="search" placeholder="Search events…" value="@search" />
                 </div>
                 <div class="sort-select">
                     @{
-                        var currentSort = ViewData["Sort"]?.ToString();
+                        var s = sort;
                     }
                     <select class="input-field" name="sort">
-                        <option value="" selected="@(currentSort == null)">Sort By</option>
-                        <option value="alphabetical" selected="@(currentSort == "alphabetical")">A – Z</option>
-                        <option value="date" selected="@(currentSort == "date")">Date</option>
+                        <option value="" selected="@(s == null)">Sort By</option>
+                        <option value="date" selected="@(s == "date")">Upcoming First</option>
+                        <option value="alphabetical" selected="@(s == "alphabetical")">A – Z</option>
+                        <option value="cost-asc" selected="@(s == "cost-asc")">Cost: Low–High</option>
+                        <option value="cost-desc" selected="@(s == "cost-desc")">Cost: High–Low</option>
                     </select>
                 </div>
                 <div class="input-submit">
-                    <button class="submit-btn" type="submit">Apply</button>
+                    <button class="submit-btn" type="submit">Search</button>
                 </div>
-                @if (!string.IsNullOrEmpty(ViewData["Search"]?.ToString()))
+                @if (!string.IsNullOrEmpty(search))
                 {
                     <div class="input-submit" style="margin-left:0.5rem;">
-                        <a asp-action="WhatsOn" class="submit-btn" style="background:var(--muted,#666);">Clear</a>
+                        <a asp-action="Events" class="submit-btn" style="background:var(--text-muted,#666);">Clear</a>
                     </div>
                 }
             </form>
         </div>
-     
-            <partial name="@Model.Events.PartialName" model="@Model.Events" />
+
+        @if (!string.IsNullOrEmpty(search))
+        {
+            <p class="ann__text" style="font-size:0.875rem;color:var(--text-muted);">
+                @total result@(total == 1 ? "" : "s") for &ldquo;@search&rdquo;
+            </p>
+        }
+        @if (Model.EventsList != null && Model.EventsList.Any())
+        {
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;">
+                @foreach (var ev in Model.EventsList)
+                {
+                    <article class="card">
+                        <div class="placeholder placeholder--card"></div>
+                        <div class="card__body">
+                            <h3 class="card__title">@ev.Title</h3>
+                            <p class="card__text" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">
+                                @ev.Location &middot; @ev.Start_Date_Time.ToString("dd MMM yyyy")
+                            </p>
+                            <p class="card__text">@(ev.Description.Length > 100 ? ev.Description[..100] + "…" : ev.Description)</p>
+
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
+                                <span style="font-size:0.8rem;color:var(--text-muted);">
+                                    $@ev.Cost.ToString("0.00") &middot;
+                                    @ev.Max_Capcity spots
+                                </span> <a asp-controller="Home" asp-action="BookEvent" asp-route-id="@ev.Id" class="btn btn--outline">Register</a>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <div style="display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:2rem;">
+                    @if (page > 1)
+                    {
+                        <a href="@Url.Action("WhatsOn", new { page = page - 1, search, sort })#newsgrid" class="btn btn--outline">&#8592; Previous</a>
+                    }
+                    <span style="font-size:0.875rem;color:var(--text-muted);">Page @(page) of @(totalPages)</span>
+                    @if (page < totalPages)
+                    {
+                        <a href="@Url.Action("WhatsOn", new { page = page + 1, search, sort })#newsgrid" class="btn btn--outline">Next &#8594;</a>
+                    }
+                </div>
+            }
+        }
+
+        else
+        {
+            <p class="ann__text" style="color:var(--text-muted);margin-top:2rem;"> No events found@(string.IsNullOrEmpty(search) ? "." : $" matching \"{search}\".") </p>
+        }
     </div>
 </section>
+ 
+    
+
 
 

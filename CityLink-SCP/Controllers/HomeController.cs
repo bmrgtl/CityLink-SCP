@@ -124,24 +124,45 @@ namespace CityLink_SCP.Controllers
 
         //  Public pages 
 
-        public IActionResult WhatsOn(string? search, string? sort)
+        public IActionResult WhatsOn(string? search, string? sort, int page = 1)
         {
+            const int pageSize = 6;
+
             var vm = GetIndexViewModel();
+            vm.Announcements.Items = vm.Announcements.Items.Take(1).ToList(); // Show only the most recent announcement on the homepage
 
             var query = _dbService._context.Events.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(e => e.Title.Contains(search) || e.Description.Contains(search) || e.Location.Contains(search));
-            query = sort == "date"
-                ? query.OrderBy(e => e.Start_Date_Time)
-                : sort == "alphabetical"
-                    ? query.OrderBy(e => e.Title)
-                    : query.OrderByDescending(e => e.Start_Date_Time);
 
-            var filtered = query.ToList().ToCardViewModel();
-            if (filtered.Events.Any()) vm.Events = filtered;
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(e =>
+                    e.Title.Contains(search) ||
+                    e.Description.Contains(search) ||
+                    e.Location.Contains(search));
+            }
+
+            query = sort switch
+            {
+                "alphabetical" => query.OrderBy(e => e.Title),
+                "date" => query.OrderBy(e => e.Start_Date_Time),
+                "cost-asc" => query.OrderBy(e => e.Cost),
+                "cost-desc" => query.OrderByDescending(e => e.Cost),
+                _ => query.OrderByDescending(e => e.Start_Date_Time)
+            };
+
+            int total = query.Count();
+
+            vm.EventsList = query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
 
             ViewData["Search"] = search;
             ViewData["Sort"] = sort;
+            ViewData["Page"] = page;
+            ViewData["TotalPages"] = (int)Math.Ceiling(total / (double)pageSize);
+            ViewData["Total"] = total;
+
             return View(vm);
         }
 
