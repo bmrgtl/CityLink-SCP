@@ -14,12 +14,17 @@
         <table class="admin-table" id="servicesTable">
             <thead>
                 <tr>
-                    <th data-sort="Id"                  class="@SortClass("Id")">ID</th>
-                    <th data-sort="Title"               class="@SortClass("Title")">Title</th>
-                    <th data-sort="Location" class="@SortClass("Location")">Location</th>
-                    <th data-sort="Cost"                class="@SortClass("Cost")">Cost / hr</th>
-                    <th data-sort="Available_Start_Time" class="@SortClass("Available_Start_Time")">Available</th>
-                    <th data-sort="StaffName" class="@SortClass("StaffName")">Staff</th>
+                    <th data-hide-priority="1"
+                        data-sort="Id"          class="@SortClass("Id")">ID</th>
+                    <th data-sort="Title"       class="@SortClass("Title")">Title</th>
+                    <th data-hide-priority="5"
+                        data-sort="Location"    class="@SortClass("Location")">Location</th>
+                    <th data-hide-priority="3"
+                        data-sort="Cost"        class="@SortClass("Cost")">Cost / hr</th>
+                    <th data-hide-priority="4"
+                        data-sort="Available_Start_Time" class="@SortClass("Available_Start_Time")">Available</th>
+                    <th data-hide-priority="2"
+                        data-sort="StaffName"   class="@SortClass("StaffName")">Staff</th>
                     <th></th>
                 </tr>
             </thead>

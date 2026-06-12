@@ -13,12 +13,16 @@
         <table class="admin-table" id="xmlConfigsTable">
             <thead>
                 <tr>
-                    <th data-sort="Id"         class="@SortClass("Id")">ID</th>
-                    <th data-sort="Type"       class="@SortClass("Type")">Type</th>
-                    <th data-sort="Label"      class="@SortClass("Label")">Label</th>
-                    <th data-sort="UploadedAt" class="@SortClass("UploadedAt")">Uploaded</th>
-                    <th data-sort="IsActive"   class="@SortClass("IsActive")">Status</th>
-                    <th></th>
+                    <th data-hide-priority="3" 
+                        data-sort="Id"          class="@SortClass("Id")">ID</th>
+                    <th data-hide-priority="2" 
+                        data-sort="Type"        class="@SortClass("Type")">Type</th>
+                    <th data-sort="Label"       class="@SortClass("Label")">Label</th>
+                    <th data-hide-priority="1" 
+                        data-sort="UploadedAt"  class="@SortClass("UploadedAt")">Uploaded</th>
+                    <th data-hide-priority="4" 
+                        data-sort="IsActive"    class="@SortClass("IsActive")">Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

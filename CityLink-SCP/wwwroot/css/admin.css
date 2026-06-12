@@ -654,22 +654,16 @@
 
 .admin-tab-nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 0;
     margin-bottom: 1.75rem;
-    border-bottom: 2px solid var(--mist);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
 }
-
-.admin-tab-nav::-webkit-scrollbar { display: none; }
 
 .admin-tab-btn {
     flex-shrink: 0;
     background: none;
     border: none;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    border-bottom: 2px solid var(--mist);
     padding: 0.65rem 1.15rem;
     font-family: var(--font-body);
     font-size: 0.875rem;

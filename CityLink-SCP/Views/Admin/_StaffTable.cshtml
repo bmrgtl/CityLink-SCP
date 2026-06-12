@@ -14,10 +14,13 @@
         <table class="admin-table" id="staffTable">
             <thead>
                 <tr>
-                    <th data-sort="Id"       class="@SortClass("Id")">ID</th>
+                    <th data-hide-priority="1" 
+                        data-sort="Id"       class="@SortClass("Id")">ID</th>
                     <th data-sort="LastName" class="@SortClass("LastName")">Name</th>
-                    <th data-sort="Email"    class="@SortClass("Email")">Email</th>
-                    <th data-sort="PhoneNumber" class="@SortClass("PhoneNumber")">Phone</th>
+                    <th data-hide-priority="2" 
+                        data-sort="Email" class="@SortClass("Email")">Email</th>
+                    <th data-hide-priority="3" 
+                        data-sort="PhoneNumber" class="@SortClass("PhoneNumber")">Phone</th>
                     <th data-sort="JobTitle" class="@SortClass("JobTitle")">Role</th>
                     <th></th>
                 </tr>

@@ -60,6 +60,45 @@ $(function () {
     }
 
     // ═══════════════════════════════════════════════════════
+    //  Responsive column hiding
+    // ═══════════════════════════════════════════════════════
+
+    function applyTablePriorities(table) {
+        var $table = $(table);
+        var $headerRow = $table.find("thead tr");
+        if (!$headerRow.length) return;
+
+        var hideableCols = [];
+        $headerRow.find("th[data-hide-priority]").each(function () {
+            hideableCols.push({
+                index: $(this).index(),
+                priority: parseInt($(this).data("hide-priority"), 10)
+            });
+        });
+        hideableCols.sort(function (a, b) { return a.priority - b.priority; });
+
+        function setColVisible(colIndex, visible) {
+            $table.find("tr > *:nth-child(" + (colIndex + 1) + ")").css("display", visible ? "" : "none");
+        }
+
+        function isOverflowing() {
+            return table.scrollWidth > $table.parent().innerWidth() + 1;
+        }
+
+        $.each(hideableCols, function (_, col) { setColVisible(col.index, true); });
+        $.each(hideableCols, function (_, col) {
+            if (!isOverflowing()) return false;
+            setColVisible(col.index, false);
+        });
+    }
+
+    function applyAllTables() {
+        $("table.admin-table").each(function () { applyTablePriorities(this); });
+    }
+
+    $(window).on("resize", applyAllTables);
+
+    // ═══════════════════════════════════════════════════════
     //  Table header sorting
     // ═══════════════════════════════════════════════════════
 
@@ -106,7 +145,7 @@ $(function () {
             $.ajax({
                 url: "/Admin/" + endpoint + "?" + params,
                 method: "GET",
-                success: function (html) { $c.html(html).css("opacity", "1"); },
+                success: function (html) { $c.html(html).css("opacity", "1"); applyAllTables(); },
                 error: function (xhr) { $c.css("opacity", "1"); alert("Search failed: " + errMsg(xhr)); }
             });
         });
@@ -148,7 +187,7 @@ $(function () {
         $("#tab-" + tab).show();
         $.each(tabLoaders[tab], function (_, cfg) {
             var $c = $("#" + cfg.id).empty().css("opacity", "0.45");
-            $.get(cfg.url, function (html) { $c.html(html).css("opacity", "1"); })
+            $.get(cfg.url, function (html) { $c.html(html).css("opacity", "1"); applyAllTables(); })
              .fail(function (xhr) { $c.css("opacity", "1").html('<p style="color:#c0392b;padding:1rem">Failed to load: ' + errMsg(xhr) + "</p>"); });
         });
     }
