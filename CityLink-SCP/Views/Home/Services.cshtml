@@ -1,17 +1,21 @@
 @using CityLink_SCP.DbModels
 @model List<Service>
 
-@{
-    int page       = (int)(ViewData["Page"] ?? 1);
-    int totalPages = (int)(ViewData["TotalPages"] ?? 1);
-    int total      = (int)(ViewData["Total"] ?? 0);
-    var search     = ViewData["Search"]?.ToString();
-    var sort       = ViewData["Sort"]?.ToString();
-}
-
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/services.css" />
+}
+
+@section Scripts {
+    <script src="~/js/public-search.js"></script>
+    <script>
+        $(function () {
+            wirePublicSearch(
+                "services-search-form", "services-cards-container", "SearchPublicServices",
+                "svcClearBtn", "svc-sortby-select", "svc-sortdir", "svc-sortby-hidden", "svc-sortorder-hidden"
+            );
+        });
+    </script>
 }
 
 <section class="section-white">
@@ -47,7 +51,6 @@
                                 <input class="input-field" name="email" placeholder="Email" type="email" required />
                             </div>
                         </div>
-
                         <div class="input-box">
                             <textarea rows="5" class="input-field" name="message" placeholder="Message" required></textarea>
                         </div>
@@ -66,84 +69,46 @@
         <p class="ann__eyebrow">What We Offer</p>
         <h3 class="heading-md">Available Services</h3>
 
-        <div class="searchsort">
-            <form method="get" asp-controller="Home" asp-action="Services">
-                <div class="search-input-box">
-                    <input class="search-input-field" name="search" placeholder="Search services…" value="@search" />
+        <form class="table-search" id="services-search-form">
+            <input type="hidden" name="Page"      value="1" />
+            <input type="hidden" name="Size"      value="12" />
+            <input type="hidden" name="SortBy"    id="svc-sortby-hidden"    value="Title" />
+            <input type="hidden" name="SortOrder" id="svc-sortorder-hidden" value="asc" />
+            <div class="table-search__row">
+                <div class="table-search__field table-search__field--lg">
+                    <label class="table-search__label" for="svc-term">Search</label>
+                    <input class="table-search__input" id="svc-term" name="SearchTerm" placeholder="Title, description or location…" />
                 </div>
-                <div class="sort-select">
-                    @{ var s = sort; }
-                    <select class="search-input-field" name="sort">
-                        <option value=""            selected="@(s == null)">Sort By</option>
-                        <option value="alphabetical"selected="@(s == "alphabetical")">A – Z</option>
-                        <option value="cost-asc"    selected="@(s == "cost-asc")">Cost: Low–High</option>
-                        <option value="cost-desc"   selected="@(s == "cost-desc")">Cost: High–Low</option>
-                    </select>
+                <div class="table-search__field">
+                    <label class="table-search__label" for="svc-from">Available From</label>
+                    <input type="time" class="table-search__input" id="svc-from" name="From" />
                 </div>
-                <div class="search-input-submit">
-                    <button class="search-submit-btn" type="submit">Apply</button>
+                <div class="table-search__field">
+                    <label class="table-search__label" for="svc-to">Available Until</label>
+                    <input type="time" class="table-search__input" id="svc-to" name="To" />
                 </div>
-                @if (!string.IsNullOrEmpty(search))
-                {
-                    <div class="search-input-submit" style="margin-left:0.5rem;">
-                        <a asp-action="Services" class="search-submit-btn" style="background:var(--text-muted,#666);">Clear</a>
+                <div class="table-search__field" style="max-width:fit-content;">
+                    <label class="table-search__label" for="svc-sortby-select">Sort By</label>
+                    <div style="display:flex;gap:0.4rem;">
+                        <select class="table-search__input table-search__sort-select" id="svc-sortby-select" style="flex:1;">
+                            <option value="Title">Title (A–Z)</option>
+                            <option value="Location">Location</option>
+                            <option value="Cost">Cost</option>
+                            <option value="Available_Start_Time">Available From</option>
+                        </select>
+                        <button type="button" class="btn--sort-dir" id="svc-sortdir" title="Toggle sort direction">&#9650;</button>
                     </div>
-                }
-            </form>
-        </div>
-
-        @if (!string.IsNullOrEmpty(search))
-        {
-            <p class="ann__text" style="font-size:0.875rem;color:var(--text-muted);">
-                @total result@(total == 1 ? "" : "s") for &ldquo;@search&rdquo;
-            </p>
-        }
-
-        @if (Model != null && Model.Any())
-        {
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;">
-                @foreach (var svc in Model)
-                {
-                    <article class="card">
-                        <div class="placeholder placeholder--card"></div>
-                        <div class="card__body">
-                            <h3 class="card__title">@svc.Title</h3>
-                            <p class="card__text" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">
-                                @svc.Location &middot; @svc.Available_Start_Time.ToString(@"hh\:mm")–@svc.Available_End_Time.ToString(@"hh\:mm")
-                            </p>
-                            <p class="card__text">@(svc.Description.Length > 100 ? svc.Description[..100] + "…" : svc.Description)</p>
-                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
-                                <span style="font-size:0.8rem;color:var(--text-muted);">$@svc.Cost.ToString("0.00")/hr</span>
-                                <a asp-controller="Home" asp-action="BookService" asp-route-id="@svc.Id" class="btn btn--outline">Book Now</a>
-                            </div>
-                        </div>
-                    </article>
-                }
-            </div>
-
-            @if (totalPages > 1)
-            {
-                <div style="display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:2rem;">
-                    @if (page > 1)
-                    {
-                        <a href="@Url.Action("Services", new { page = page - 1, search, sort })"
-                           class="btn btn--outline">&#8592; Previous</a>
-                    }
-                    <span style="font-size:0.875rem;color:var(--text-muted);">Page @(page) of @(totalPages)</span>
-                    @if (page < totalPages)
-                    {
-                        <a href="@Url.Action("Services", new { page = page + 1, search, sort })"
-                           class="btn btn--outline">Next &#8594;</a>
-                    }
                 </div>
-            }
-        }
-        else
-        {
-            <p class="ann__text" style="color:var(--text-muted);margin-top:2rem;">
-                No services found@(string.IsNullOrEmpty(search) ? "." : $" matching \"{search}\".")
-            </p>
-        }
+            </div>
+            <div class="table-search__actions">
+                <button type="submit" class="btn btn--outline">Search</button>
+                <button type="button" class="btn--ghost" id="svcClearBtn" style="display:none">Clear</button>
+            </div>
+        </form>
+
+        <div id="services-cards-container">
+            <partial name="_ServiceCardGrid" model="@Model" />
+        </div>
     </div>
 </section>
 

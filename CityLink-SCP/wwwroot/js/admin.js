@@ -145,7 +145,7 @@ $(function () {
             $.ajax({
                 url: "/Admin/" + endpoint + "?" + params,
                 method: "GET",
-                success: function (html) { $c.html(html).css("opacity", "1"); applyAllTables(); },
+                success: function (html) { $c.html(html).css("opacity", "1");  },
                 error: function (xhr) { $c.css("opacity", "1"); alert("Search failed: " + errMsg(xhr)); }
             });
         });

@@ -21,7 +21,7 @@
     --shadow-hover: 0 12px 40px rgba(27, 58, 47, 0.18);
     --ease: 0.25s ease;
     --max-width: 1180px;
-    --padding: 1.25rem; /* side padding — increases at larger breakpoints */
+    --padding: 1.25rem; /* side padding â€” increases at larger breakpoints */
 }
 
 
@@ -44,6 +44,13 @@ body {
     background: var(--white);
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
 }
 
 a {
@@ -149,7 +156,7 @@ button {
     opacity: 0.8;
 }
 
-/* Desktop links — hidden on mobile, shown via media query */
+/* Desktop links â€” hidden on mobile, shown via media query */
 .nav_links {
     display: none;
     align-items: center;
@@ -330,6 +337,111 @@ button {
     .nav__mobile { display: none }
     .footer__grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
 
+}
+
+/* ----------------------------------------------------------------
+   Public search form (Events / Services pages)
+---------------------------------------------------------------- */
+
+.table-search {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem 0.75rem;
+    background: var(--cream);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-md);
+}
+
+.table-search__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.table-search__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1 1 160px;    /* text inputs */
+}
+
+.table-search__field--lg   { flex: 2 1 200px; }  /* SearchTerm, Location */
+.table-search__field--sm   { flex: 0 0 85px;  }  /* cost range, tickets â€” fixed, don't shrink */
+.table-search__field--date { flex: 1 1 185px; }  /* datetime-local needs more room */
+
+.table-search__label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.table-search__input {
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    background: var(--white);
+    outline: none;
+    width: 100%;
+    transition: border-color var(--ease);
+}
+
+.table-search__input:focus { border-color: var(--green); }
+
+.table-search__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.table-search__sort-select { flex: 0 1 auto; width: auto; }
+
+.btn--sort-dir {
+    padding: 0.45rem 0.65rem;
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1;
+    transition: background var(--ease);
+}
+
+.btn--sort-dir:hover { background: var(--cream); }
+
+.btn--ghost {
+    background: none;
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: background var(--ease);
+}
+
+.btn--ghost:hover { background: var(--cream); }
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.public-pager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
 }
 
 

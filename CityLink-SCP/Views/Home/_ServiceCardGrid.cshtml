@@ -1,0 +1,44 @@
+@using CityLink_SCP.DbModels
+@model List<Service>
+@{
+    int  page    = (int)(ViewData["Page"]    ?? 1);
+    bool hasMore = (bool)(ViewData["HasMore"] ?? false);
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="cards-grid">
+        @foreach (var svc in Model)
+        {
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">@svc.Title</h3>
+                    <p class="card__text" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">
+                        @svc.Location &middot; @svc.Available_Start_Time.ToString(@"hh\:mm")–@svc.Available_End_Time.ToString(@"hh\:mm")
+                    </p>
+                    <p class="card__text">@(svc.Description.Length > 100 ? svc.Description[..100] + "…" : svc.Description)</p>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
+                        <span style="font-size:0.8rem;color:var(--text-muted);">$@svc.Cost.ToString("0.00")/hr</span>
+                        <a asp-controller="Home" asp-action="BookService" asp-route-id="@svc.Id" class="btn btn--outline">Book Now</a>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+    <div class="public-pager">
+        @if (page > 1)
+        {
+            <button type="button" class="btn btn--outline pager-btn" data-page="@(page - 1)">&#8592; Prev</button>
+        }
+        <span>Page @(page)</span>
+        @if (hasMore)
+        {
+            <button type="button" class="btn btn--outline pager-btn" data-page="@(page + 1)">Next &#8594;</button>
+        }
+    </div>
+}
+else
+{
+    <p class="ann__text" style="color:var(--text-muted);margin-top:2rem;">No services match your search.</p>
+}

@@ -1,0 +1,44 @@
+@using CityLink_SCP.DbModels
+@model List<Event>
+@{
+    int  page    = (int)(ViewData["Page"]    ?? 1);
+    bool hasMore = (bool)(ViewData["HasMore"] ?? false);
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="cards-grid">
+        @foreach (var ev in Model)
+        {
+            <article class="card">
+                <div class="placeholder placeholder--card"></div>
+                <div class="card__body">
+                    <h3 class="card__title">@ev.Title</h3>
+                    <p class="card__text" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">
+                        @ev.Location &middot; @ev.Start_Date_Time.ToString("dd MMM yyyy")
+                    </p>
+                    <p class="card__text">@(ev.Description.Length > 100 ? ev.Description[..100] + "…" : ev.Description)</p>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
+                        <span style="font-size:0.8rem;color:var(--text-muted);">$@ev.Cost.ToString("0.00") &middot; @ev.Max_Capcity spots</span>
+                        <a asp-controller="Home" asp-action="BookEvent" asp-route-id="@ev.Id" class="btn btn--outline">Register</a>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+    <div class="public-pager">
+        @if (page > 1)
+        {
+            <button type="button" class="btn btn--outline pager-btn" data-page="@(page - 1)">&#8592; Prev</button>
+        }
+        <span>Page @(page)</span>
+        @if (hasMore)
+        {
+            <button type="button" class="btn btn--outline pager-btn" data-page="@(page + 1)">Next &#8594;</button>
+        }
+    </div>
+}
+else
+{
+    <p class="ann__text" style="color:var(--text-muted);margin-top:2rem;">No events match your search.</p>
+}
