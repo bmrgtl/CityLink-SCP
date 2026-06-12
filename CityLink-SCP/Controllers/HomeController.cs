@@ -148,15 +148,46 @@ namespace CityLink_SCP.Controllers
         [HttpGet]
         public IActionResult Events([ModelBinder(typeof(RestrictedQueryModelBinder))] EventQueryParams query)
         {
+            if (query.Size <= 0) query.Size = 12;
             var events = _dbService._context.Events.ApplyQuery(query).ToList();
+            SetPublicPagerViewData(query, events.Count == query.Size);
             return View("Events", events);
+        }
+
+        [HttpGet]
+        public IActionResult SearchPublicEvents([ModelBinder(typeof(RestrictedQueryModelBinder))] EventQueryParams query)
+        {
+            if (query.Size <= 0) query.Size = 12;
+            var events = _dbService._context.Events.ApplyQuery(query).ToList();
+            SetPublicPagerViewData(query, events.Count == query.Size);
+            return PartialView("_EventCardGrid", events);
         }
 
         [HttpGet]
         public IActionResult Services([ModelBinder(typeof(RestrictedQueryModelBinder))] ServiceQueryParams query)
         {
+            if (query.Size <= 0) query.Size = 12;
             var services = _dbService._context.Services.ApplyQuery(query).ToList();
+            SetPublicPagerViewData(query, services.Count == query.Size);
             return View("Services", services);
+        }
+
+        [HttpGet]
+        public IActionResult SearchPublicServices([ModelBinder(typeof(RestrictedQueryModelBinder))] ServiceQueryParams query)
+        {
+            if (query.Size <= 0) query.Size = 12;
+            var services = _dbService._context.Services.ApplyQuery(query).ToList();
+            SetPublicPagerViewData(query, services.Count == query.Size);
+            return PartialView("_ServiceCardGrid", services);
+        }
+
+        private void SetPublicPagerViewData(QueryParameters query, bool hasMore)
+        {
+            ViewData["Page"]      = query.Page;
+            ViewData["Size"]      = query.Size;
+            ViewData["HasMore"]   = hasMore;
+            ViewData["SortBy"]    = query.SortBy;
+            ViewData["SortOrder"] = query.SortOrder;
         }
 
         // GET: /Home/ContactUs

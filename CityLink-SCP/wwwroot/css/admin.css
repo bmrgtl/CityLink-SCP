@@ -340,6 +340,14 @@
         border-color: var(--placeholder);
     }
 
+#xml-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .xml-panel__toolbar {
     display: flex;
     gap: 1rem;

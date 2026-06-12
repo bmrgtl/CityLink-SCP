@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using CityLink_SCP.Database;
 using CityLink_SCP.DbModels;
-using CityLink_SCP.Extensions;
+using CityLink_SCP.Common;
 using System.Xml.Linq;
 using CityLink_SCP.PageModels;
 using System.Collections.ObjectModel;
@@ -162,11 +162,8 @@ public class XmlConfigService
     {
         var vmType = GetViewModelType(typeName);
         if (vmType == null) return string.Empty;
-        var instance = Activator.CreateInstance(vmType);
-        var serializer = new XmlSerializer(vmType);
-        using var sw = new StringWriter();
-        serializer.Serialize(sw, instance);
-        return XDocument.Parse(sw.ToString()).ToString(); // pretty-print
+        var xml = XmlTypeSerializer.ToXml(vmType);
+        return XDocument.Parse(xml).ToString(); // pretty-print
     }
 
 	public static string GetFriendlyName(Type type)

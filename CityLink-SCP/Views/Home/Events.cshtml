@@ -1,17 +1,21 @@
 @using CityLink_SCP.DbModels
 @model List<Event>
 
-@{
-    int page       = (int)(ViewData["Page"] ?? 1);
-    int totalPages = (int)(ViewData["TotalPages"] ?? 1);
-    int total      = (int)(ViewData["Total"] ?? 0);
-    var search     = ViewData["Search"]?.ToString();
-    var sort       = ViewData["Sort"]?.ToString();
-}
-
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/whatson.css" />
+}
+
+@section Scripts {
+    <script src="~/js/public-search.js"></script>
+    <script>
+        $(function () {
+            wirePublicSearch(
+                "events-search-form", "events-cards-container", "SearchPublicEvents",
+                "evClearBtn", "ev-sortby-select", "ev-sortdir", "ev-sortby-hidden", "ev-sortorder-hidden"
+            );
+        });
+    </script>
 }
 
 <section class="section">
@@ -19,84 +23,65 @@
         <p class="eyebrow">Community Events</p>
         <h2 class="heading-lg">What's Happening</h2>
 
-        <div class="searchsort">
-            <form method="get" asp-controller="Home" asp-action="Events">
-                <div class="input-box">
-                    <input class="input-field" name="search" placeholder="Search events…" value="@search" />
+        <form class="table-search" id="events-search-form">
+            <input type="hidden" name="Page"      value="1" />
+            <input type="hidden" name="Size"      value="12" />
+            <input type="hidden" name="SortBy"    id="ev-sortby-hidden"    value="Start_Date_Time" />
+            <input type="hidden" name="SortOrder" id="ev-sortorder-hidden" value="asc" />
+            <div class="table-search__row">
+                <div class="table-search__field table-search__field--lg">
+                    <label class="table-search__label" for="ev-term">Search</label>
+                    <input class="table-search__input" id="ev-term" name="SearchTerm" placeholder="Title or description…" />
                 </div>
-                <div class="sort-select">
-                    @{ var s = sort; }
-                    <select class="input-field" name="sort">
-                        <option value=""            selected="@(s == null)">Sort By</option>
-                        <option value="date"        selected="@(s == "date")">Upcoming First</option>
-                        <option value="alphabetical"selected="@(s == "alphabetical")">A – Z</option>
-                        <option value="cost-asc"    selected="@(s == "cost-asc")">Cost: Low–High</option>
-                        <option value="cost-desc"   selected="@(s == "cost-desc")">Cost: High–Low</option>
+                <div class="table-search__field table-search__field--lg">
+                    <label class="table-search__label" for="ev-location">Location</label>
+                    <input class="table-search__input" id="ev-location" name="Location" placeholder="e.g. City Square" />
+                </div>
+                <div class="table-search__field table-search__field--sm">
+                    <label class="table-search__label" for="ev-mincost">Min $</label>
+                    <input type="number" class="table-search__input" id="ev-mincost" name="MinCost" min="0" step="0.01" placeholder="0.00" />
+                </div>
+                <div class="table-search__field table-search__field--sm">
+                    <label class="table-search__label" for="ev-maxcost">Max $</label>
+                    <input type="number" class="table-search__input" id="ev-maxcost" name="MaxCost" min="0" step="0.01" placeholder="0.00" />
+                </div>
+                <div class="table-search__field table-search__field--date">
+                    <label class="table-search__label" for="ev-from">From</label>
+                    <input type="datetime-local" class="table-search__input" id="ev-from" name="From" />
+                </div>
+                <div class="table-search__field table-search__field--date">
+                    <label class="table-search__label" for="ev-to">To</label>
+                    <input type="datetime-local" class="table-search__input" id="ev-to" name="To" />
+                </div>
+                <div class="table-search__field table-search__field--sm">
+                    <label class="table-search__label" for="ev-avail">Tickets</label>
+                    <select class="table-search__input" id="ev-avail" name="TicketsAvaliable">
+                        <option value="">Any</option>
+                        <option value="true">Available</option>
                     </select>
                 </div>
-                <div class="input-submit">
-                    <button class="submit-btn" type="submit">Search</button>
-                </div>
-                @if (!string.IsNullOrEmpty(search))
-                {
-                    <div class="input-submit" style="margin-left:0.5rem;">
-                        <a asp-action="Events" class="submit-btn" style="background:var(--text-muted,#666);">Clear</a>
+                <div class="table-search__field" style="max-width:fit-content;">
+                    <label class="table-search__label" for="ev-sortby-select">Sort By</label>
+                    <div style="display:flex;gap:0.4rem;">
+                        <select class="table-search__input table-search__sort-select" id="ev-sortby-select" style="flex:1;">
+                            <option value="Start_Date_Time">Date</option>
+                            <option value="Title">Title (A–Z)</option>
+                            <option value="Location">Location</option>
+                            <option value="Cost">Cost</option>
+                            <option value="Max_Capcity">Capacity</option>
+                        </select>
+                        <button type="button" class="btn--sort-dir" id="ev-sortdir" title="Toggle sort direction">&#9650;</button>
                     </div>
-                }
-            </form>
-        </div>
-
-        @if (!string.IsNullOrEmpty(search))
-        {
-            <p class="ann__text" style="font-size:0.875rem;color:var(--text-muted);">
-                @total result@(total == 1 ? "" : "s") for &ldquo;@search&rdquo;
-            </p>
-        }
-
-        @if (Model != null && Model.Any())
-        {
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;">
-                @foreach (var ev in Model)
-                {
-                    <article class="card">
-                        <div class="placeholder placeholder--card"></div>
-                        <div class="card__body">
-                            <h3 class="card__title">@ev.Title</h3>
-                            <p class="card__text" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">
-                                @ev.Location &middot; @ev.Start_Date_Time.ToString("dd MMM yyyy")
-                            </p>
-                            <p class="card__text">@(ev.Description.Length > 100 ? ev.Description[..100] + "…" : ev.Description)</p>
-                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;">
-                                <span style="font-size:0.8rem;color:var(--text-muted);">$@ev.Cost.ToString("0.00") &middot; @ev.Max_Capcity spots</span>
-                                <a asp-controller="Home" asp-action="BookEvent" asp-route-id="@ev.Id" class="btn btn--outline">Register</a>
-                            </div>
-                        </div>
-                    </article>
-                }
-            </div>
-
-            @if (totalPages > 1)
-            {
-                <div style="display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:2rem;">
-                    @if (page > 1)
-                    {
-                        <a href="@Url.Action("Events", new { page = page - 1, search, sort })"
-                           class="btn btn--outline">&#8592; Previous</a>
-                    }
-                    <span style="font-size:0.875rem;color:var(--text-muted);">Page @(page) of @(totalPages)</span>
-                    @if (page < totalPages)
-                    {
-                        <a href="@Url.Action("Events", new { page = page + 1, search, sort })"
-                           class="btn btn--outline">Next &#8594;</a>
-                    }
                 </div>
-            }
-        }
-        else
-        {
-            <p class="ann__text" style="color:var(--text-muted);margin-top:2rem;">
-                No events found@(string.IsNullOrEmpty(search) ? "." : $" matching \"{search}\".")
-            </p>
-        }
+            </div>
+            <div class="table-search__actions">
+                <button type="submit" class="btn btn--outline">Search</button>
+                <button type="button" class="btn--ghost" id="evClearBtn" style="display:none">Clear</button>
+            </div>
+        </form>
+
+        <div id="events-cards-container">
+            <partial name="_EventCardGrid" model="@Model" />
+        </div>
     </div>
 </section>
