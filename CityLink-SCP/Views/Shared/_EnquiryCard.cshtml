@@ -49,7 +49,7 @@
             var el = document.getElementById('enquiry-result');
             el.textContent = res.message;
             el.style.background  = res.success ? 'rgba(45,122,58,0.1)' : 'rgba(192,57,43,0.08)';
-            el.style.color       = res.success ? 'var(--green,#2d7a3a)' : '#c0392b';
+                el.style.color       = res.success ? 'rgba(255, 255, 255, 0.7)' : '#c0392b';
             el.style.border      = res.success ? '1px solid rgba(45,122,58,0.25)' : '1px solid rgba(192,57,43,0.2)';
             el.style.display     = 'block';
             if (res.success) { form.reset(); form.style.display = 'none'; }
