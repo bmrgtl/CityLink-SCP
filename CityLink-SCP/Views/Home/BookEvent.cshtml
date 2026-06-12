@@ -24,6 +24,9 @@
         }
         else
         {
+            int spotsLeft = Model.Event.Max_Capcity - Model.Event.TotalAttendees;
+            bool soldOut  = spotsLeft <= 0;
+
             <h2 class="news__heading">@Model.Event.Title</h2>
             <p class="ann__text">@Model.Event.Location | @Model.Event.Start_Date_Time.ToString("f")</p>
             <p class="ann__text">@Model.Event.Description</p>
@@ -52,16 +55,19 @@
                                 <input class="input-field" value="@Model.User?.PhoneNumber" placeholder="Mobile Number" readonly />
                             </div>
 
-                            <div class="datetime-row">
-                                <div class="input-box">
-                                    <label class="ann__text">Number of Tickets</label>
+                            @if (!soldOut)
+                            {
+                                <div class="datetime-row">
+                                    <div class="input-box">
+                                        <label class="ann__text">Number of Tickets</label>
+                                    </div>
+                                    <div class="input-box">
+                                        <input name="numberOfAttendees" class="input-field"
+                                               style="width:30%;text-align:center;"
+                                               type="number" value="1" min="1" max="@spotsLeft" step="1" required />
+                                    </div>
                                 </div>
-                                <div class="input-box">
-                                    <input name="numberOfAttendees" class="input-field"
-                                           style="width:30%;text-align:center;"
-                                           type="number" value="1" min="1" max="@Model.Event.Max_Capcity" step="1" required />
-                                </div>
-                            </div>
+                            }
 
                             @if (Model.User == null)
                             {
@@ -85,10 +91,20 @@
                                     <p>Capacity</p>
                                     <p>@Model.Event.Max_Capcity spots</p>
                                 </div>
+                                <div class="booking-details">
+                                    <p>Available</p>
+                                    <p @(soldOut ? "style=\"color:var(--red,#c00);font-weight:600;\"" : "")>
+                                        @(soldOut ? "Sold Out" : $"{spotsLeft} spot{(spotsLeft == 1 ? "" : "s")} left")
+                                    </p>
+                                </div>
                             </div>
 
                             <div class="input-submit">
-                                @if (Model.User != null)
+                                @if (soldOut)
+                                {
+                                    <button class="submit-btn" type="button" disabled style="opacity:0.5;cursor:not-allowed;">Sold Out</button>
+                                }
+                                else if (Model.User != null)
                                 {
                                     <button class="submit-btn" type="submit">Book Event</button>
                                 }

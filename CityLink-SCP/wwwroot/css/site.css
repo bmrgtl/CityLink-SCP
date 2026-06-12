@@ -339,7 +339,7 @@ button {
    Public search form (Events / Services pages)
 ---------------------------------------------------------------- */
 
-.table-search {
+.pub-search {
     margin-bottom: 1.5rem;
     padding: 1rem 1.5rem 0.75rem;
     background: var(--cream);
@@ -347,25 +347,26 @@ button {
     border-radius: var(--radius-md);
 }
 
-.table-search__row {
+.pub-search__row {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem 0.85rem;
     margin-bottom: 0.75rem;
 }
 
-.table-search__field {
+.pub-search__field {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    flex: 1 1 160px;    /* text inputs */
+    flex: 1 1 160px;
+    max-width: fit-content;
 }
 
-.table-search__field--lg   { flex: 2 1 200px; }  /* SearchTerm, Location */
-.table-search__field--sm   { flex: 0 0 85px;  }  /* cost range, tickets — fixed, don't shrink */
-.table-search__field--date { flex: 1 1 185px; }  /* datetime-local needs more room */
+.pub-search__field--lg   { flex: 2 1 200px; }
+.pub-search__field--sm   { flex: 0 0 85px;  }
+.pub-search__field--date { flex: 1 1 185px; }
 
-.table-search__label {
+.pub-search__label {
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -373,7 +374,7 @@ button {
     color: var(--text-muted);
 }
 
-.table-search__input {
+.pub-search__input {
     padding: 0.5rem 0.75rem;
     border: 1.5px solid var(--mist);
     border-radius: var(--radius-sm);
@@ -385,16 +386,16 @@ button {
     transition: border-color var(--ease);
 }
 
-.table-search__input:focus { border-color: var(--green); }
+.pub-search__input:focus { border-color: var(--green); }
 
-.table-search__actions {
+.pub-search__actions {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
 
-.table-search__sort-select { flex: 0 1 auto; width: auto; }
+.pub-search__sort-select { flex: 0 1 auto; width: auto; }
 
 .btn--sort-dir {
     padding: 0.45rem 0.65rem;

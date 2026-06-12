@@ -26,7 +26,7 @@ public static class QueryExtensions
             source = source.Where(e => e.Cost <= (double)query.MaxCost);
 
         if (query.TicketsAvaliable.HasValue && query.TicketsAvaliable.Value)
-            source = source.Where(e => e.EventRegistrations.Sum(er => er.NumberOfAttendees) < e.Max_Capcity);
+            source = source.Where(e => e.TotalAttendees < e.Max_Capcity);
 
         if (query.From.HasValue)
             source = source.Where(e => e.Start_Date_Time >= query.From);
@@ -44,7 +44,8 @@ public static class QueryExtensions
             "Cost"           => query.SortOrder == "asc" ? source.OrderBy(e => e.Cost)           : source.OrderByDescending(e => e.Cost),
             "Start_Date_Time"=> query.SortOrder == "asc" ? source.OrderBy(e => e.Start_Date_Time): source.OrderByDescending(e => e.Start_Date_Time),
             "End_Date_Time"  => query.SortOrder == "asc" ? source.OrderBy(e => e.End_Date_Time)  : source.OrderByDescending(e => e.End_Date_Time),
-            "Max_Capcity"    => query.SortOrder == "asc" ? source.OrderBy(e => e.Max_Capcity)    : source.OrderByDescending(e => e.Max_Capcity),
+            "Max_Capcity"      => query.SortOrder == "asc" ? source.OrderBy(e => e.Max_Capcity)      : source.OrderByDescending(e => e.Max_Capcity),
+            "TotalAttendees"   => query.SortOrder == "asc" ? source.OrderBy(e => e.TotalAttendees)   : source.OrderByDescending(e => e.TotalAttendees),
             "StaffName"      => query.SortOrder == "asc" ? source.OrderBy(e => e.Staff.LastName) : source.OrderByDescending(e => e.Staff.LastName),
             _                => query.SortOrder == "asc" ? source.OrderBy(e => e.Id)             : source.OrderByDescending(e => e.Id),
         };

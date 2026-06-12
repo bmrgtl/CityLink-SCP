@@ -72,6 +72,9 @@ namespace CityLink_SCP.Services
 				var ev = _context.Events.Find(eventId);
 				if (ev == null) return new DbActionResult<EventRegistration>(false, "Event not found");
 
+				if (ev.TotalAttendees + numOfAttendees > ev.Max_Capcity)
+					return new DbActionResult<EventRegistration>(false, $"Not enough capacity. {ev.Max_Capcity - ev.TotalAttendees} spot(s) remaining.");
+
 				var registration = new EventRegistration
 				{
 					UserId = userId,
@@ -80,11 +83,29 @@ namespace CityLink_SCP.Services
 					TotalCost = numOfAttendees * ev.Cost
 				};
 
+				ev.TotalAttendees += numOfAttendees;
 				_context.EventRegistrations.Add(registration);
 				_context.SaveChanges();
 				return new DbActionResult<EventRegistration>(true, "Event registration added successfully", registration);
 			}
 			catch (Exception ex) { return new DbActionResult<EventRegistration>(false, ex.Message); }
+		}
+
+		public DbActionResult RemoveEventRegistration(string userId, int eventId)
+		{
+			try
+			{
+				var reg = _context.EventRegistrations.Find(userId, eventId);
+				if (reg == null) return new DbActionResult(false, "Registration not found.");
+
+				var ev = _context.Events.Find(eventId);
+				if (ev != null) ev.TotalAttendees = Math.Max(0, ev.TotalAttendees - reg.NumberOfAttendees);
+
+				_context.EventRegistrations.Remove(reg);
+				_context.SaveChanges();
+				return new DbActionResult(true, "Registration removed.");
+			}
+			catch (Exception ex) { return new DbActionResult(false, ex.Message); }
 		}
 	}
 }

@@ -24,6 +24,8 @@
                         data-sort="Cost"            class="@SortClass("Cost")">Cost</th>
                     <th data-hide-priority="2"
                         data-sort="Max_Capcity"     class="@SortClass("Max_Capcity")">Capacity</th>
+                    <th data-hide-priority="2"
+                        data-sort="TotalAttendees"  class="@SortClass("TotalAttendees")">Attendees</th>
                     <th data-hide-priority="4"
                         data-sort="StaffName"       class="@SortClass("StaffName")">Staff</th>
                     <th></th>
@@ -39,6 +41,7 @@
                         <td class="col-muted">@ev.Start_Date_Time.ToString("dd MMM yyyy, HH:mm")</td>
                         <td>$@ev.Cost.ToString("0.00")</td>
                         <td class="col-muted">@ev.Max_Capcity</td>
+                        <td class="col-muted">@ev.TotalAttendees</td>
                         <td class="col-muted">@ev.Staff?.FirstName @ev.Staff?.LastName</td>
                         <td class="col-actions">
                             <button class="btn--admin btn--ghost btn--sm view-event-btn" data-id="@ev.Id">View</button>

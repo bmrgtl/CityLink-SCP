@@ -69,28 +69,28 @@
         <p class="ann__eyebrow">What We Offer</p>
         <h3 class="heading-md">Available Services</h3>
 
-        <form class="table-search" id="services-search-form">
+        <form class="pub-search" id="services-search-form">
             <input type="hidden" name="Page"      value="1" />
             <input type="hidden" name="Size"      value="12" />
             <input type="hidden" name="SortBy"    id="svc-sortby-hidden"    value="Title" />
             <input type="hidden" name="SortOrder" id="svc-sortorder-hidden" value="asc" />
-            <div class="table-search__row">
-                <div class="table-search__field table-search__field--lg">
-                    <label class="table-search__label" for="svc-term">Search</label>
-                    <input class="table-search__input" id="svc-term" name="SearchTerm" placeholder="Title, description or location…" />
+            <div class="pub-search__row">
+                <div class="pub-search__field pub-search__field--lg">
+                    <label class="pub-search__label" for="svc-term">Search</label>
+                    <input class="pub-search__input" id="svc-term" name="SearchTerm" placeholder="Title, description or location…" />
                 </div>
-                <div class="table-search__field">
-                    <label class="table-search__label" for="svc-from">Available From</label>
-                    <input type="time" class="table-search__input" id="svc-from" name="From" />
+                <div class="pub-search__field">
+                    <label class="pub-search__label" for="svc-from">Available From</label>
+                    <input type="time" class="pub-search__input" id="svc-from" name="From" />
                 </div>
-                <div class="table-search__field">
-                    <label class="table-search__label" for="svc-to">Available Until</label>
-                    <input type="time" class="table-search__input" id="svc-to" name="To" />
+                <div class="pub-search__field">
+                    <label class="pub-search__label" for="svc-to">Available Until</label>
+                    <input type="time" class="pub-search__input" id="svc-to" name="To" />
                 </div>
-                <div class="table-search__field" style="max-width:fit-content;">
-                    <label class="table-search__label" for="svc-sortby-select">Sort By</label>
+                <div class="pub-search__field" style="max-width:fit-content;">
+                    <label class="pub-search__label" for="svc-sortby-select">Sort By</label>
                     <div style="display:flex;gap:0.4rem;">
-                        <select class="table-search__input table-search__sort-select" id="svc-sortby-select" style="flex:1;">
+                        <select class="pub-search__input pub-search__sort-select" id="svc-sortby-select" style="flex:1;">
                             <option value="Title">Title (A–Z)</option>
                             <option value="Location">Location</option>
                             <option value="Cost">Cost</option>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </div>
-            <div class="table-search__actions">
+            <div class="pub-search__actions">
                 <button type="submit" class="btn btn--outline">Search</button>
                 <button type="button" class="btn--ghost" id="svcClearBtn" style="display:none">Clear</button>
             </div>
