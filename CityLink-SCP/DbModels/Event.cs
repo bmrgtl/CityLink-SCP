@@ -8,6 +8,7 @@
 		public string Location { get; set; } = null!;
 		public double Cost { get; set; }
 		public int Max_Capcity { get; set; }
+		public int TotalAttendees { get; set; } = 0;
 		public DateTime Start_Date_Time { get; set; }
 		public DateTime End_Date_Time { get; set; }
 

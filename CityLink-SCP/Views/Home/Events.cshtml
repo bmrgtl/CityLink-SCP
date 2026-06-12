@@ -23,47 +23,47 @@
         <p class="eyebrow">Community Events</p>
         <h2 class="heading-lg">What's Happening</h2>
 
-        <form class="table-search" id="events-search-form">
+        <form class="pub-search" id="events-search-form">
             <input type="hidden" name="Page"      value="1" />
             <input type="hidden" name="Size"      value="12" />
             <input type="hidden" name="SortBy"    id="ev-sortby-hidden"    value="Start_Date_Time" />
             <input type="hidden" name="SortOrder" id="ev-sortorder-hidden" value="asc" />
-            <div class="table-search__row">
-                <div class="table-search__field table-search__field--lg">
-                    <label class="table-search__label" for="ev-term">Search</label>
-                    <input class="table-search__input" id="ev-term" name="SearchTerm" placeholder="Title or description…" />
+            <div class="pub-search__row">
+                <div class="pub-search__field pub-search__field--lg">
+                    <label class="pub-search__label" for="ev-term">Search</label>
+                    <input class="pub-search__input" id="ev-term" name="SearchTerm" placeholder="Title or description…" />
                 </div>
-                <div class="table-search__field table-search__field--lg">
-                    <label class="table-search__label" for="ev-location">Location</label>
-                    <input class="table-search__input" id="ev-location" name="Location" placeholder="e.g. City Square" />
+                <div class="pub-search__field pub-search__field--lg">
+                    <label class="pub-search__label" for="ev-location">Location</label>
+                    <input class="pub-search__input" id="ev-location" name="Location" placeholder="e.g. City Square" />
                 </div>
-                <div class="table-search__field table-search__field--sm">
-                    <label class="table-search__label" for="ev-mincost">Min $</label>
-                    <input type="number" class="table-search__input" id="ev-mincost" name="MinCost" min="0" step="0.01" placeholder="0.00" />
+                <div class="pub-search__field pub-search__field--sm">
+                    <label class="pub-search__label" for="ev-mincost">Min $</label>
+                    <input type="number" class="pub-search__input" id="ev-mincost" name="MinCost" min="0" step="0.01" placeholder="0.00" />
                 </div>
-                <div class="table-search__field table-search__field--sm">
-                    <label class="table-search__label" for="ev-maxcost">Max $</label>
-                    <input type="number" class="table-search__input" id="ev-maxcost" name="MaxCost" min="0" step="0.01" placeholder="0.00" />
+                <div class="pub-search__field pub-search__field--sm">
+                    <label class="pub-search__label" for="ev-maxcost">Max $</label>
+                    <input type="number" class="pub-search__input" id="ev-maxcost" name="MaxCost" min="0" step="0.01" placeholder="0.00" />
                 </div>
-                <div class="table-search__field table-search__field--date">
-                    <label class="table-search__label" for="ev-from">From</label>
-                    <input type="datetime-local" class="table-search__input" id="ev-from" name="From" />
+                <div class="pub-search__field pub-search__field--date">
+                    <label class="pub-search__label" for="ev-from">From</label>
+                    <input type="datetime-local" class="pub-search__input" id="ev-from" name="From" />
                 </div>
-                <div class="table-search__field table-search__field--date">
-                    <label class="table-search__label" for="ev-to">To</label>
-                    <input type="datetime-local" class="table-search__input" id="ev-to" name="To" />
+                <div class="pub-search__field pub-search__field--date">
+                    <label class="pub-search__label" for="ev-to">To</label>
+                    <input type="datetime-local" class="pub-search__input" id="ev-to" name="To" />
                 </div>
-                <div class="table-search__field table-search__field--sm">
-                    <label class="table-search__label" for="ev-avail">Tickets</label>
-                    <select class="table-search__input" id="ev-avail" name="TicketsAvaliable">
+                <div class="pub-search__field pub-search__field--sm">
+                    <label class="pub-search__label" for="ev-avail">Tickets</label>
+                    <select class="pub-search__input" id="ev-avail" name="TicketsAvaliable">
                         <option value="">Any</option>
                         <option value="true">Available</option>
                     </select>
                 </div>
-                <div class="table-search__field" style="max-width:fit-content;">
-                    <label class="table-search__label" for="ev-sortby-select">Sort By</label>
+                <div class="pub-search__field" style="max-width:fit-content;">
+                    <label class="pub-search__label" for="ev-sortby-select">Sort By</label>
                     <div style="display:flex;gap:0.4rem;">
-                        <select class="table-search__input table-search__sort-select" id="ev-sortby-select" style="flex:1;">
+                        <select class="pub-search__input pub-search__sort-select" id="ev-sortby-select" style="flex:1;">
                             <option value="Start_Date_Time">Date</option>
                             <option value="Title">Title (A–Z)</option>
                             <option value="Location">Location</option>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <div class="table-search__actions">
+            <div class="pub-search__actions">
                 <button type="submit" class="btn btn--outline">Search</button>
                 <button type="button" class="btn--ghost" id="evClearBtn" style="display:none">Clear</button>
             </div>

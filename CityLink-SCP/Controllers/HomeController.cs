@@ -387,13 +387,8 @@ namespace CityLink_SCP.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return RedirectToAction("Login");
-            var reg = await _dbService._context.EventRegistrations.FindAsync(user.Id, eventId);
-            if (reg != null)
-            {
-                _dbService._context.EventRegistrations.Remove(reg);
-                await _dbService._context.SaveChangesAsync();
-                TempData["Success"] = "Registration cancelled.";
-            }
+            var result = _dbService.RemoveEventRegistration(user.Id, eventId);
+            if (result.Success) TempData["Success"] = "Registration cancelled.";
             return RedirectToAction("Profile");
         }
 

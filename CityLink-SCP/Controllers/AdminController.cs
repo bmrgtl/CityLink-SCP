@@ -500,11 +500,8 @@ namespace CityLink_SCP.Controllers
         [HttpPost]
         public IActionResult DeleteEventRegistration(string userId, int eventId)
         {
-            var reg = _dbService._context.EventRegistrations
-                .FirstOrDefault(r => r.UserId == userId && r.EventId == eventId);
-            if (reg == null) return BadRequest(new { error = "Registration not found." });
-            _dbService._context.EventRegistrations.Remove(reg);
-            _dbService._context.SaveChanges();
+            var result = _dbService.RemoveEventRegistration(userId, eventId);
+            if (!result.Success) return BadRequest(new { error = result.Message });
             const int size = 20;
             var items = _dbService._context.EventRegistrations
                 .Include(r => r.User).Include(r => r.Event)
@@ -587,8 +584,6 @@ namespace CityLink_SCP.Controllers
             return PartialView("_FeedbackTable", feedback);
         }
 
-        #endregion
-
         [HttpGet]
         public IActionResult SearchXmlConfigs(
             [ModelBinder(typeof(RestrictedQueryModelBinder))] XmlConfigQueryParams query)
@@ -631,7 +626,7 @@ namespace CityLink_SCP.Controllers
             ViewData["SortBy"]    = sortBy;
             ViewData["SortOrder"] = sortOrder;
         }
-
+        #endregion
         #region Tab Section Endpoints
 
         [HttpGet]

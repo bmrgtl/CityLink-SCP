@@ -499,8 +499,8 @@
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    flex: 1 1 150px;     /* grows to fill, wraps below 150 px */
-    min-width: 120px;
+    flex: 1 1 150px;
+    max-width: fit-content;
 }
 
 .table-search__field--lg {
