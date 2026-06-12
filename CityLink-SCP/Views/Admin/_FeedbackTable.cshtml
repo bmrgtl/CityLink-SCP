@@ -14,11 +14,14 @@
         <table class="admin-table" id="feedbackTable">
             <thead>
                 <tr>
-                    <th data-sort="Id"        class="@SortClass("Id")">ID</th>
-                    <th data-sort="UserName" class="@SortClass("UserName")">From</th>
-                    <th data-sort="Message" class="@SortClass("Message")">Message</th>
-                    <th data-sort="Status"    class="@SortClass("Status")">Status</th>
-                    <th data-sort="CreatedAt" class="@SortClass("CreatedAt")">Received</th>
+                    <th data-hide-priority="1"
+                        data-sort="Id"        class="@SortClass("Id")">ID</th>
+                    <th data-sort="UserName"  class="@SortClass("UserName")">From</th>
+                    <th data-sort="Message"   class="@SortClass("Message")">Message</th>
+                    <th data-hide-priority="3"
+                        data-sort="Status"    class="@SortClass("Status")">Status</th>
+                    <th data-hide-priority="2"
+                        data-sort="CreatedAt" class="@SortClass("CreatedAt")">Received</th>
                     <th></th>
                 </tr>
             </thead>

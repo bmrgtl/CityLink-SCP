@@ -12,10 +12,12 @@
         <table class="admin-table" id="regsTable">
             <thead>
                 <tr>
-                    <th data-sort="EventName"          class="@SortClass("EventName")">Event</th>
-                    <th data-sort="UserName"           class="@SortClass("UserName")">User</th>
-                    <th data-sort="NumberOfAttendees"  class="@SortClass("NumberOfAttendees")">Attendees</th>
-                    <th data-sort="TotalCost"          class="@SortClass("TotalCost")">Total Cost</th>
+                    <th data-sort="EventName"         class="@SortClass("EventName")">Event</th>
+                    <th data-sort="UserName"          class="@SortClass("UserName")">User</th>
+                    <th data-hide-priority="2"
+                        data-sort="NumberOfAttendees" class="@SortClass("NumberOfAttendees")">Attendees</th>
+                    <th data-hide-priority="1"
+                        data-sort="TotalCost"         class="@SortClass("TotalCost")">Total Cost</th>
                     <th></th>
                 </tr>
             </thead>

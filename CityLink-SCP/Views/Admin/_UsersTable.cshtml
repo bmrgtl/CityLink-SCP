@@ -14,12 +14,16 @@
         <table class="admin-table" id="usersTable">
             <thead>
                 <tr>
-                    <th data-sort="Id"        class="@SortClass("Id")">ID</th>
-                    <th data-sort="LastName"  class="@SortClass("LastName")">Name</th>
-                    <th data-sort="Email"     class="@SortClass("Email")">Email</th>
-                    <th data-sort="PhoneNumber" class="@SortClass("PhoneNumber")">Phone</th>
-                    <th data-sort="Address"     class="@SortClass("Address")">Address</th>
-                    <th></th>
+                    <th data-hide-priority="2"
+                        data-sort="Id"          class="@SortClass("Id")">ID</th>
+                    <th data-sort="LastName"    class="@SortClass("LastName")">Name</th>
+                    <th data-hide-priority="3" 
+                        data-sort="Email"       class="@SortClass("Email")">Email</th>
+                    <th data-hide-priority="5"
+                        data-sort="PhoneNumber" class="@SortClass("PhoneNumber")">Phone</th>
+                    <th data-hide-priority="1"
+                        data-sort="Address"     class="@SortClass("Address")">Address</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
