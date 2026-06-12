@@ -100,7 +100,7 @@ namespace CityLink_SCP.Controllers
 				var staff = _dbService._context.AppStaff.FirstOrDefault(s => s.Id == staffId)
 					?? _dbService._context.AppStaff.First();
 				await _xmlService.SaveNewVersionAsync(staff, xmlConfig);
-				return PartialView("_XmlConfigsTable", XmlConfigsList());
+				return Ok();
 			}
 			catch (Exception ex)
 			{
@@ -114,7 +114,7 @@ namespace CityLink_SCP.Controllers
 		{
 			var success = await _xmlService.ActivateVersionAsync(recordId);
 			if (!success) return BadRequest(new { error = "Config not found." });
-			return PartialView("_XmlConfigsTable", XmlConfigsList());
+			return Ok();
 		}
 
 		[HttpGet]
@@ -134,7 +134,7 @@ namespace CityLink_SCP.Controllers
             if (r == null) return BadRequest(new { error = "Config not found." });
             _dbService._context.XML_Configurations.Remove(r);
             _dbService._context.SaveChanges();
-            return PartialView("_XmlConfigsTable", XmlConfigsList());
+            return Ok();
 		}
 
         private List<XmlConfigDto> XmlConfigsList()
@@ -189,7 +189,7 @@ namespace CityLink_SCP.Controllers
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
                 return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
-            return PartialView("_UsersTable", UsersList());
+            return Ok();
         }
 
         [HttpPost]
@@ -208,7 +208,7 @@ namespace CityLink_SCP.Controllers
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 await _userManager.ResetPasswordAsync(user, token, dto.Password);
             }
-            return PartialView("_UsersTable", UsersList());
+            return Ok();
         }
 
         [HttpPost]
@@ -219,7 +219,7 @@ namespace CityLink_SCP.Controllers
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
                 return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
-            return PartialView("_UsersTable", UsersList());
+            return Ok();
         }
 
         private List<ApplicationUser> UsersList()
@@ -262,7 +262,7 @@ namespace CityLink_SCP.Controllers
             if (!result.Succeeded)
                 return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
             await _userManager.AddToRoleAsync(staff, "Staff");
-            return PartialView("_StaffTable", StaffList());
+            return Ok();
         }
 
         [HttpPost]
@@ -282,7 +282,7 @@ namespace CityLink_SCP.Controllers
                 var token = await _userManager.GeneratePasswordResetTokenAsync(staff);
                 await _userManager.ResetPasswordAsync(staff, token, dto.Password);
             }
-            return PartialView("_StaffTable", StaffList());
+            return Ok();
         }
 
         [HttpPost]
@@ -293,7 +293,7 @@ namespace CityLink_SCP.Controllers
             var result = await _userManager.DeleteAsync(staff);
             if (!result.Succeeded)
                 return BadRequest(new { error = string.Join("; ", result.Errors.Select(e => e.Description)) });
-            return PartialView("_StaffTable", StaffList());
+            return Ok();
         }
 
         private List<ApplicationStaff> StaffList()
@@ -339,7 +339,7 @@ namespace CityLink_SCP.Controllers
             };
             _dbService._context.Events.Add(ev);
             _dbService._context.SaveChanges();
-            return PartialView("_EventsTable", EventsList());
+            return Ok();
         }
 
         [HttpPost]
@@ -352,7 +352,7 @@ namespace CityLink_SCP.Controllers
             ev.Start_Date_Time = dto.Start_Date_Time; ev.End_Date_Time = dto.End_Date_Time;
             ev.StaffId = dto.StaffId;
             _dbService._context.SaveChanges();
-            return PartialView("_EventsTable", EventsList());
+            return Ok();
         }
 
         [HttpPost]
@@ -362,7 +362,7 @@ namespace CityLink_SCP.Controllers
             if (ev == null) return BadRequest(new { error = "Event not found." });
             _dbService._context.Events.Remove(ev);
             _dbService._context.SaveChanges();
-            return PartialView("_EventsTable", EventsList());
+            return Ok();
         }
 
         private List<Event> EventsList()
@@ -410,7 +410,7 @@ namespace CityLink_SCP.Controllers
             };
             _dbService._context.Services.Add(svc);
             _dbService._context.SaveChanges();
-            return PartialView("_ServicesTable", ServicesList());
+            return Ok();
         }
 
         [HttpPost]
@@ -424,7 +424,7 @@ namespace CityLink_SCP.Controllers
             svc.Available_End_Time = dto.Available_End_Time;
             svc.StaffId = dto.StaffId;
             _dbService._context.SaveChanges();
-            return PartialView("_ServicesTable", ServicesList());
+            return Ok();
         }
 
         [HttpPost]
@@ -434,7 +434,7 @@ namespace CityLink_SCP.Controllers
             if (svc == null) return BadRequest(new { error = "Service not found." });
             _dbService._context.Services.Remove(svc);
             _dbService._context.SaveChanges();
-            return PartialView("_ServicesTable", ServicesList());
+            return Ok();
         }
 
         private List<Service> ServicesList()
@@ -472,7 +472,7 @@ namespace CityLink_SCP.Controllers
             if (fb.Status == FeedbackStatus.Resolved || fb.Status == FeedbackStatus.Closed)
                 fb.ResolvedAt ??= DateTime.UtcNow;
             _dbService._context.SaveChanges();
-            return PartialView("_FeedbackTable", FeedbackList());
+            return Ok();
         }
 
         [HttpPost]
@@ -482,7 +482,7 @@ namespace CityLink_SCP.Controllers
             if (fb == null) return BadRequest(new { error = "Feedback not found." });
             _dbService._context.Feedbacks.Remove(fb);
             _dbService._context.SaveChanges();
-            return PartialView("_FeedbackTable", FeedbackList());
+            return Ok();
         }
 
         private List<Feedback> FeedbackList()
@@ -502,12 +502,7 @@ namespace CityLink_SCP.Controllers
         {
             var result = _dbService.RemoveEventRegistration(userId, eventId);
             if (!result.Success) return BadRequest(new { error = result.Message });
-            const int size = 20;
-            var items = _dbService._context.EventRegistrations
-                .Include(r => r.User).Include(r => r.Event)
-                .OrderByDescending(r => r.EventId).Take(size).ToList();
-            SetPagerViewData(1, size, items.Count == size, "EventId", "desc");
-            return PartialView("_EventRegistrationsTable", items);
+            return Ok();
         }
 
         [HttpPost]
@@ -518,12 +513,7 @@ namespace CityLink_SCP.Controllers
             if (booking == null) return BadRequest(new { error = "Booking not found." });
             _dbService._context.ServiceBookings.Remove(booking);
             _dbService._context.SaveChanges();
-            const int size = 20;
-            var items = _dbService._context.ServiceBookings
-                .Include(b => b.User).Include(b => b.Service)
-                .OrderByDescending(b => b.Start_Time).Take(size).ToList();
-            SetPagerViewData(1, size, items.Count == size, "Start_Time", "desc");
-            return PartialView("_ServiceBookingsTable", items);
+            return Ok();
         }
 
         #endregion
