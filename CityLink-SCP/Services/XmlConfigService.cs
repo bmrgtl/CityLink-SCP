@@ -86,6 +86,22 @@ public class XmlConfigService
         return (T?)serializer.Deserialize(reader);
     }
 
+    public object? ToViewModel(string typeName, string xml)
+    {
+        var type = GetViewModelType(typeName);
+        if (type == null) return null;
+        try
+        {
+            var serializer = new XmlSerializer(type);
+            using var reader = new StringReader(xml);
+            return serializer.Deserialize(reader);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public XmlConfig FromViewModel<T>(T viewModel)
     {
         return new XmlConfig

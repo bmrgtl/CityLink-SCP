@@ -85,6 +85,15 @@ namespace CityLink_SCP.Controllers
 			return PartialView(xmlVm.PartialName, model);
 		}
 
+        [HttpPost]
+        public async Task<IActionResult> GetXmlPreview(string xmlType, string xmlContent)
+        {
+            var model = await Task.Run(() => _xmlService.ToViewModel(xmlType, xmlContent));
+            if (model == null) return BadRequest("Invalid XML or unknown type.");
+            if (model is not IXmlViewModel xmlVm) return BadRequest("No preview for this type.");
+            return PartialView(xmlVm.PartialName, model);
+        }
+
 		[HttpPost]
 		public async Task<IActionResult> UploadXmlConfig([FromForm] XmlConfigDto xmlConfig)
 		{

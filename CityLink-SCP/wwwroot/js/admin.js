@@ -234,12 +234,14 @@ $(function () {
     });
 
     $(document).on("click", "#previewXmlBtn", function () {
-        var id = $("#xml-editor-overlay input[name='ExistingId']").val();
-        if (!id) { showStatus("xml-status", "Save the config first, or preview an existing row.", "info"); return; }
-        $.get("/Admin/GetXmlPreview", { id: id }, function (html) {
+        var xmlType = $("#xmlTypeSelect").val();
+        var xmlContent = $("#xmlEditText").val();
+        if (!xmlType) { showStatus("xml-status", "Select a config type before previewing.", "info"); return; }
+        if (!xmlContent.trim()) { showStatus("xml-status", "Enter XML content before previewing.", "info"); return; }
+        $.post("/Admin/GetXmlPreview", { xmlType: xmlType, xmlContent: xmlContent }, function (html) {
             $("#xml-preview-content").empty().append(html);
             openPanel("xml-preview-overlay");
-        }).fail(function (xhr) { alert("Preview error: " + errMsg(xhr)); });
+        }).fail(function (xhr) { showStatus("xml-status", "Preview error: " + errMsg(xhr), "error"); });
     });
 
     $(document).on("click", ".preview-config-btn", function () {
