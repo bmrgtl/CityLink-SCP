@@ -179,7 +179,7 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchPublicEvents([ModelBinder(typeof(RestrictedQueryModelBinder))] EventQueryParams query)
         {
             if (query.Size <= 0) query.Size = 12;
-            var events = _dbService._context.Events.ApplyQuery(query).ToList();
+            var events = _dbService._context.Events.ApplyQuery(query)?.ToList();
             SetPublicPagerViewData(query, events.Count == query.Size);
             return PartialView("_EventCardGrid", events);
         }
@@ -197,7 +197,7 @@ namespace CityLink_SCP.Controllers
         public IActionResult SearchPublicServices([ModelBinder(typeof(RestrictedQueryModelBinder))] ServiceQueryParams query)
         {
             if (query.Size <= 0) query.Size = 12;
-            var services = _dbService._context.Services.ApplyQuery(query).ToList();
+            var services = _dbService._context.Services.ApplyQuery(query)?.ToList();
             SetPublicPagerViewData(query, services.Count == query.Size);
             return PartialView("_ServiceCardGrid", services);
         }

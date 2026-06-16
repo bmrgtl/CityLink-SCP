@@ -52,6 +52,8 @@ public class RestrictedQueryModelBinder : IModelBinder
                     converted = TimeOnly.Parse(valueResult.FirstValue!);
                 else if (targetType == typeof(DateOnly))
                     converted = DateOnly.Parse(valueResult.FirstValue!);
+                else if (targetType == typeof(string))
+                    converted = valueResult.FirstValue!.ToLower();
                 else
                     converted = Convert.ChangeType(valueResult.FirstValue, targetType);
 
